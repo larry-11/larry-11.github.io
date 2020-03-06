@@ -4,11 +4,11 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Categories, SYSU CV GAN">
+    <meta name="keywords" content="Tag: light-weight, SYSU CV GAN">
     <meta name="baidu-site-verification" content>
     <meta name="google-site-verification" content>
     <meta name="360-site-verification" content>
-    <meta name="description" content="Categories | Larry Site">
+    <meta name="description" content="Tag: light-weight | Larry Site">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -16,7 +16,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Categories | Larry Site</title>
+    <title>Tag: light-weight | Larry Site</title>
     <link rel="icon" type="image/jpeg" href="/bio.jpg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -251,7 +251,7 @@
                     Version 1.0
                  -->
                 
-                    Categories
+                    Tag
                 
             </div>
 
@@ -275,51 +275,49 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
 
     
 
-<div id="category-cloud" class="container chip-container">
+<div id="tags" class="container chip-container">
     <div class="card">
         <div class="card-content">
             <div class="tag-title center-align">
-                <i class="fa fa-bookmark"></i>&nbsp;&nbsp;Post Categories
+                <i class="fa fa-tags"></i>&nbsp;&nbsp;Post Tags
             </div>
             <div class="tag-chips">
                 
                 
-                
-                <a href="/categories/随笔/" title="随笔: 1">
+                <a href="/tags/随笔/" title="随笔: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #F9EBEA;">随笔
+                            data-tagname="随笔" style="background-color: #F9EBEA;">随笔
                         <span class="tag-length">1</span>
                     </span>
                 </a>
                 
                 
-                <a href="/categories/Meta-Learning/" title="Meta Learning: 0">
+                <a href="/tags/Meta-Learning/" title="Meta Learning: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #F5EEF8;">Meta Learning
-                        <span class="tag-length">0</span>
+                            data-tagname="Meta Learning" style="background-color: #F5EEF8;">Meta Learning
+                        <span class="tag-length">1</span>
                     </span>
                 </a>
                 
                 
-                <a href="/categories/SR/" title="SR: 0">
+                <a href="/tags/SR/" title="SR: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #D5F5E3;">SR
-                        <span class="tag-length">0</span>
+                            data-tagname="SR" style="background-color: #D5F5E3;">SR
+                        <span class="tag-length">1</span>
                     </span>
                 </a>
                 
                 
-                <a href="/categories/DL/" title="DL: 3">
+                <a href="/tags/light-weight/" title="light-weight: 1">
                     <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            style="background-color: #E8F8F5;">DL
-                        <span class="tag-length">3</span>
+                             chip-active "
+                            data-tagname="light-weight" style="background-color: #E8F8F5;">light-weight
+                        <span class="tag-length">1</span>
                     </span>
                 </a>
-                
                 
             </div>
         </div>
@@ -327,64 +325,46 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
 </div>
 
     
-    <style type="text/css">
-    #category-radar {
-        width: 100%;
-        height: 360px;
-    }
-</style>
 
-<div class="container" data-aos="fade-up">
-    <div class="card">
-        <div id="category-radar" class="card-content"></div>
-    </div>
-</div>
-
-<script type="text/javascript" src="/libs/echarts/echarts.min.js"></script>
-<script type="text/javascript">
-    let radarChart = echarts.init(document.getElementById('category-radar'));
-
-    
-
-    let option = {
-        title: {
-            left: 'center',
-            text: 'Post Categories Radar Chart',
-            textStyle: {
-                fontWeight: 500,
-                fontSize: 22
-            }
-        },
-        tooltip: {},
-        radar: {
-            name: {
-                textStyle: {
-                    color: '#3C4858'
-                }
-            },
-            indicator: [{"name":"随笔","max":3},{"name":"Meta Learning","max":3},{"name":"SR","max":3},{"name":"DL","max":3}],
-            nameGap: 5,
-            center: ['50%','55%'],
-            radius: '66%'
-        },
-        series: [{
-            type: 'radar',
-            color: ['#3ecf8e'],
-            itemStyle: {normal: {areaStyle: {type: 'default'}}},
-            data : [
-                {
-                    value : [1,0,0,3],
-                    name : 'Number of Categories'
-                }
-            ]
-        }]
-    };
-
-    radarChart.setOption(option);
-</script>
-    
-
+    <article id="articles" class="container articles">
+        <div class="row tags-posts">
+            
+            
+            <div class="article tag-post col s12 m6 l4" data-tags="light-weight" data-aos="fade-up">
+                <div class="card">
+                    <a href="/2019/11/17/lightweight/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="light-weight 论文阅读笔记">
+                            
+                            <span class="card-title">light-weight 论文阅读笔记</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-17
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fa fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/DL/" class="post-category" target="_blank">
+                                DL
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </article>
 </main>
+
 
     <footer class="page-footer bg-color">
     <div class="container row center-align">

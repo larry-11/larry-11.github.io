@@ -43,37 +43,11 @@
   </entry>
   
   <entry>
-    <title>Meta Learning （Hongyi Li）</title>
-    <link href="https://larry-11.github.io/larry-11.github.io/2020/02/04/meta-learning/"/>
-    <id>https://larry-11.github.io/larry-11.github.io/2020/02/04/meta-learning/</id>
-    <published>2020-02-04T04:00:00.000Z</published>
-    <updated>2020-03-04T13:23:12.000Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;Meta-Learning&quot;&gt;&lt;a href=&quot;#Meta-Learning&quot; class=&quot;headerlink&quot; title=&quot;Meta Learning&quot;&gt;&lt;/a&gt;Meta Learning&lt;/h1&gt;&lt;h2 id=&quot;Introduction&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="Meta Learning" scheme="https://larry-11.github.io/larry-11.github.io/categories/Meta-Learning/"/>
-    
-    
-      <category term="Meta Learning" scheme="https://larry-11.github.io/larry-11.github.io/tags/Meta-Learning/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Super Resolution</title>
-    <link href="https://larry-11.github.io/larry-11.github.io/2020/02/04/super-resolution/"/>
-    <id>https://larry-11.github.io/larry-11.github.io/2020/02/04/super-resolution/</id>
-    <published>2020-02-04T04:00:00.000Z</published>
-    <updated>2020-03-04T13:20:16.000Z</updated>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/02/26/super-resolution/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/02/26/super-resolution/</id>
+    <published>2020-02-26T04:00:00.000Z</published>
+    <updated>2020-03-06T03:19:34.000Z</updated>
     
     <summary type="html">
     
@@ -87,10 +61,62 @@
     
     </summary>
     
-      <category term="SR" scheme="https://larry-11.github.io/larry-11.github.io/categories/SR/"/>
+      <category term="DL" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL/"/>
     
     
       <category term="SR" scheme="https://larry-11.github.io/larry-11.github.io/tags/SR/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Meta Learning （Hongyi Li）</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/02/04/meta-learning/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/02/04/meta-learning/</id>
+    <published>2020-02-04T04:00:00.000Z</published>
+    <updated>2020-03-06T03:19:44.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Meta-Learning&quot;&gt;&lt;a href=&quot;#Meta-Learning&quot; class=&quot;headerlink&quot; title=&quot;Meta Learning&quot;&gt;&lt;/a&gt;Meta Learning&lt;/h1&gt;&lt;h2 id=&quot;Introduction&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="DL" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL/"/>
+    
+    
+      <category term="Meta Learning" scheme="https://larry-11.github.io/larry-11.github.io/tags/Meta-Learning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>light-weight 论文阅读笔记</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2019/11/17/lightweight/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2019/11/17/lightweight/</id>
+    <published>2019-11-17T04:00:00.000Z</published>
+    <updated>2020-03-06T03:20:46.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Light-weight&quot;&gt;&lt;a href=&quot;#Light-weight&quot; class=&quot;headerlink&quot; title=&quot;Light-weight&quot;&gt;&lt;/a&gt;&lt;strong&gt;Light-weight&lt;/strong&gt;&lt;/h1&gt;&lt;h2
+        
+      
+    
+    </summary>
+    
+      <category term="DL" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL/"/>
+    
+    
+      <category term="light-weight" scheme="https://larry-11.github.io/larry-11.github.io/tags/light-weight/"/>
     
   </entry>
   
