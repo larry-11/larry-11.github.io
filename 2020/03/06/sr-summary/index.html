@@ -4,11 +4,17 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="新的开始, SYSU CV GAN">
+    <meta name="keywords" content="SR summary, SYSU CV GAN">
     <meta name="baidu-site-verification" content>
     <meta name="google-site-verification" content>
     <meta name="360-site-verification" content>
-    <meta name="description" content="庆祝小站正式成立！！！Celebrate the establishment of Larry Site! !! !!">
+    <meta name="description" content="SRcategories
+supervised SR（有监督学习的图像超分辨率）
+unsupervised SR（无监督学习的图像超分辨率）
+domain-specific SR （特定应用领域的图像超分辨率）
+
+dataset
+summa">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -16,7 +22,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>新的开始 | Larry Site</title>
+    <title>SR summary | Larry Site</title>
     <link rel="icon" type="image/jpeg" href="/bio.jpg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -258,13 +264,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        新的开始
+                        SR summary
                     </div>
                 </div>
             </div>
@@ -375,8 +381,8 @@
                     
                     <div class="article-tag">
                         
-                        <a href="/tags/随笔/" target="_blank">
-                            <span class="chip bg-color">随笔</span>
+                        <a href="/tags/SR/" target="_blank">
+                            <span class="chip bg-color">SR</span>
                         </a>
                         
                     </div>
@@ -387,8 +393,8 @@
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                        <a href="/categories/随笔/" class="post-category" target="_blank">
-                            随笔
+                        <a href="/categories/DL-summary/" class="post-category" target="_blank">
+                            DL summary
                         </a>
                         
                     </div>
@@ -399,7 +405,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2020-03-04
+                    2020-03-06
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -413,7 +419,7 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    14
+                    350
                 </div>
                 
 
@@ -431,7 +437,55 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="庆祝小站正式成立！！！"><a href="#庆祝小站正式成立！！！" class="headerlink" title="庆祝小站正式成立！！！"></a>庆祝小站正式成立！！！</h1><h1 id="Celebrate-the-establishment-of-Larry-Site"><a href="#Celebrate-the-establishment-of-Larry-Site" class="headerlink" title="Celebrate the establishment of Larry Site! !! !!"></a>Celebrate the establishment of Larry Site! !! !!</h1>
+                <h1 id="SR"><a href="#SR" class="headerlink" title="SR"></a>SR</h1><h2 id="categories"><a href="#categories" class="headerlink" title="categories"></a>categories</h2><ul>
+<li>supervised SR（有监督学习的图像超分辨率）</li>
+<li>unsupervised SR（无监督学习的图像超分辨率）</li>
+<li>domain-specific SR （特定应用领域的图像超分辨率）</li>
+</ul>
+<h2 id="dataset"><a href="#dataset" class="headerlink" title="dataset"></a>dataset</h2><p><img src="image-20200306194236412.png" alt></p>
+<h2 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h2><p><img src="image-20200306194207180.png" alt></p>
+<h2 id="innovation"><a href="#innovation" class="headerlink" title="innovation"></a>innovation</h2><ol>
+<li><p>Framework ：</p>
+<ul>
+<li>lightweight：考虑实际应用</li>
+<li>Local and Global Information：大的感受野可以提供更多的纹理信息</li>
+<li>Low- and High-level Information：低层为颜色边缘信息，高层为目标信息</li>
+<li>Context-specific Attention：结合特定内容的注意力机制</li>
+<li>Upsampling Layers：multi-scale</li>
+</ul>
+</li>
+<li><p>Learning Strategies</p>
+<ul>
+<li>loss：pixel，VGG，GAN 最有效的损失函数还不明确</li>
+<li>Normalization：代替BN</li>
+</ul>
+</li>
+<li><p>Evaluation Metric</p>
+<ul>
+<li>SRGAN提出传统的PSNR/SSIM图像质量评价方法存在缺陷，存在细节模糊但数值较高情况</li>
+</ul>
+</li>
+<li><p>unsupervised SR</p>
+<ul>
+<li>常见方法为 Bicubic 方法获得LR图像，用LR-HR作为SR网络的训练数据，这样SR问题会变成预先定义图像退化过程的逆过程，在自然低分辨率图像上应用这类SR方法效果较差</li>
+<li>目前多方法多围绕cycle-GAN</li>
+</ul>
+</li>
+<li><p>Real World Scenaries</p>
+<ul>
+<li>Dealing with Various Degradation：解决多种图像退化问题，针对不同方式获得的LR图像</li>
+<li>Domain-specific Applications：视频监控、人脸识别、目标跟踪等应用场景</li>
+<li>Multi-scale Super-resolution：任意缩放因子</li>
+<li>Zoom：基于真实环境中的图像退化模型<br>Zoom to Learn, Learn to Zoom<br>Camera Lens Super-Resolution</li>
+</ul>
+</li>
+<li><p>multi-task SR</p>
+<ul>
+<li>Recovering Realistic Texture in Image Super-resolution by Deep Spatial Feature Transform</li>
+</ul>
+</li>
+</ol>
+
             </div>
             <hr />
 
@@ -465,9 +519,9 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《新的开始》
+                    《SR summary》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/03/04/larry-site/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/03/06/sr-summary/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Liangyu Cui
             </a> is licensed under a
@@ -511,19 +565,19 @@
             <div class="article-badge left-badge text-color">
                 <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2020/03/06/sr-summary/">
+                <a href="/2020/03/06/eccv18-sr/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="SR summary">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Super resolution">
                         
-                        <span class="card-title">SR summary</span>
+                        <span class="card-title">Super resolution</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            inrto of SR
+                            ECCV 2018 SR 相关论文整理
                         
                     </div>
                     <div class="publish-info">
@@ -534,8 +588,8 @@
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/DL-summary/" class="post-category" target="_blank">
-                                    DL summary
+                            <a href="/categories/DL-paper/" class="post-category" target="_blank">
+                                    DL paper
                                 </a>
                             
                             
@@ -560,31 +614,31 @@
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/02/26/super-resolution/">
+                <a href="/2020/03/04/larry-site/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Super Resolution">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="新的开始">
                         
-                        <span class="card-title">Super Resolution</span>
+                        <span class="card-title">新的开始</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            SR 相关论文笔记整理，包含SRGAN,ESRGAN以及ICCV2019、CVPR2019部分相关论文
+                            新的开始~
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-02-26
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-04
                             </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/DL-paper/" class="post-category" target="_blank">
-                                    DL paper
+                            <a href="/categories/随笔/" class="post-category" target="_blank">
+                                    随笔
                                 </a>
                             
                             
@@ -594,8 +648,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/SR/" target="_blank">
-                        <span class="chip bg-color">SR</span>
+                    <a href="/tags/随笔/" target="_blank">
+                        <span class="chip bg-color">随笔</span>
                     </a>
                     
                 </div>

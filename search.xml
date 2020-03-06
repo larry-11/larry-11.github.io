@@ -13,7 +13,32 @@
       
       <categories>
           
-          <category> DL </category>
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SR </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SR summary</title>
+      <link href="/2020/03/06/sr-summary/"/>
+      <url>/2020/03/06/sr-summary/</url>
+      
+        <content type="html"><![CDATA[<h1 id="SR"><a href="#SR" class="headerlink" title="SR"></a>SR</h1><h2 id="categories"><a href="#categories" class="headerlink" title="categories"></a>categories</h2><ul><li>supervised SR（有监督学习的图像超分辨率）</li><li>unsupervised SR（无监督学习的图像超分辨率）</li><li>domain-specific SR （特定应用领域的图像超分辨率）</li></ul><h2 id="dataset"><a href="#dataset" class="headerlink" title="dataset"></a>dataset</h2><p><img src="image-20200306194236412.png" alt></p><h2 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h2><p><img src="image-20200306194207180.png" alt></p><h2 id="innovation"><a href="#innovation" class="headerlink" title="innovation"></a>innovation</h2><ol><li><p>Framework ：</p><ul><li>lightweight：考虑实际应用</li><li>Local and Global Information：大的感受野可以提供更多的纹理信息</li><li>Low- and High-level Information：低层为颜色边缘信息，高层为目标信息</li><li>Context-specific Attention：结合特定内容的注意力机制</li><li>Upsampling Layers：multi-scale</li></ul></li><li><p>Learning Strategies</p><ul><li>loss：pixel，VGG，GAN 最有效的损失函数还不明确</li><li>Normalization：代替BN</li></ul></li><li><p>Evaluation Metric</p><ul><li>SRGAN提出传统的PSNR/SSIM图像质量评价方法存在缺陷，存在细节模糊但数值较高情况</li></ul></li><li><p>unsupervised SR</p><ul><li>常见方法为 Bicubic 方法获得LR图像，用LR-HR作为SR网络的训练数据，这样SR问题会变成预先定义图像退化过程的逆过程，在自然低分辨率图像上应用这类SR方法效果较差</li><li>目前多方法多围绕cycle-GAN</li></ul></li><li><p>Real World Scenaries</p><ul><li>Dealing with Various Degradation：解决多种图像退化问题，针对不同方式获得的LR图像</li><li>Domain-specific Applications：视频监控、人脸识别、目标跟踪等应用场景</li><li>Multi-scale Super-resolution：任意缩放因子</li><li>Zoom：基于真实环境中的图像退化模型<br>Zoom to Learn, Learn to Zoom<br>Camera Lens Super-Resolution</li></ul></li><li><p>multi-task SR</p><ul><li>Recovering Realistic Texture in Image Super-resolution by Deep Spatial Feature Transform</li></ul></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL summary </category>
           
       </categories>
       
@@ -63,7 +88,7 @@
       
       <categories>
           
-          <category> DL </category>
+          <category> DL paper </category>
           
       </categories>
       
@@ -88,7 +113,7 @@
       
       <categories>
           
-          <category> DL </category>
+          <category> DL paper </category>
           
       </categories>
       
@@ -113,7 +138,7 @@
       
       <categories>
           
-          <category> DL </category>
+          <category> DL paper </category>
           
       </categories>
       
@@ -138,7 +163,7 @@
       
       <categories>
           
-          <category> DL </category>
+          <category> DL paper </category>
           
       </categories>
       
@@ -163,7 +188,7 @@
       
       <categories>
           
-          <category> DL </category>
+          <category> DL paper </category>
           
       </categories>
       
