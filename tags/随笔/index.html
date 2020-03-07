@@ -284,28 +284,19 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
             <div class="tag-chips">
                 
                 
-                <a href="/tags/随笔/" title="随笔: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-active "
-                            data-tagname="随笔" style="background-color: #F9EBEA;">随笔
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
                 <a href="/tags/SR/" title="SR: 4">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="SR" style="background-color: #F5EEF8;">SR
+                            data-tagname="SR" style="background-color: #F9EBEA;">SR
                         <span class="tag-length">4</span>
                     </span>
                 </a>
                 
                 
-                <a href="/tags/detection/" title="detection: 1">
+                <a href="/tags/随笔/" title="随笔: 1">
                     <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="detection" style="background-color: #D5F5E3;">detection
+                             chip-active "
+                            data-tagname="随笔" style="background-color: #F5EEF8;">随笔
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -314,7 +305,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 <a href="/tags/GAN/" title="GAN: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="GAN" style="background-color: #E8F8F5;">GAN
+                            data-tagname="GAN" style="background-color: #D5F5E3;">GAN
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -323,7 +314,16 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 <a href="/tags/Meta-Learning/" title="Meta Learning: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="Meta Learning" style="background-color: #FEF9E7;">Meta Learning
+                            data-tagname="Meta Learning" style="background-color: #E8F8F5;">Meta Learning
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/detection/" title="detection: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="detection" style="background-color: #FEF9E7;">detection
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -480,8 +480,8 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
         var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
         var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
         var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
-        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
-    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+        // document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }
     siteTime();
 </script>
 
