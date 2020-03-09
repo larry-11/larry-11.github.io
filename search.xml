@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>MZSR</title>
+      <link href="/2020/03/09/mzsr-cvpr20/"/>
+      <url>/2020/03/09/mzsr-cvpr20/</url>
+      
+        <content type="html"><![CDATA[<h1 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h1><ul><li>现有 SISR 模型不能挖掘测试图片内部的信息</li><li>SISR 模型仅适用于固定领域：例如使用“bicubic”进行下采样的图片</li><li>ZSSR 需要上千次迭代</li></ul><h1 id="contribution"><a href="#contribution" class="headerlink" title="contribution"></a>contribution</h1><ul><li>通过 meta-transfer learning 为 ZSSR 提供初始参数</li><li>利用了 internal 与 external 信息</li><li><em>“fast, flexible, lightweight and unsupervised at meta-test time”</em>  可应用于实际应用</li></ul><h1 id="method"><a href="#method" class="headerlink" title="method"></a>method</h1><p><img src="image-20200309171528334.png" alt></p><h2 id="Large-scale-Training"><a href="#Large-scale-Training" class="headerlink" title="Large-scale Training"></a>Large-scale Training</h2><ul><li><p>使用 DIV2K 数据集，进行“预训练”，使用“bicubic”下采样</p></li><li><p>loss：<img src="image-20200309172242758.png" alt></p></li><li><p>why：</p><p>（1）SR任务具有相似的属相，因此可以学习到图片的能够代表HR的有效表示</p><p>（2）MAML训练不稳定，使用 pre-trained 来简化训练</p></li></ul><h2 id="Meta-Transfer-Learning"><a href="#Meta-Transfer-Learning" class="headerlink" title="Meta-Transfer Learning"></a>Meta-Transfer Learning</h2><ul><li><p>借鉴 MAML 思想，输出初始权重</p></li><li><p><em>In this step, we seek to find a sensitive and transferable initial point of the parameter space where a few gradient updates lead to large performance improvements</em></p></li><li><p><em>external dataset for meta-training, internal learning for meta-test</em></p><p>why： <em>we intend our meta-learner to more focus on the kernel-agnostic property with the help of a large-scale external dataset</em></p></li><li><p>用大量不同模糊核k合成训练数据集：<img src="image-20200309181946514.png" alt></p></li><li><p>模糊核分布：<img src="image-20200309182629382.png" alt></p></li><li><p>meta-data 分为 D(tr) 与 D(te)：task-level training, task-level test</p></li><li><p>task-level training: <img src="image-20200309182852335.png" alt></p></li><li><p>meta-objective: <img src="image-20200309182921770.png" alt></p></li><li><p>meta-training: <img src="image-20200309182945472.png" alt></p></li></ul><h2 id="Meta-Test"><a href="#Meta-Test" class="headerlink" title="Meta-Test"></a>Meta-Test</h2><ul><li>通过 <em>“kernel estimation algorithms”</em> 从输入图像中得到 blur kernel</li><li>meta-transfer learning 对相应的kernel 生成初始权重</li></ul><h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p><img src="image-20200309184409434.png" alt></p><p><img src="image-20200309184429461.png" alt></p><h1 id="experiment"><a href="#experiment" class="headerlink" title="experiment"></a>experiment</h1><p><img src="image-20200309185128226.png" alt></p><p><img src="image-20200309184704620.png" alt></p><p>实验效果能够看出其快速适应的特点</p><h1 id="advantage"><a href="#advantage" class="headerlink" title="advantage"></a>advantage</h1><ul><li>综合内部外部信息</li><li>快速适应</li></ul><h1 id="disadvantage"><a href="#disadvantage" class="headerlink" title="disadvantage"></a>disadvantage</h1><ul><li><em>“kernel estimation algorithms”</em> 通过输入的 LR 图片预测 blur kernel，影响模型整体性能</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SR, Meta Learning </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Semi-supervised 李宏毅</title>
       <link href="/2020/03/09/semi-supervised/"/>
       <url>/2020/03/09/semi-supervised/</url>
