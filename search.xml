@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Semi-supervised 李宏毅</title>
+      <link href="/2020/03/09/semi-supervised/"/>
+      <url>/2020/03/09/semi-supervised/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Semi-supervised"><a href="#Semi-supervised" class="headerlink" title="Semi-supervised"></a>Semi-supervised</h1><h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><ul><li><p>supervised learning：</p><p><img src="image-20200309144949140.png" alt></p></li><li><p>Semi-supervised learning：</p><p><img src="image-20200309145015366.png" alt></p></li><li><p>Why？ 利用好未标注信息</p><p><img src="image-20200309145102909.png" alt></p></li><li><p>Why helps？ 假设影响效果</p><p><img src="image-20200309145258396.png" alt></p></li></ul><h2 id="Generative-Model"><a href="#Generative-Model" class="headerlink" title="Generative Model"></a>Generative Model</h2><p>类似EM，逐步逼近</p><p><img src="image-20200309150057821.png" alt></p><p><img src="image-20200309150307629.png" alt></p><h2 id="Low-density-Separation"><a href="#Low-density-Separation" class="headerlink" title="Low-density Separation"></a>Low-density Separation</h2><h3 id="self-training"><a href="#self-training" class="headerlink" title="self training"></a>self training</h3><p><img src="image-20200309150526844.png" alt></p><p><img src="image-20200309150912805.png" alt></p><p>hard label有绝对的类别，soft label为各类别概率</p><h3 id="Entropy-based"><a href="#Entropy-based" class="headerlink" title="Entropy-based"></a>Entropy-based</h3><p><img src="image-20200309151321244.png" alt></p><h3 id="Semi-supervised-SVM"><a href="#Semi-supervised-SVM" class="headerlink" title="Semi-supervised SVM"></a>Semi-supervised SVM</h3><p><img src="image-20200309151833922.png" alt></p><h2 id="Smoothness-Assumption"><a href="#Smoothness-Assumption" class="headerlink" title="Smoothness Assumption"></a>Smoothness Assumption</h2><h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><p><img src="image-20200309152101626.png" alt></p><h3 id="Application"><a href="#Application" class="headerlink" title="Application"></a>Application</h3><p><img src="image-20200309152253696.png" alt></p><p><img src="image-20200309152411421.png" alt></p><h3 id="Approach"><a href="#Approach" class="headerlink" title="Approach"></a>Approach</h3><h4 id="Cluster"><a href="#Cluster" class="headerlink" title="Cluster"></a>Cluster</h4><p><img src="image-20200309152450444.png" alt></p><p><img src="image-20200309152649530.png" alt></p><h4 id="Graph-based"><a href="#Graph-based" class="headerlink" title="Graph-based"></a>Graph-based</h4><p><img src="image-20200309152829189.png" alt></p><p><img src="image-20200309153144204.png" alt></p><p> <img src="image-20200309153417329.png" alt></p><p><img src="image-20200309153554298.png" alt></p><p><img src="image-20200309153743118.png" alt="image-20200309153743118"></p><h2 id="Better-Representation"><a href="#Better-Representation" class="headerlink" title="Better Representation"></a>Better Representation</h2><p>找到本质信息</p><p><img src="image-20200309154008397.png" alt></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL summary </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> semi-supervised </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>SR</title>
       <link href="/2020/03/07/sr-cvpr1819/"/>
       <url>/2020/03/07/sr-cvpr1819/</url>
@@ -138,7 +163,7 @@
       
       <categories>
           
-          <category> DL paper </category>
+          <category> DL summary </category>
           
       </categories>
       
