@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://larry-11.github.io/larry-11.github.io/"/>
-  <updated>2020-03-13T03:05:24.000Z</updated>
+  <updated>2020-03-13T04:10:14.000Z</updated>
   <id>https://larry-11.github.io/larry-11.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://larry-11.github.io/larry-11.github.io/2020/03/12/gan-dissection-iclr19/"/>
     <id>https://larry-11.github.io/larry-11.github.io/2020/03/12/gan-dissection-iclr19/</id>
     <published>2020-03-12T04:00:00.000Z</published>
-    <updated>2020-03-13T03:05:24.000Z</updated>
+    <updated>2020-03-13T04:10:14.000Z</updated>
     
     <summary type="html">
     
@@ -70,32 +70,6 @@
   </entry>
   
   <entry>
-    <title>Semi-supervised 李宏毅</title>
-    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/09/semi-supervised/"/>
-    <id>https://larry-11.github.io/larry-11.github.io/2020/03/09/semi-supervised/</id>
-    <published>2020-03-09T04:00:00.000Z</published>
-    <updated>2020-03-09T08:05:02.000Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;Semi-supervised&quot;&gt;&lt;a href=&quot;#Semi-supervised&quot; class=&quot;headerlink&quot; title=&quot;Semi-supervised&quot;&gt;&lt;/a&gt;Semi-supervised&lt;/h1&gt;&lt;h2 id=&quot;Intro&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="DL summary" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-summary/"/>
-    
-    
-      <category term="semi-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/semi-supervised/"/>
-    
-  </entry>
-  
-  <entry>
     <title>MZSR</title>
     <link href="https://larry-11.github.io/larry-11.github.io/2020/03/09/mzsr-cvpr20/"/>
     <id>https://larry-11.github.io/larry-11.github.io/2020/03/09/mzsr-cvpr20/</id>
@@ -121,6 +95,32 @@
       <category term="SR" scheme="https://larry-11.github.io/larry-11.github.io/tags/SR/"/>
     
       <category term="Meta Learning" scheme="https://larry-11.github.io/larry-11.github.io/tags/Meta-Learning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Semi-supervised 李宏毅</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/09/semi-supervised/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/03/09/semi-supervised/</id>
+    <published>2020-03-09T04:00:00.000Z</published>
+    <updated>2020-03-09T08:05:02.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Semi-supervised&quot;&gt;&lt;a href=&quot;#Semi-supervised&quot; class=&quot;headerlink&quot; title=&quot;Semi-supervised&quot;&gt;&lt;/a&gt;Semi-supervised&lt;/h1&gt;&lt;h2 id=&quot;Intro&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="DL summary" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-summary/"/>
+    
+    
+      <category term="semi-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/semi-supervised/"/>
     
   </entry>
   
