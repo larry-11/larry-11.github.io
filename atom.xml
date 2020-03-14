@@ -96,32 +96,6 @@
   </entry>
   
   <entry>
-    <title>Semi-supervised 李宏毅</title>
-    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/09/semi-supervised/"/>
-    <id>https://larry-11.github.io/larry-11.github.io/2020/03/09/semi-supervised/</id>
-    <published>2020-03-09T04:00:00.000Z</published>
-    <updated>2020-03-09T08:05:02.000Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;Semi-supervised&quot;&gt;&lt;a href=&quot;#Semi-supervised&quot; class=&quot;headerlink&quot; title=&quot;Semi-supervised&quot;&gt;&lt;/a&gt;Semi-supervised&lt;/h1&gt;&lt;h2 id=&quot;Intro&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="DL summary" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-summary/"/>
-    
-    
-      <category term="semi-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/semi-supervised/"/>
-    
-  </entry>
-  
-  <entry>
     <title>MZSR</title>
     <link href="https://larry-11.github.io/larry-11.github.io/2020/03/09/mzsr-cvpr20/"/>
     <id>https://larry-11.github.io/larry-11.github.io/2020/03/09/mzsr-cvpr20/</id>
@@ -147,6 +121,32 @@
       <category term="SR" scheme="https://larry-11.github.io/larry-11.github.io/tags/SR/"/>
     
       <category term="Meta Learning" scheme="https://larry-11.github.io/larry-11.github.io/tags/Meta-Learning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Semi-supervised 李宏毅</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/09/semi-supervised/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/03/09/semi-supervised/</id>
+    <published>2020-03-09T04:00:00.000Z</published>
+    <updated>2020-03-09T08:05:02.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Semi-supervised&quot;&gt;&lt;a href=&quot;#Semi-supervised&quot; class=&quot;headerlink&quot; title=&quot;Semi-supervised&quot;&gt;&lt;/a&gt;Semi-supervised&lt;/h1&gt;&lt;h2 id=&quot;Intro&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="DL summary" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-summary/"/>
+    
+    
+      <category term="semi-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/semi-supervised/"/>
     
   </entry>
   
@@ -381,6 +381,60 @@
     
     
       <category term="detection" scheme="https://larry-11.github.io/larry-11.github.io/tags/detection/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Sparse Coding</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2019/06/13/pca/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2019/06/13/pca/</id>
+    <published>2019-06-13T04:00:00.000Z</published>
+    <updated>2020-03-14T07:33:28.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;向量内积&quot;&gt;&lt;a href=&quot;#向量内积&quot; class=&quot;headerlink&quot; title=&quot;向量内积&quot;&gt;&lt;/a&gt;向量内积&lt;/h1&gt;&lt;p&gt;向量投影&lt;/p&gt;
+&lt;h1 id=&quot;基变换的矩阵表示&quot;&gt;&lt;a href=&quot;#基变换的矩阵表示&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="ML" scheme="https://larry-11.github.io/larry-11.github.io/categories/ML/"/>
+    
+    
+      <category term="ML" scheme="https://larry-11.github.io/larry-11.github.io/tags/ML/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Sparse Coding</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2019/06/13/xi-shu-bian-ma/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2019/06/13/xi-shu-bian-ma/</id>
+    <published>2019-06-13T04:00:00.000Z</published>
+    <updated>2020-03-14T07:31:12.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;基本定义：&quot;&gt;&lt;a href=&quot;#基本定义：&quot; class=&quot;headerlink&quot; title=&quot;基本定义：&quot;&gt;&lt;/a&gt;基本定义：&lt;/h1&gt;&lt;p&gt; 无监督学习，“超完备基（over-complete bases）”&lt;/p&gt;
+&lt;p&gt;&lt;img
+        
+      
+    
+    </summary>
+    
+      <category term="ML" scheme="https://larry-11.github.io/larry-11.github.io/categories/ML/"/>
+    
+    
+      <category term="ML" scheme="https://larry-11.github.io/larry-11.github.io/tags/ML/"/>
     
   </entry>
   
