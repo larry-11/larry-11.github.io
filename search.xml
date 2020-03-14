@@ -29,6 +29,31 @@
     
     
     <entry>
+      <title>Monet</title>
+      <link href="/2020/03/14/monet/"/>
+      <url>/2020/03/14/monet/</url>
+      
+        <content type="html"><![CDATA[<p><img src="0.jpg" alt></p><p><img src="1.jpg" alt></p><p><img src="2.jpg" alt></p><p><img src="5.jpg" alt></p><p><img src="6.jpg" alt></p><p><img src="7.jpg" alt></p><p><img src="8.jpg" alt></p><p><img src="9.jpg" alt></p><p><img src="10.jpg" alt></p><p><img src="12.jpg" alt></p><p><img src="13.jpg" alt></p><p><img src="14.jpg" alt></p><p><img src="15.jpg" alt></p><p><img src="16.jpg" alt></p><p><img src="17.jpg" alt></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 随笔 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 随笔 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>GAN DISSECTION ICLR19 精读</title>
       <link href="/2020/03/12/gan-dissection-iclr19/"/>
       <url>/2020/03/12/gan-dissection-iclr19/</url>
