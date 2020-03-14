@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Optimal Method</title>
+      <link href="/2020/03/14/zui-you-hua-fang-fa/"/>
+      <url>/2020/03/14/zui-you-hua-fang-fa/</url>
+      
+        <content type="html"><![CDATA[<h1 id="梯度下降法"><a href="#梯度下降法" class="headerlink" title="梯度下降法"></a>梯度下降法</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><ol><li>一个一阶最优化算法</li><li>函数上当前点对应梯度（或者是近似梯度）的<em>反方向</em>的规定步长距离点进行迭代搜索</li><li>找到一个函数的局部极小值</li></ol><h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p><img src="image-20200314115550697.png" alt></p><p><img src="image-20200314123032520.png" alt></p><h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><ol><li>靠近局部极小值时速度减慢。</li><li>直线搜索可能会产生一些问题。（局部最优）</li><li>可能会“之字型”地下降。（如下图）</li></ol><p><img src="image-20200314115827317.png" alt></p><h1 id="牛顿法"><a href="#牛顿法" class="headerlink" title="牛顿法"></a>牛顿法</h1><h2 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h2><ol><li>利用一阶导数(梯度)和二阶导数(Hessen矩阵)对目标函数进行二次函数近似</li></ol><h2 id="算法-1"><a href="#算法-1" class="headerlink" title="算法"></a>算法</h2><p><img src="image-20200314121320843.png" alt></p><p><img src="image-20200314134256613.png" alt></p><h2 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h2><ol><li>局部牛顿法最突出的优点是收敛速度快，具有局部二阶收敛性，如果初始点远离最小点可能不收敛</li><li>与梯度下降法相比，使用牛顿法收敛更快（使用二阶矩阵，迭代更少次数）。但是每次迭代的时间比梯度下降法长</li></ol><p><img src="image-20200314123247675.png" alt></p><p>​        下图中，红色为牛顿法，绿色为梯度下降法</p><p><img src="image-20200314123302132.png" alt></p><h1 id="坐标下降法"><a href="#坐标下降法" class="headerlink" title="坐标下降法"></a>坐标下降法</h1><h2 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h2><ol><li>简单但却高效的非梯度优化算法</li><li>依次沿着坐标轴的方向循环最小化目标函数值</li></ol><h2 id="算法-2"><a href="#算法-2" class="headerlink" title="算法"></a>算法</h2><p><img src="image-20200314124348050.png" alt></p><p>针对多变量的 xk 选取 i 维度进行优化：</p><p><img src="image-20200314124459706.png" alt></p><h2 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h2><ol><li>对于非平滑函数，坐标下降法可能会遇到问题。下图展示了当函数等高线非平滑时，算法可能在非驻点中断执行。</li></ol><p><img src="image-20200314124524988.png" alt></p><h1 id="凸优化"><a href="#凸优化" class="headerlink" title="凸优化"></a>凸优化</h1><ol><li><p>研究定义于凸集中的凸函数最小化的问题</p></li><li><p>定义：</p><p><img src="image-20200314131431311.png" alt></p></li></ol><h1 id="拉格朗日乘子法"><a href="#拉格朗日乘子法" class="headerlink" title="拉格朗日乘子法"></a>拉格朗日乘子法</h1><h2 id="简介-3"><a href="#简介-3" class="headerlink" title="简介"></a>简介</h2><ol><li>与先前优化方法不同，拉格朗日乘子法寻找多元函数在其变量受到一个或多个条件的约束时的极值的方法</li><li>将一个有<em>n</em>个变量与<em>k</em>个约束条件的最优化问题转换为一个解有<em>n</em> + <em>k</em>个变量的方程组的解的问题</li></ol><h2 id="算法-3"><a href="#算法-3" class="headerlink" title="算法"></a>算法</h2><h3 id="引入拉格朗日乘数-可以为任何数"><a href="#引入拉格朗日乘数-可以为任何数" class="headerlink" title="引入拉格朗日乘数(可以为任何数)"></a>引入拉格朗日乘数(可以为任何数)</h3><p><img src="image-20200314130015194.png" alt></p><h3 id="f-x-y-求极值，g-x-y-c-为约束条件，-对于不同-d-值存在-f-x-y-d-的等高线，当-g-c-与-f-x-y-d-相切时出现极值"><a href="#f-x-y-求极值，g-x-y-c-为约束条件，-对于不同-d-值存在-f-x-y-d-的等高线，当-g-c-与-f-x-y-d-相切时出现极值" class="headerlink" title="f(x,y) 求极值，g(x,y)=c 为约束条件， 对于不同 d 值存在 f(x,y) = d 的等高线，当 g=c 与 f(x,y) = d 相切时出现极值"></a>f(x,y) 求极值，g(x,y)=c 为约束条件， 对于不同 d 值存在 f(x,y) = d 的等高线，当 g=c 与 f(x,y) = d 相切时出现极值</h3><p><img src="image-20200314130457045.png" alt></p><h3 id="向量表示（f，g相切）："><a href="#向量表示（f，g相切）：" class="headerlink" title="向量表示（f，g相切）："></a>向量表示（f，g相切）：</h3><p>将原方程与约束条件综合考虑为一个方程进行优化</p><p><img src="image-20200314130557022.png" alt></p><p><img src="image-20200314130615968.png" alt></p><p><img src="image-20200314130628584.png" alt></p><h3 id="分类讨论"><a href="#分类讨论" class="headerlink" title="分类讨论"></a>分类讨论</h3><ul><li><p>等式约束：</p><p><img src="image-20200314132335938.png" alt></p><p><img src="image-20200314132356225.png" alt></p></li><li><p>不等式约束：</p><p><img src="image-20200314132415063.png" alt></p><p><img src="image-20200314132539769.png" alt></p></li></ul><h3 id="证明（wiki）"><a href="#证明（wiki）" class="headerlink" title="证明（wiki）"></a>证明（wiki）</h3><p><img src="image-20200314130946008.png" alt></p><h1 id="KKT条件"><a href="#KKT条件" class="headerlink" title="KKT条件"></a>KKT条件</h1><ol><li>对于不等式条件约束的优化，拉格朗日乘子没有办法消除它的约束，仅能推导出最优解一定满足的性质</li><li>KKT条件是所有不等式约束的最优解都必须得满足的条件</li><li>满足KKT条件的不一定是最优解，但是最优解一定得满足KKT条件</li></ol><p><img src="image-20200314132840222.png" alt></p><h1 id="拉格朗日对偶"><a href="#拉格朗日对偶" class="headerlink" title="拉格朗日对偶"></a>拉格朗日对偶</h1><h2 id="简介-4"><a href="#简介-4" class="headerlink" title="简介"></a>简介</h2><ol><li>原问题是不可解的情况下，通过对偶问题更易求解</li><li>几乎所有的凸优化问题都满足强对偶性</li></ol><h2 id="算法-4"><a href="#算法-4" class="headerlink" title="算法"></a>算法</h2><p><img src="image-20200314133848354.png" alt></p><h1 id="拉格朗日乘子-amp-KKT-amp-对偶"><a href="#拉格朗日乘子-amp-KKT-amp-对偶" class="headerlink" title="拉格朗日乘子 &amp; KKT &amp; 对偶"></a>拉格朗日乘子 &amp; KKT &amp; 对偶</h1><p><img src="image-20200314133958324.png" alt></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> ML </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ML </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>GAN DISSECTION ICLR19 精读</title>
       <link href="/2020/03/12/gan-dissection-iclr19/"/>
       <url>/2020/03/12/gan-dissection-iclr19/</url>
@@ -54,6 +79,31 @@
     
     
     <entry>
+      <title>Semi-supervised 李宏毅</title>
+      <link href="/2020/03/09/semi-supervised/"/>
+      <url>/2020/03/09/semi-supervised/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Semi-supervised"><a href="#Semi-supervised" class="headerlink" title="Semi-supervised"></a>Semi-supervised</h1><h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><ul><li><p>supervised learning：</p><p><img src="image-20200309144949140.png" alt></p></li><li><p>Semi-supervised learning：</p><p><img src="image-20200309145015366.png" alt></p></li><li><p>Why？ 利用好未标注信息</p><p><img src="image-20200309145102909.png" alt></p></li><li><p>Why helps？ 假设影响效果</p><p><img src="image-20200309145258396.png" alt></p></li></ul><h2 id="Generative-Model"><a href="#Generative-Model" class="headerlink" title="Generative Model"></a>Generative Model</h2><p>类似EM，逐步逼近</p><p><img src="image-20200309150057821.png" alt></p><p><img src="image-20200309150307629.png" alt></p><h2 id="Low-density-Separation"><a href="#Low-density-Separation" class="headerlink" title="Low-density Separation"></a>Low-density Separation</h2><h3 id="self-training"><a href="#self-training" class="headerlink" title="self training"></a>self training</h3><p><img src="image-20200309150526844.png" alt></p><p><img src="image-20200309150912805.png" alt></p><p>hard label有绝对的类别，soft label为各类别概率</p><h3 id="Entropy-based"><a href="#Entropy-based" class="headerlink" title="Entropy-based"></a>Entropy-based</h3><p><img src="image-20200309151321244.png" alt></p><h3 id="Semi-supervised-SVM"><a href="#Semi-supervised-SVM" class="headerlink" title="Semi-supervised SVM"></a>Semi-supervised SVM</h3><p><img src="image-20200309151833922.png" alt></p><h2 id="Smoothness-Assumption"><a href="#Smoothness-Assumption" class="headerlink" title="Smoothness Assumption"></a>Smoothness Assumption</h2><h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><p><img src="image-20200309152101626.png" alt></p><h3 id="Application"><a href="#Application" class="headerlink" title="Application"></a>Application</h3><p><img src="image-20200309152253696.png" alt></p><p><img src="image-20200309152411421.png" alt></p><h3 id="Approach"><a href="#Approach" class="headerlink" title="Approach"></a>Approach</h3><h4 id="Cluster"><a href="#Cluster" class="headerlink" title="Cluster"></a>Cluster</h4><p><img src="image-20200309152450444.png" alt></p><p><img src="image-20200309152649530.png" alt></p><h4 id="Graph-based"><a href="#Graph-based" class="headerlink" title="Graph-based"></a>Graph-based</h4><p><img src="image-20200309152829189.png" alt></p><p><img src="image-20200309153144204.png" alt></p><p> <img src="image-20200309153417329.png" alt></p><p><img src="image-20200309153554298.png" alt></p><p><img src="image-20200309153743118.png" alt="image-20200309153743118"></p><h2 id="Better-Representation"><a href="#Better-Representation" class="headerlink" title="Better Representation"></a>Better Representation</h2><p>找到本质信息</p><p><img src="image-20200309154008397.png" alt></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL summary </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> semi-supervised </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>MZSR</title>
       <link href="/2020/03/09/mzsr-cvpr20/"/>
       <url>/2020/03/09/mzsr-cvpr20/</url>
@@ -73,31 +123,6 @@
             <tag> SR </tag>
             
             <tag> Meta Learning </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Semi-supervised 李宏毅</title>
-      <link href="/2020/03/09/semi-supervised/"/>
-      <url>/2020/03/09/semi-supervised/</url>
-      
-        <content type="html"><![CDATA[<h1 id="Semi-supervised"><a href="#Semi-supervised" class="headerlink" title="Semi-supervised"></a>Semi-supervised</h1><h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><ul><li><p>supervised learning：</p><p><img src="image-20200309144949140.png" alt></p></li><li><p>Semi-supervised learning：</p><p><img src="image-20200309145015366.png" alt></p></li><li><p>Why？ 利用好未标注信息</p><p><img src="image-20200309145102909.png" alt></p></li><li><p>Why helps？ 假设影响效果</p><p><img src="image-20200309145258396.png" alt></p></li></ul><h2 id="Generative-Model"><a href="#Generative-Model" class="headerlink" title="Generative Model"></a>Generative Model</h2><p>类似EM，逐步逼近</p><p><img src="image-20200309150057821.png" alt></p><p><img src="image-20200309150307629.png" alt></p><h2 id="Low-density-Separation"><a href="#Low-density-Separation" class="headerlink" title="Low-density Separation"></a>Low-density Separation</h2><h3 id="self-training"><a href="#self-training" class="headerlink" title="self training"></a>self training</h3><p><img src="image-20200309150526844.png" alt></p><p><img src="image-20200309150912805.png" alt></p><p>hard label有绝对的类别，soft label为各类别概率</p><h3 id="Entropy-based"><a href="#Entropy-based" class="headerlink" title="Entropy-based"></a>Entropy-based</h3><p><img src="image-20200309151321244.png" alt></p><h3 id="Semi-supervised-SVM"><a href="#Semi-supervised-SVM" class="headerlink" title="Semi-supervised SVM"></a>Semi-supervised SVM</h3><p><img src="image-20200309151833922.png" alt></p><h2 id="Smoothness-Assumption"><a href="#Smoothness-Assumption" class="headerlink" title="Smoothness Assumption"></a>Smoothness Assumption</h2><h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><p><img src="image-20200309152101626.png" alt></p><h3 id="Application"><a href="#Application" class="headerlink" title="Application"></a>Application</h3><p><img src="image-20200309152253696.png" alt></p><p><img src="image-20200309152411421.png" alt></p><h3 id="Approach"><a href="#Approach" class="headerlink" title="Approach"></a>Approach</h3><h4 id="Cluster"><a href="#Cluster" class="headerlink" title="Cluster"></a>Cluster</h4><p><img src="image-20200309152450444.png" alt></p><p><img src="image-20200309152649530.png" alt></p><h4 id="Graph-based"><a href="#Graph-based" class="headerlink" title="Graph-based"></a>Graph-based</h4><p><img src="image-20200309152829189.png" alt></p><p><img src="image-20200309153144204.png" alt></p><p> <img src="image-20200309153417329.png" alt></p><p><img src="image-20200309153554298.png" alt></p><p><img src="image-20200309153743118.png" alt="image-20200309153743118"></p><h2 id="Better-Representation"><a href="#Better-Representation" class="headerlink" title="Better Representation"></a>Better Representation</h2><p>找到本质信息</p><p><img src="image-20200309154008397.png" alt></p>]]></content>
-      
-      
-      <categories>
-          
-          <category> DL summary </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> semi-supervised </tag>
             
         </tags>
       
