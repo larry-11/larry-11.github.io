@@ -13,5 +13,5 @@ https://larry-11.github.io/larry-11.github.io/2020/02/04/meta-learning/
 https://larry-11.github.io/larry-11.github.io/2019/11/17/lightweight/
 https://larry-11.github.io/larry-11.github.io/2019/11/06/gan/
 https://larry-11.github.io/larry-11.github.io/2019/07/28/anchor-free/
-https://larry-11.github.io/larry-11.github.io/2019/06/13/pca/
+https://larry-11.github.io/larry-11.github.io/2019/07/10/pca/
 https://larry-11.github.io/larry-11.github.io/2019/06/13/xi-shu-bian-ma/
