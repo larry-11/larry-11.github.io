@@ -1,5 +1,6 @@
-https://larry-11.github.io/larry-11.github.io/2020/03/14/zui-you-hua-fang-fa/
+https://larry-11.github.io/larry-11.github.io/2020/04/20/simclr-jing-du/
 https://larry-11.github.io/larry-11.github.io/2020/03/14/monet/
+https://larry-11.github.io/larry-11.github.io/2020/03/14/zui-you-hua-fang-fa/
 https://larry-11.github.io/larry-11.github.io/2020/03/12/gan-dissection-iclr19/
 https://larry-11.github.io/larry-11.github.io/2020/03/12/xin-xi-shang/
 https://larry-11.github.io/larry-11.github.io/2020/03/09/mzsr-cvpr20/
