@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://larry-11.github.io/larry-11.github.io/2020/04/21/momentum-contrastive-learning-v1/</loc>
+    
+    <lastmod>2020-04-21T16:44:48.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://larry-11.github.io/larry-11.github.io/2020/04/20/momentum-contrastive-learning-v2/</loc>
+    
+    <lastmod>2020-04-21T12:05:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://larry-11.github.io/larry-11.github.io/2020/04/20/simclr-jing-du/</loc>
     
     <lastmod>2020-04-21T12:05:56.000Z</lastmod>
@@ -149,20 +163,6 @@
   </url>
   
   <url>
-    <loc>https://larry-11.github.io/larry-11.github.io/friends/index.html</loc>
-    
-    <lastmod>2020-03-04T04:12:46.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://larry-11.github.io/larry-11.github.io/tags/index.html</loc>
-    
-    <lastmod>2020-03-04T04:12:46.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://larry-11.github.io/larry-11.github.io/categories/index.html</loc>
     
     <lastmod>2020-03-04T04:12:46.000Z</lastmod>
@@ -171,6 +171,20 @@
   
   <url>
     <loc>https://larry-11.github.io/larry-11.github.io/contact/index.html</loc>
+    
+    <lastmod>2020-03-04T04:12:46.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://larry-11.github.io/larry-11.github.io/friends/index.html</loc>
+    
+    <lastmod>2020-03-04T04:12:46.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://larry-11.github.io/larry-11.github.io/tags/index.html</loc>
     
     <lastmod>2020-03-04T04:12:46.000Z</lastmod>
     

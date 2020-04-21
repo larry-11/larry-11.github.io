@@ -4,11 +4,16 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="SR, SYSU CV GAN">
+    <meta name="keywords" content="MoCo v1, SYSU CV GAN">
     <meta name="baidu-site-verification" content>
     <meta name="google-site-verification" content>
     <meta name="360-site-verification" content>
-    <meta name="description" content="“Zero-Shot” Super-Resolution using Deep Internal Learning (CVPR 2018)Motivation:1.传统SR方法会在测试数据满足训练数据的一些条件时（ideal），有着极好的效">
+    <meta name="description" content="motivation
+NLP中常用的SSL往往是由于NLP中常使用离散变量（单词），而CV中多数为高维连续变量
+contrastive learning作为字典查询角度需要构建较大的字典
+
+contribution
+提出MoCo构建用于co">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -16,7 +21,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>SR | Larry Site</title>
+    <title>MoCo v1 | Larry Site</title>
     <link rel="icon" type="image/jpeg" href="/bio.jpg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -258,13 +263,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        SR
+                        MoCo v1
                     </div>
                 </div>
             </div>
@@ -375,8 +380,8 @@
                     
                     <div class="article-tag">
                         
-                        <a href="/tags/SR/" target="_blank">
-                            <span class="chip bg-color">SR</span>
+                        <a href="/tags/self-supervised/" target="_blank">
+                            <span class="chip bg-color">self-supervised</span>
                         </a>
                         
                     </div>
@@ -399,7 +404,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2020-03-07
+                    2020-04-21
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -413,7 +418,7 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    689
+                    655
                 </div>
                 
 
@@ -431,39 +436,85 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="“Zero-Shot”-Super-Resolution-using-Deep-Internal-Learning-CVPR-2018"><a href="#“Zero-Shot”-Super-Resolution-using-Deep-Internal-Learning-CVPR-2018" class="headerlink" title="“Zero-Shot” Super-Resolution using Deep Internal Learning (CVPR 2018)"></a>“Zero-Shot” Super-Resolution using Deep Internal Learning (CVPR 2018)</h1><h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation:"></a><strong>Motivation:</strong></h2><p>1.传统SR方法会在测试数据满足训练数据的一些条件时（ideal），有着极好的效果，但是如果测试数据没有满足约束时（no-ideal），效果会很差。</p>
-<h2 id="Model"><a href="#Model" class="headerlink" title="Model:"></a><strong>Model:</strong></h2><p><img src="image-20200307181958254.png" alt></p>
-<p>1.ZSSR是在test的同时训练的，但是因为网络结构小，因此和SotA supervised CNNs相比test的时间相差不多</p>
-<p>2.理论基础：“the internal entropy of patches inside a single image is much smaller than the external entropy of patches in a general collection of natural images”<br> 因此不选用训练集训练模型，而选用单张图片进行ZSSR</p>
-<p>3.对于测试图片I，先进行下采样得到Is，随后选用（I，Is）作为训练集来进行模型训练</p>
-<p>4.在传统数据集上，效果不显著；no-ideal测试集上效果显著</p>
-<p><img src="image-20200307182024033.png" alt></p>
-<p><img src="image-20200307182030696.png" alt></p>
-<h2 id="Advantage"><a href="#Advantage" class="headerlink" title="Advantage:"></a><strong>Advantage:</strong></h2><p>1.针对测试图片来训练模型，提高模型的实用性</p>
-<h2 id="Disadvantage"><a href="#Disadvantage" class="headerlink" title="Disadvantage"></a><strong>Disadvantage</strong></h2><p>1.ZSSR方法更容易生成图像内部已有的类似信息，而通过外部训练数据学习的超分辨算法，如EDSR+，更易学习到图像外部信息</p>
-<h1 id="Recovering-Realistic-Texture-in-Image-Super-resolution-by-Deep-Spatial-Feature-Transform-CVPR-2018）"><a href="#Recovering-Realistic-Texture-in-Image-Super-resolution-by-Deep-Spatial-Feature-Transform-CVPR-2018）" class="headerlink" title="Recovering Realistic Texture in Image Super-resolution by Deep Spatial Feature Transform(CVPR 2018）"></a>Recovering Realistic Texture in Image Super-resolution by Deep Spatial Feature Transform(CVPR 2018）</h1><h2 id="Motivation-1"><a href="#Motivation-1" class="headerlink" title="Motivation:"></a><strong>Motivation:</strong></h2><p>1.实际应用中，许多物体在低分辨率下非常相似，例如左图中的墙壁与植物，如果不提前加语义信息，则很难复原真实细节</p>
-<p><img src="image-20200307182112863.png" alt></p>
-<h2 id="Model-1"><a href="#Model-1" class="headerlink" title="Model:"></a><strong>Model:</strong></h2><p>1.整体思路与SROBB类似，同样是根据分割结果来进行优化。不同之处在于，作者在特征提取阶段便考虑到分割信息，而SROBB仅在最终loss处考虑</p>
-<p><img src="image-20200307182121962.png" alt></p>
-<h2 id="Advantage-1"><a href="#Advantage-1" class="headerlink" title="Advantage:"></a><strong>Advantage:</strong></h2><p>1.加入分割模型有针对性地提取信息，凸显细节</p>
-<h2 id="Disadvantage-1"><a href="#Disadvantage-1" class="headerlink" title="Disadvantage"></a><strong>Disadvantage</strong></h2><p>1.没有使用content loss</p>
-<h1 id="Zoom-to-Learn-Learn-to-Zoom-CVPR-2019"><a href="#Zoom-to-Learn-Learn-to-Zoom-CVPR-2019" class="headerlink" title="Zoom to Learn, Learn to Zoom (CVPR 2019)"></a>Zoom to Learn, Learn to Zoom (CVPR 2019)</h1><p><strong>Motivation:</strong></p>
-<p>1.现有的基于学习的超分辨率方法不使用真实的传感器数据，而是对经过处理的RGB图像进行操作</p>
-<p>2.通过对高分辨率RGB图像重新采样来合成传感器数据是对真实传感器数据和噪声的一种过于简化的近似，间接降低了输入中的噪声水平，导致图像质量较差</p>
-<p><strong>Model:</strong></p>
-<p>1.每个场景的7个光学变焦设置下采集了7幅图像</p>
-<p><img src="image-20200307182154747.png" alt></p>
-<p>2.Contextual Bilateral Loss：contextual loss不考虑像素点之间的空间信息，因此造成很多不准确的特征匹配。因此作者将空间区域也加入到损失函数中。</p>
-<p><img src="image-20200307182207451.png" alt></p>
-<p><img src="image-20200307182222132.png" alt></p>
-<p><img src="image-20200307182228708.png" alt></p>
-<p>3.最终损失函数如下，类似content loss+ perceptual loss：</p>
-<p><img src="image-20200307182241211.png" alt></p>
-<p><strong>Advantage:</strong></p>
-<p>1.使用RAW进行超分，相比经过ISP处理的JPG，RAW有丰富的信息</p>
-<p>2.提出CoBi Loss解决不对齐的问题</p>
-<p>3.为真实的计算变焦提供一个数据集SR-RAW</p>
-<p><img src="image-20200307182249496.png" alt></p>
+                <h1 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h1><ul>
+<li>NLP中常用的SSL往往是由于NLP中常使用离散变量（单词），而CV中多数为高维连续变量</li>
+<li>contrastive learning作为字典查询角度需要构建较大的字典</li>
+</ul>
+<h1 id="contribution"><a href="#contribution" class="headerlink" title="contribution"></a>contribution</h1><ul>
+<li>提出MoCo构建用于contrastive learning的large and consistent dictionaries</li>
+<li>purpose：<em>pre-train representations (i.e., features) that can be transferred to downstream tasks by fine-tuning</em></li>
+<li>适用于<em>real-world, billionimage scale, and relatively uncurated scenario</em></li>
+</ul>
+<h1 id="method"><a href="#method" class="headerlink" title="method"></a>method</h1><p><img src="image-20200421221349267.png" alt></p>
+<h2 id="Contrastive-Learning-as-Dictionary-Look-up"><a href="#Contrastive-Learning-as-Dictionary-Look-up" class="headerlink" title="Contrastive Learning as Dictionary Look-up"></a>Contrastive Learning as Dictionary Look-up</h2><ul>
+<li><p>InfoNCE（contrastive loss function） t为温度变量</p>
+<p><img src="image-20200421221109336.png" alt></p>
+</li>
+<li><p>a (K+1)-way softmax-based classifier that tries to classify q as k+</p>
+</li>
+</ul>
+<h2 id="Momentum-Contrast"><a href="#Momentum-Contrast" class="headerlink" title="Momentum Contrast"></a>Momentum Contrast</h2><ul>
+<li>动态字典</li>
+<li>key encoder在训练过程中不断进化</li>
+<li>假设：good features can be learned by a large dictionary that covers a rich set of negative samples, while the encoder for the dictionary keys is kept as consistent as possible despite its evolution</li>
+</ul>
+<h3 id="Dictionary-as-a-queue"><a href="#Dictionary-as-a-queue" class="headerlink" title="Dictionary as a queue"></a>Dictionary as a queue</h3><ul>
+<li><em>At the core of our approach is maintaining the dictionary as a queue of data samples</em></li>
+<li>字典可以大于mini-batch size，可以作为超参数进行调节</li>
+<li>每次更新mini batch个样本，FIFO</li>
+</ul>
+<h3 id="Momentum-update"><a href="#Momentum-update" class="headerlink" title="Momentum update"></a>Momentum update</h3><ul>
+<li><p>使用队列可以扩充字典的大小，但是对key encoder进行反向传播变得更难</p>
+</li>
+<li><p>将query encoder 直接复制给key encoder ，这样快速地改变key encoder会破坏键值表示的一致性，不够稳定</p>
+</li>
+<li><p>momentum update</p>
+<p><img src="image-20200421231524714.png" alt></p>
+</li>
+<li><p>实验中较大的m（0.999）取得较好的结果，</p>
+<p><em>slowly evolving key encoder is a core to making use of a queue</em></p>
+</li>
+</ul>
+<h3 id="Relations-to-previous-mechanisms"><a href="#Relations-to-previous-mechanisms" class="headerlink" title="Relations to previous mechanisms"></a>Relations to previous mechanisms</h3><p><img src="image-20200421231720678.png" alt></p>
+<ul>
+<li>end2end<ul>
+<li>字典大小和mini-batch大小相同，受限于GPU显存</li>
+<li>对大的mini-batch进行优化也是挑战</li>
+</ul>
+</li>
+<li>memory bank<ul>
+<li>包含数据集所有数据的特征表示，从Memory Bank中采样数据不需要进行反向传播，所以能支持比较大的字典</li>
+<li>一个样本的特征表示只在它出现时才在Memory Bank更新，因此具有更少的一致性</li>
+<li>更新只是进行特征表示的更新，不涉及encoder</li>
+</ul>
+</li>
+</ul>
+<h2 id="Pretext-Task"><a href="#Pretext-Task" class="headerlink" title="Pretext Task"></a>Pretext Task</h2><p><img src="image-20200422001549632.png" alt></p>
+<ul>
+<li>2 random view ：positive pair</li>
+<li>queries &amp; keys独立编码</li>
+</ul>
+<h3 id="Technical-details"><a href="#Technical-details" class="headerlink" title="Technical details"></a>Technical details</h3><ul>
+<li>ResNet</li>
+<li>output：128-D</li>
+<li>output：L2-norm</li>
+<li>random color jittering, random horizontal flip, and random grayscale conversion</li>
+</ul>
+<h3 id="Shuffling-BN"><a href="#Shuffling-BN" class="headerlink" title="Shuffling BN"></a>Shuffling BN</h3><ul>
+<li><p>BN会导致模型难以学习到有效的representation</p>
+</li>
+<li><p><em>The model appears to “cheat” the pretext task and easily finds a low-loss solution. This is possibly because the intra-batch communication among samples (caused by BN) leaks information</em></p>
+<p>模型每个batch的内的样本之间communication 泄露了信息导致的</p>
+</li>
+<li><p>shuffling BN：每个GPU分开做BN</p>
+<p>对于键值编码器fk，在当前mini-batch中打乱样本的顺序，再把它们送到GPU上分别进行BN，然后再恢复样本的顺序；</p>
+<p>对于查询编码器fq，不改变样本的顺序。</p>
+<p>这能够保证用于计算查询和其正键值的批统计值出自两个不同的子集</p>
+</li>
+</ul>
+<h1 id="experiment"><a href="#experiment" class="headerlink" title="experiment"></a>experiment</h1><h2 id="Linear-Classification-Protocol"><a href="#Linear-Classification-Protocol" class="headerlink" title="Linear Classification Protocol"></a>Linear Classification Protocol</h2><h3 id="contrastive-loss-mechanisms"><a href="#contrastive-loss-mechanisms" class="headerlink" title="contrastive loss mechanisms"></a>contrastive loss mechanisms</h3><p><img src="image-20200422003719906.png" alt></p>
+<h3 id="momentum"><a href="#momentum" class="headerlink" title="momentum"></a>momentum</h3><p><img src="image-20200422003837786.png" alt></p>
+<h3 id="Comparison-with-previous-results"><a href="#Comparison-with-previous-results" class="headerlink" title="Comparison with previous results"></a>Comparison with previous results</h3><p><img src="image-20200422003935701.png" alt></p>
 
             </div>
             <hr />
@@ -498,9 +549,9 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《SR》
+                    《MoCo v1》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/03/07/sr-cvpr1819/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/04/21/momentum-contrastive-learning-v1/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Liangyu Cui
             </a> is licensed under a
@@ -540,46 +591,48 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="/2020/03/09/semi-supervised/">
+                <a href="/2020/04/21/momentum-contrastive-learning-v1/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Semi-supervised 李宏毅">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="MoCo v1">
                         
-                        <span class="card-title">Semi-supervised 李宏毅</span>
+                        <span class="card-title">MoCo v1</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            半监督学习李宏毅课程笔记
+                            Momentum Contrast for Unsupervised Visual Representation Learning
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-09
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-21
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/DL-summary/" class="post-category" target="_blank">
-                                    DL summary
+                            <a href="/categories/DL-paper/" class="post-category" target="_blank">
+                                    DL paper
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/semi-supervised/" target="_blank">
-                        <span class="chip bg-color">semi-supervised</span>
+                    <a href="/tags/self-supervised/" target="_blank">
+                        <span class="chip bg-color">self-supervised</span>
                     </a>
                     
                 </div>
@@ -593,24 +646,24 @@
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/03/06/eccv18-sr/">
+                <a href="/2020/04/20/momentum-contrastive-learning-v2/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Super resolution">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="SimCLR">
                         
-                        <span class="card-title">Super resolution</span>
+                        <span class="card-title">SimCLR</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ECCV 2018 SR 相关论文整理
+                            A Simple Framework for Contrastive Learning of Visual Representations
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-06
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-20
                             </span>
                         <span class="publish-author">
                             
@@ -627,8 +680,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/SR/" target="_blank">
-                        <span class="chip bg-color">SR</span>
+                    <a href="/tags/self-supervised/" target="_blank">
+                        <span class="chip bg-color">self-supervised</span>
                     </a>
                     
                 </div>

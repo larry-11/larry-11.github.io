@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://larry-11.github.io/larry-11.github.io/"/>
-  <updated>2020-04-21T12:05:56.000Z</updated>
+  <updated>2020-04-21T16:44:48.000Z</updated>
   <id>https://larry-11.github.io/larry-11.github.io/</id>
   
   <author>
@@ -15,6 +15,59 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MoCo v1</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/04/21/momentum-contrastive-learning-v1/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/04/21/momentum-contrastive-learning-v1/</id>
+    <published>2020-04-21T04:00:00.000Z</published>
+    <updated>2020-04-21T16:44:48.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;motivation&quot;&gt;&lt;a href=&quot;#motivation&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="self-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/self-supervised/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SimCLR</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/04/20/momentum-contrastive-learning-v2/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/04/20/momentum-contrastive-learning-v2/</id>
+    <published>2020-04-20T04:00:00.000Z</published>
+    <updated>2020-04-21T12:05:56.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;motivation&quot;&gt;&lt;a href=&quot;#motivation&quot; class=&quot;headerlink&quot; title=&quot;motivation&quot;&gt;&lt;/a&gt;motivation&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;generative &amp;amp;
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="self-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/self-supervised/"/>
+    
+  </entry>
   
   <entry>
     <title>SimCLR</title>
