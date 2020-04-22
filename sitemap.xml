@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://larry-11.github.io/larry-11.github.io/2020/04/21/momentum-contrastive-learning-v2/</loc>
+    
+    <lastmod>2020-04-22T03:32:00.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://larry-11.github.io/larry-11.github.io/2020/04/21/momentum-contrastive-learning-v1/</loc>
     
-    <lastmod>2020-04-21T16:44:48.000Z</lastmod>
+    <lastmod>2020-04-22T02:34:40.000Z</lastmod>
     
   </url>
   
@@ -149,13 +156,6 @@
   </url>
   
   <url>
-    <loc>https://larry-11.github.io/larry-11.github.io/archives/index.html</loc>
-    
-    <lastmod>2020-03-04T04:12:46.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://larry-11.github.io/larry-11.github.io/categories/index.html</loc>
     
     <lastmod>2020-03-04T04:12:46.000Z</lastmod>
@@ -164,6 +164,13 @@
   
   <url>
     <loc>https://larry-11.github.io/larry-11.github.io/contact/index.html</loc>
+    
+    <lastmod>2020-03-04T04:12:46.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://larry-11.github.io/larry-11.github.io/archives/index.html</loc>
     
     <lastmod>2020-03-04T04:12:46.000Z</lastmod>
     

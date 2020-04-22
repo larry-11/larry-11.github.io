@@ -9,11 +9,11 @@
     <meta name="google-site-verification" content>
     <meta name="360-site-verification" content>
     <meta name="description" content="motivation
-NLP中常用的SSL往往是由于NLP中常使用离散变量（单词），而CV中多数为高维连续变量
-contrastive learning作为字典查询角度需要构建较大的字典
+SimCLR提出projection head &amp;amp; data augmentation能够大大提高表现
+SimCLR训练过程使用过大batch size，需要TPU支持
 
 contribution
-提出MoCo构建用于co">
+在MoCo ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -418,14 +418,14 @@ contribution
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    672
+                    217
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    2 Min
+                    1 Min
                 </div>
                 
                 
@@ -437,86 +437,35 @@ contribution
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h1 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h1><ul>
-<li>NLP中常用的SSL往往是由于NLP中常使用离散变量（单词），而CV中多数为高维连续变量</li>
-<li>contrastive learning作为字典查询角度需要构建较大的字典</li>
+<li>SimCLR提出projection head &amp; data augmentation能够大大提高表现</li>
+<li>SimCLR训练过程使用过大batch size，需要TPU支持</li>
 </ul>
 <h1 id="contribution"><a href="#contribution" class="headerlink" title="contribution"></a>contribution</h1><ul>
-<li>提出MoCo构建用于contrastive learning的large and consistent dictionaries</li>
-<li>purpose：<em>pre-train representations (i.e., features) that can be transferred to downstream tasks by fine-tuning</em></li>
-<li>适用于<em>real-world, billionimage scale, and relatively uncurated scenario</em></li>
+<li>在MoCo v1中使用了projection head &amp; data augmentation</li>
+<li>通过v1中的queue机制解决SimCLR过大batch size问题（仅concat mini_batch的低维特征向量）</li>
 </ul>
-<h1 id="method"><a href="#method" class="headerlink" title="method"></a>method</h1><p><img src="image-20200421221349267.png" alt></p>
-<h2 id="Contrastive-Learning-as-Dictionary-Look-up"><a href="#Contrastive-Learning-as-Dictionary-Look-up" class="headerlink" title="Contrastive Learning as Dictionary Look-up"></a>Contrastive Learning as Dictionary Look-up</h2><ul>
-<li><p>InfoNCE（contrastive loss function） t为温度变量</p>
-<p><img src="image-20200421221109336.png" alt></p>
-</li>
-<li><p>a (K+1)-way softmax-based classifier that tries to classify q as k+</p>
-</li>
-</ul>
-<h2 id="Momentum-Contrast"><a href="#Momentum-Contrast" class="headerlink" title="Momentum Contrast"></a>Momentum Contrast</h2><ul>
-<li>动态字典</li>
-<li>key encoder在训练过程中不断进化</li>
-<li>假设：good features can be learned by a large dictionary that covers a rich set of negative samples, while the encoder for the dictionary keys is kept as consistent as possible despite its evolution</li>
-</ul>
-<h3 id="Dictionary-as-a-queue"><a href="#Dictionary-as-a-queue" class="headerlink" title="Dictionary as a queue"></a>Dictionary as a queue</h3><ul>
-<li><em>At the core of our approach is maintaining the dictionary as a queue of data samples</em></li>
-<li>字典可以大于mini-batch size，可以作为超参数进行调节</li>
-<li>每次更新mini batch个样本，FIFO</li>
-</ul>
-<h3 id="Momentum-update"><a href="#Momentum-update" class="headerlink" title="Momentum update"></a>Momentum update</h3><ul>
-<li><p>使用队列可以扩充字典的大小，但是对key encoder进行反向传播变得更难</p>
-</li>
-<li><p>将query encoder 直接复制给key encoder ，这样快速地改变key encoder会破坏键值表示的一致性，不够稳定</p>
-</li>
-<li><p>队列保存特征图信息，而非原始图像信息</p>
-</li>
-<li><p>momentum update</p>
-<p><img src="image-20200421231524714.png" alt></p>
-</li>
-<li><p>实验中较大的m（0.999）取得较好的结果，</p>
-<p><em>slowly evolving key encoder is a core to making use of a queue</em></p>
-</li>
-</ul>
-<h3 id="Relations-to-previous-mechanisms"><a href="#Relations-to-previous-mechanisms" class="headerlink" title="Relations to previous mechanisms"></a>Relations to previous mechanisms</h3><p><img src="image-20200421231720678.png" alt></p>
+<h1 id="method"><a href="#method" class="headerlink" title="method"></a>method</h1><p><img src="image-20200422110621465.png" alt></p>
 <ul>
-<li>end2end<ul>
-<li>字典大小和mini-batch大小相同，受限于GPU显存</li>
-<li>对大的mini-batch进行优化也是挑战</li>
+<li>SimCLR为end2end机制，需要较大batch size来提供negative set</li>
+<li>MoCo通过queue保存negative key，每轮迭代仅encode mini_batch样本</li>
+<li>依旧使用InfoNCE</li>
 </ul>
-</li>
-<li>memory bank<ul>
-<li>包含数据集所有数据的特征表示，从Memory Bank中采样数据不需要进行反向传播，所以能支持比较大的字典</li>
-<li>一个样本的特征表示只在它出现时才在Memory Bank更新，因此具有更少的一致性</li>
-<li>更新只是进行特征表示的更新，不涉及encoder</li>
-</ul>
-</li>
-</ul>
-<h2 id="Pretext-Task"><a href="#Pretext-Task" class="headerlink" title="Pretext Task"></a>Pretext Task</h2><p><img src="image-20200422001549632.png" alt></p>
+<h1 id="experiment"><a href="#experiment" class="headerlink" title="experiment"></a>experiment</h1><p><img src="image-20200422111821704.png" alt></p>
+<h2 id="MLP-head"><a href="#MLP-head" class="headerlink" title="MLP head"></a>MLP head</h2><p><img src="image-20200422111732879.png" alt></p>
 <ul>
-<li>2 random view ：positive pair</li>
-<li>queries &amp; keys独立编码</li>
+<li>通过两层MLP（ReLU）代替v1中的fc</li>
+<li><em>in contrast to the big leap on ImageNet, the detection gains are smaller</em></li>
 </ul>
-<h3 id="Technical-details"><a href="#Technical-details" class="headerlink" title="Technical details"></a>Technical details</h3><ul>
-<li>ResNet</li>
-<li>output：128-D</li>
-<li>output：L2-norm</li>
-<li>random color jittering, random horizontal flip, and random grayscale conversion</li>
+<h2 id="Augmentation"><a href="#Augmentation" class="headerlink" title="Augmentation"></a>Augmentation</h2><ul>
+<li>引入blur augmentation（stronger color distortion在实验中没有较明显的效果提升）</li>
+<li>单纯引入aug+在检测任务中效果优于MLP，但在线性分类中效果较差</li>
+<li><em>linear classification accuracy is not monotonically related to transfer performance in detection</em></li>
 </ul>
-<h3 id="Shuffling-BN"><a href="#Shuffling-BN" class="headerlink" title="Shuffling BN"></a>Shuffling BN</h3><ul>
-<li><p>BN会导致模型难以学习到有效的representation</p>
-</li>
-<li><p><em>The model appears to “cheat” the pretext task and easily finds a low-loss solution. This is possibly because the intra-batch communication among samples (caused by BN) leaks information</em></p>
-<p>模型每个batch的内的样本之间communication 泄露了信息导致的</p>
-</li>
-<li><p>shuffling BN：每个GPU分开做BN</p>
-<p>对于键值编码器fk，在当前mini-batch中打乱样本的顺序，再把它们送到GPU上分别进行BN，然后再恢复样本的顺序；</p>
-<p>对于查询编码器fq，不改变样本的顺序。</p>
-<p>这能够保证用于计算查询和其正键值的批统计值出自两个不同的子集</p>
-</li>
+<h2 id="Comparison-with-SimCLR"><a href="#Comparison-with-SimCLR" class="headerlink" title="Comparison with SimCLR"></a>Comparison with SimCLR</h2><p><img src="image-20200422112621430.png" alt></p>
+<h2 id="Computational-cost"><a href="#Computational-cost" class="headerlink" title="Computational cost"></a>Computational cost</h2><p><img src="image-20200422112954818.png" alt></p>
+<ul>
+<li>SimCLR需要更新q、k enconder，而MoCo仅更新q encoder，k encoder通过Momentum update进行更新</li>
 </ul>
-<h1 id="experiment"><a href="#experiment" class="headerlink" title="experiment"></a>experiment</h1><h2 id="Linear-Classification-Protocol"><a href="#Linear-Classification-Protocol" class="headerlink" title="Linear Classification Protocol"></a>Linear Classification Protocol</h2><h3 id="contrastive-loss-mechanisms"><a href="#contrastive-loss-mechanisms" class="headerlink" title="contrastive loss mechanisms"></a>contrastive loss mechanisms</h3><p><img src="image-20200422003719906.png" alt></p>
-<h3 id="momentum"><a href="#momentum" class="headerlink" title="momentum"></a>momentum</h3><p><img src="image-20200422003837786.png" alt></p>
-<h3 id="Comparison-with-previous-results"><a href="#Comparison-with-previous-results" class="headerlink" title="Comparison with previous results"></a>Comparison with previous results</h3><p><img src="image-20200422003935701.png" alt></p>
 
             </div>
             <hr />
@@ -553,7 +502,7 @@ contribution
                   property="dct:title" rel="dct:type">
                     《MoCo v1》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/04/21/momentum-contrastive-learning-v1/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/04/21/momentum-contrastive-learning-v2/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Liangyu Cui
             </a> is licensed under a
@@ -593,10 +542,9 @@ contribution
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
                 <a href="/2020/04/21/momentum-contrastive-learning-v1/">
                     <div class="card-image">
@@ -614,9 +562,9 @@ contribution
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-21
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-21
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -629,7 +577,6 @@ contribution
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -648,24 +595,24 @@ contribution
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/04/21/momentum-contrastive-learning-v2/">
+                <a href="/2020/04/20/simclr-jing-du/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="MoCo v1">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="SimCLR">
                         
-                        <span class="card-title">MoCo v1</span>
+                        <span class="card-title">SimCLR</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Momentum Contrast for Unsupervised Visual Representation Learning
+                            A Simple Framework for Contrastive Learning of Visual Representations
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-21
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-20
                             </span>
                         <span class="publish-author">
                             

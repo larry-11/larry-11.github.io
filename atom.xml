@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://larry-11.github.io/larry-11.github.io/"/>
-  <updated>2020-04-21T16:44:48.000Z</updated>
+  <updated>2020-04-22T02:34:40.000Z</updated>
   <id>https://larry-11.github.io/larry-11.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://larry-11.github.io/larry-11.github.io/2020/04/21/momentum-contrastive-learning-v1/"/>
     <id>https://larry-11.github.io/larry-11.github.io/2020/04/21/momentum-contrastive-learning-v1/</id>
     <published>2020-04-21T04:00:00.000Z</published>
-    <updated>2020-04-21T16:44:48.000Z</updated>
+    <updated>2020-04-22T02:34:40.000Z</updated>
     
     <summary type="html">
     
@@ -30,6 +30,33 @@
         
         
           &lt;h1 id=&quot;motivation&quot;&gt;&lt;a href=&quot;#motivation&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="self-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/self-supervised/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MoCo v1</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/04/21/momentum-contrastive-learning-v2/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/04/21/momentum-contrastive-learning-v2/</id>
+    <published>2020-04-21T04:00:00.000Z</published>
+    <updated>2020-04-22T03:32:00.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;motivation&quot;&gt;&lt;a href=&quot;#motivation&quot; class=&quot;headerlink&quot; title=&quot;motivation&quot;&gt;&lt;/a&gt;motivation&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;SimCLR提出projection head &amp;amp;
         
       
     
@@ -179,6 +206,32 @@
   </entry>
   
   <entry>
+    <title>Semi-supervised 李宏毅</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/09/semi-supervised/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/03/09/semi-supervised/</id>
+    <published>2020-03-09T04:00:00.000Z</published>
+    <updated>2020-03-09T08:05:02.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Semi-supervised&quot;&gt;&lt;a href=&quot;#Semi-supervised&quot; class=&quot;headerlink&quot; title=&quot;Semi-supervised&quot;&gt;&lt;/a&gt;Semi-supervised&lt;/h1&gt;&lt;h2 id=&quot;Intro&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="DL summary" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-summary/"/>
+    
+    
+      <category term="semi-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/semi-supervised/"/>
+    
+  </entry>
+  
+  <entry>
     <title>MZSR</title>
     <link href="https://larry-11.github.io/larry-11.github.io/2020/03/09/mzsr-cvpr20/"/>
     <id>https://larry-11.github.io/larry-11.github.io/2020/03/09/mzsr-cvpr20/</id>
@@ -204,32 +257,6 @@
       <category term="SR" scheme="https://larry-11.github.io/larry-11.github.io/tags/SR/"/>
     
       <category term="Meta Learning" scheme="https://larry-11.github.io/larry-11.github.io/tags/Meta-Learning/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Semi-supervised 李宏毅</title>
-    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/09/semi-supervised/"/>
-    <id>https://larry-11.github.io/larry-11.github.io/2020/03/09/semi-supervised/</id>
-    <published>2020-03-09T04:00:00.000Z</published>
-    <updated>2020-03-09T08:05:02.000Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;Semi-supervised&quot;&gt;&lt;a href=&quot;#Semi-supervised&quot; class=&quot;headerlink&quot; title=&quot;Semi-supervised&quot;&gt;&lt;/a&gt;Semi-supervised&lt;/h1&gt;&lt;h2 id=&quot;Intro&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="DL summary" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-summary/"/>
-    
-    
-      <category term="semi-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/semi-supervised/"/>
     
   </entry>
   
