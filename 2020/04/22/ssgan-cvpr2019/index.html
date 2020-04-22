@@ -4,11 +4,13 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="SR, SYSU CV GAN">
+    <meta name="keywords" content="SSGAN CVPR2019, SYSU CV GAN">
     <meta name="baidu-site-verification" content>
     <meta name="google-site-verification" content>
     <meta name="360-site-verification" content>
-    <meta name="description" content="“Zero-Shot” Super-Resolution using Deep Internal Learning (CVPR 2018)Motivation:1.传统SR方法会在测试数据满足训练数据的一些条件时（ideal），有着极好的效">
+    <meta name="description" content="motivation
+Conditional GAN需要大量标签
+GAN训练不稳定：GANs are typically trained using alternating stochastic gradient descent which">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -16,7 +18,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>SR | Larry Site</title>
+    <title>SSGAN CVPR2019 | Larry Site</title>
     <link rel="icon" type="image/jpeg" href="/bio.jpg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -258,13 +260,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        SR
+                        SSGAN CVPR2019
                     </div>
                 </div>
             </div>
@@ -375,8 +377,12 @@
                     
                     <div class="article-tag">
                         
-                        <a href="/tags/SR/" target="_blank">
-                            <span class="chip bg-color">SR</span>
+                        <a href="/tags/GAN/" target="_blank">
+                            <span class="chip bg-color">GAN</span>
+                        </a>
+                        
+                        <a href="/tags/self-supervised/" target="_blank">
+                            <span class="chip bg-color">self-supervised</span>
                         </a>
                         
                     </div>
@@ -399,7 +405,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2020-03-07
+                    2020-04-22
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -413,7 +419,7 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    689
+                    551
                 </div>
                 
 
@@ -431,39 +437,59 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="“Zero-Shot”-Super-Resolution-using-Deep-Internal-Learning-CVPR-2018"><a href="#“Zero-Shot”-Super-Resolution-using-Deep-Internal-Learning-CVPR-2018" class="headerlink" title="“Zero-Shot” Super-Resolution using Deep Internal Learning (CVPR 2018)"></a>“Zero-Shot” Super-Resolution using Deep Internal Learning (CVPR 2018)</h1><h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation:"></a><strong>Motivation:</strong></h2><p>1.传统SR方法会在测试数据满足训练数据的一些条件时（ideal），有着极好的效果，但是如果测试数据没有满足约束时（no-ideal），效果会很差。</p>
-<h2 id="Model"><a href="#Model" class="headerlink" title="Model:"></a><strong>Model:</strong></h2><p><img src="image-20200307181958254.png" alt></p>
-<p>1.ZSSR是在test的同时训练的，但是因为网络结构小，因此和SotA supervised CNNs相比test的时间相差不多</p>
-<p>2.理论基础：“the internal entropy of patches inside a single image is much smaller than the external entropy of patches in a general collection of natural images”<br> 因此不选用训练集训练模型，而选用单张图片进行ZSSR</p>
-<p>3.对于测试图片I，先进行下采样得到Is，随后选用（I，Is）作为训练集来进行模型训练</p>
-<p>4.在传统数据集上，效果不显著；no-ideal测试集上效果显著</p>
-<p><img src="image-20200307182024033.png" alt></p>
-<p><img src="image-20200307182030696.png" alt></p>
-<h2 id="Advantage"><a href="#Advantage" class="headerlink" title="Advantage:"></a><strong>Advantage:</strong></h2><p>1.针对测试图片来训练模型，提高模型的实用性</p>
-<h2 id="Disadvantage"><a href="#Disadvantage" class="headerlink" title="Disadvantage"></a><strong>Disadvantage</strong></h2><p>1.ZSSR方法更容易生成图像内部已有的类似信息，而通过外部训练数据学习的超分辨算法，如EDSR+，更易学习到图像外部信息</p>
-<h1 id="Recovering-Realistic-Texture-in-Image-Super-resolution-by-Deep-Spatial-Feature-Transform-CVPR-2018）"><a href="#Recovering-Realistic-Texture-in-Image-Super-resolution-by-Deep-Spatial-Feature-Transform-CVPR-2018）" class="headerlink" title="Recovering Realistic Texture in Image Super-resolution by Deep Spatial Feature Transform(CVPR 2018）"></a>Recovering Realistic Texture in Image Super-resolution by Deep Spatial Feature Transform(CVPR 2018）</h1><h2 id="Motivation-1"><a href="#Motivation-1" class="headerlink" title="Motivation:"></a><strong>Motivation:</strong></h2><p>1.实际应用中，许多物体在低分辨率下非常相似，例如左图中的墙壁与植物，如果不提前加语义信息，则很难复原真实细节</p>
-<p><img src="image-20200307182112863.png" alt></p>
-<h2 id="Model-1"><a href="#Model-1" class="headerlink" title="Model:"></a><strong>Model:</strong></h2><p>1.整体思路与SROBB类似，同样是根据分割结果来进行优化。不同之处在于，作者在特征提取阶段便考虑到分割信息，而SROBB仅在最终loss处考虑</p>
-<p><img src="image-20200307182121962.png" alt></p>
-<h2 id="Advantage-1"><a href="#Advantage-1" class="headerlink" title="Advantage:"></a><strong>Advantage:</strong></h2><p>1.加入分割模型有针对性地提取信息，凸显细节</p>
-<h2 id="Disadvantage-1"><a href="#Disadvantage-1" class="headerlink" title="Disadvantage"></a><strong>Disadvantage</strong></h2><p>1.没有使用content loss</p>
-<h1 id="Zoom-to-Learn-Learn-to-Zoom-CVPR-2019"><a href="#Zoom-to-Learn-Learn-to-Zoom-CVPR-2019" class="headerlink" title="Zoom to Learn, Learn to Zoom (CVPR 2019)"></a>Zoom to Learn, Learn to Zoom (CVPR 2019)</h1><p><strong>Motivation:</strong></p>
-<p>1.现有的基于学习的超分辨率方法不使用真实的传感器数据，而是对经过处理的RGB图像进行操作</p>
-<p>2.通过对高分辨率RGB图像重新采样来合成传感器数据是对真实传感器数据和噪声的一种过于简化的近似，间接降低了输入中的噪声水平，导致图像质量较差</p>
-<p><strong>Model:</strong></p>
-<p>1.每个场景的7个光学变焦设置下采集了7幅图像</p>
-<p><img src="image-20200307182154747.png" alt></p>
-<p>2.Contextual Bilateral Loss：contextual loss不考虑像素点之间的空间信息，因此造成很多不准确的特征匹配。因此作者将空间区域也加入到损失函数中。</p>
-<p><img src="image-20200307182207451.png" alt></p>
-<p><img src="image-20200307182222132.png" alt></p>
-<p><img src="image-20200307182228708.png" alt></p>
-<p>3.最终损失函数如下，类似content loss+ perceptual loss：</p>
-<p><img src="image-20200307182241211.png" alt></p>
-<p><strong>Advantage:</strong></p>
-<p>1.使用RAW进行超分，相比经过ISP处理的JPG，RAW有丰富的信息</p>
-<p>2.提出CoBi Loss解决不对齐的问题</p>
-<p>3.为真实的计算变焦提供一个数据集SR-RAW</p>
-<p><img src="image-20200307182249496.png" alt></p>
+                <h1 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h1><ul>
+<li>Conditional GAN需要大量标签</li>
+<li>GAN训练不稳定：<em>GANs are typically trained using alternating stochastic gradient descent which is often unstable and lacks theoretical guarantees</em></li>
+<li><em>instability, divergence, cyclic behavior, or mode collapse</em></li>
+<li>GAN训练过程中D模块的遗忘现象<ul>
+<li>In non-stationary online environments, neural networks forget previous tasks</li>
+<li>training may become unstable or cyclic</li>
+<li>This issue is usually addressed either by reusing old samples or by applying continual learning techniques</li>
+<li>These issues become more prominent in the context of complex data sets - &gt; conditioning（labeled data）</li>
+<li>CGAN中标记数据可以帮助D模块训练更稳定的表达，并且CGAN对于单一类别训练易于整体数据集训练</li>
+</ul>
+</li>
+</ul>
+<h1 id="contribution"><a href="#contribution" class="headerlink" title="contribution"></a>contribution</h1><ul>
+<li><em>take a step towards bridging the gap between conditional and unconditional GANs</em>，<em>Under the same conditions, the self-supervised GAN attains a similar performance to state-of-the-art conditional counterparts</em></li>
+<li>unsupervised generative model that combines adversarial training with self supervised learning</li>
+<li>add an auxiliary, self-supervised loss to the discriminator</li>
+</ul>
+<h1 id="Key-Issue-Discriminator-Forgetting"><a href="#Key-Issue-Discriminator-Forgetting" class="headerlink" title="Key Issue: Discriminator Forgetting"></a>Key Issue: Discriminator Forgetting</h1><ul>
+<li><p>original value function for GAN</p>
+<p><img src="image-20200422124554575.png" alt></p>
+<p>训练过程中PG(x)参数更新，因此导致D模块在线学习不稳定</p>
+</li>
+<li><p>训练过程中D模块往往会根据G模块学习到的局部特征（纹理、边缘、结构等）来进行惩罚，因此难以学习到整体的有效表达（局部陷阱）</p>
+<p><em>discriminator is not incentivised to maintain a useful data representation as long as the current representation is useful to discriminate between the classes</em></p>
+</li>
+<li><p>训练后期PG = Pdata，D模块输出为常数0.5，因此D模块将无法继续学习到有效信息。</p>
+<p>同时如果训练过程中加入正则化，D模块可能会忽略有效信息而专注于次要信息，因此无法正确辨别</p>
+</li>
+<li><p>常规Uncond-GAN的遗忘现象（500k后遗忘有效表达）<br><img src="image-20200422125628942.png" alt></p>
+</li>
+<li><p>mnist测试，尽管任务相似，训练类别切换时仍存在遗忘现象<br><img src="image-20200422125811573.png" alt></p>
+</li>
+</ul>
+<h1 id="method"><a href="#method" class="headerlink" title="method"></a>method</h1><p> <img src="image-20200422130346468.png" alt></p>
+<h2 id="pretext-task"><a href="#pretext-task" class="headerlink" title="pretext task"></a>pretext task</h2><ul>
+<li><p>引入旋转角度预测，学习到更有效地表达</p>
+</li>
+<li><p>rotation-based loss</p>
+<p><img src="image-20200422160149394.png" alt></p>
+</li>
+</ul>
+<h2 id="Collaborative-Adversarial-Training"><a href="#Collaborative-Adversarial-Training" class="headerlink" title="Collaborative Adversarial Training"></a>Collaborative Adversarial Training</h2><ul>
+<li><em>generator and discriminator collaborate on the task of representation learning, and compete on the generative task</em></li>
+<li>D模块通过预测真实数据旋转角度进行训练</li>
+<li>促进G模块生成具有可检测旋转的真实图片特征的表达</li>
+<li>α&gt;0不能保证收敛到PG = Pdata，因此训练过程中逐渐将α衰减至0</li>
+<li><em>the generator is encouraged to generate images that are rotation-detectable because they share features with real images that are used for rotation classification</em></li>
+</ul>
+<h1 id="experiment"><a href="#experiment" class="headerlink" title="experiment"></a>experiment</h1><p><img src="image-20200422161522929.png" alt></p>
+<p><img src="image-20200422161543467.png" alt></p>
+<p><img src="image-20200422161850627.png" alt></p>
+<p><img src="image-20200422161909392.png" alt></p>
 
             </div>
             <hr />
@@ -498,9 +524,9 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《SR》
+                    《SSGAN CVPR2019》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/03/07/sr-cvpr1819/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/04/22/ssgan-cvpr2019/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Liangyu Cui
             </a> is licensed under a
@@ -544,31 +570,31 @@
             <div class="article-badge left-badge text-color">
                 <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2020/03/09/semi-supervised/">
+                <a href="/2020/04/22/momentum-contrastive-learning-v2/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Semi-supervised 李宏毅">
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="MoCo v2">
                         
-                        <span class="card-title">Semi-supervised 李宏毅</span>
+                        <span class="card-title">MoCo v2</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            半监督学习李宏毅课程笔记
+                            Improved Baselines with Momentum Contrastive Learning
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-09
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-22
                         </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/DL-summary/" class="post-category" target="_blank">
-                                    DL summary
+                            <a href="/categories/DL-paper/" class="post-category" target="_blank">
+                                    DL paper
                                 </a>
                             
                             
@@ -578,8 +604,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/semi-supervised/" target="_blank">
-                        <span class="chip bg-color">semi-supervised</span>
+                    <a href="/tags/self-supervised/" target="_blank">
+                        <span class="chip bg-color">self-supervised</span>
                     </a>
                     
                 </div>
@@ -593,24 +619,24 @@
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/03/06/eccv18-sr/">
+                <a href="/2020/04/21/momentum-contrastive-learning-v1/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Super resolution">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="MoCo v1">
                         
-                        <span class="card-title">Super resolution</span>
+                        <span class="card-title">MoCo v1</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ECCV 2018 SR 相关论文整理
+                            Momentum Contrast for Unsupervised Visual Representation Learning
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-06
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-21
                             </span>
                         <span class="publish-author">
                             
@@ -627,8 +653,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/SR/" target="_blank">
-                        <span class="chip bg-color">SR</span>
+                    <a href="/tags/self-supervised/" target="_blank">
+                        <span class="chip bg-color">self-supervised</span>
                     </a>
                     
                 </div>

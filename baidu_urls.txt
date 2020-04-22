@@ -1,5 +1,6 @@
+https://larry-11.github.io/larry-11.github.io/2020/04/22/momentum-contrastive-learning-v2/
+https://larry-11.github.io/larry-11.github.io/2020/04/22/ssgan-cvpr2019/
 https://larry-11.github.io/larry-11.github.io/2020/04/21/momentum-contrastive-learning-v1/
-https://larry-11.github.io/larry-11.github.io/2020/04/21/momentum-contrastive-learning-v2/
 https://larry-11.github.io/larry-11.github.io/2020/04/20/simclr-jing-du/
 https://larry-11.github.io/larry-11.github.io/2020/03/14/monet/
 https://larry-11.github.io/larry-11.github.io/2020/03/14/zui-you-hua-fang-fa/
