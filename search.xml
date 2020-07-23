@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>BYOL</title>
+      <link href="/2020/07/24/byol/"/>
+      <url>/2020/07/24/byol/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><ul><li>constract learning常见方法多使用memory bank，large batch与moco</li><li>需要组成positive pair &amp; negative pair，计算力消耗巨大</li></ul><h1 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h1><ul><li>directly bootstrap the representations</li><li>仅针对positive pair，去掉负样本</li><li>SOTA</li></ul><h1 id="Compare-with-SimCLR"><a href="#Compare-with-SimCLR" class="headerlink" title="Compare with SimCLR"></a>Compare with SimCLR</h1><p><img src="image-20200724003245632.png" alt="image-20200724003245632"></p><p>SimCLR通过在representation后添加一层映射层，将原有图片特征打乱，相当于给特征增加噪音，增加识别挑战性，因此能够提高模型提取特征的能力。</p><p>这一点从下图的t-SNE视觉化也可以看到，各个类别的图片本了各自占据一个地方，经过映射之后，各个类别都混在一起，难以分辨。</p><p><img src="image-20200724003423415.png" alt="image-20200724003423415"></p><p>最初设想如下图所示：仅通过transform构成的positive pair来进行训练，通过添加predict来学习positive之间映射，但由于缺少负样本导致效果较差。</p><p><img src="image-20200724003222489.png" alt="image-20200724003222489"></p><p>因此通过延迟更新来增加噪音，与MOCO中的Momentum update想法相似。同样的想法也出现在DQN网络的Q估计与Q现实网络中。</p><p>对比DQN网络，online类似Q估计，target类似Q现实，后二者为预测/优化目标，为了保证模型训练的稳定性，因此延迟更新，避免训练陷入恶性循环或者发散。</p><h1 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h1><h2 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h2><p><img src="image-20200724005327043.png" alt="image-20200724005327043"></p><h2 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h2><p><img src="image-20200724005307531.png" alt="image-20200724005307531"></p><h1 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h1><p>[<a href="https://blog.voidful.tech/paper%20reading/2020/06/28/paper-notes-simclr/]" target="_blank" rel="noopener">https://blog.voidful.tech/paper%20reading/2020/06/28/paper-notes-simclr/]</a>(<a href="https://blog.voidful.tech/paper" target="_blank" rel="noopener">https://blog.voidful.tech/paper</a> reading/2020/06/28/paper-notes-simclr/)</p><p><a href="https://arxiv.org/pdf/2006.07733.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/2006.07733.pdf</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> self-supervised </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>WGAN</title>
       <link href="/2020/07/23/wgan/"/>
       <url>/2020/07/23/wgan/</url>
