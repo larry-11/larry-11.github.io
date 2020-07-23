@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Larry Site</title>
+  
+  <subtitle>Version 1.0</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://larry-11.github.io/larry-11.github.io/"/>
+  <updated>2020-07-23T09:48:44.000Z</updated>
+  <id>https://larry-11.github.io/larry-11.github.io/</id>
+  
+  <author>
+    <name>Liangyu Cui</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>WGAN</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/07/23/wgan/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/07/23/wgan/</id>
+    <published>2020-07-23T04:00:00.000Z</published>
+    <updated>2020-07-23T09:48:44.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;motivation&quot;&gt;&lt;a href=&quot;#motivation&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="GAN" scheme="https://larry-11.github.io/larry-11.github.io/tags/GAN/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MoCo v2</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/04/22/momentum-contrastive-learning-v2/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/04/22/momentum-contrastive-learning-v2/</id>
+    <published>2020-04-22T04:00:00.000Z</published>
+    <updated>2020-04-22T03:36:52.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;motivation&quot;&gt;&lt;a href=&quot;#motivation&quot; class=&quot;headerlink&quot; title=&quot;motivation&quot;&gt;&lt;/a&gt;motivation&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;SimCLR提出projection head &amp;amp;
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="self-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/self-supervised/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SSGAN CVPR2019</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/04/22/ssgan-cvpr2019/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/04/22/ssgan-cvpr2019/</id>
+    <published>2020-04-22T04:00:00.000Z</published>
+    <updated>2020-04-22T08:19:24.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;motivation&quot;&gt;&lt;a href=&quot;#motivation&quot; class=&quot;headerlink&quot; title=&quot;motivation&quot;&gt;&lt;/a&gt;motivation&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;Conditional
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="GAN" scheme="https://larry-11.github.io/larry-11.github.io/tags/GAN/"/>
+    
+      <category term="self-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/self-supervised/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MoCo v1</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/04/21/momentum-contrastive-learning-v1/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/04/21/momentum-contrastive-learning-v1/</id>
+    <published>2020-04-21T04:00:00.000Z</published>
+    <updated>2020-04-22T02:34:40.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;motivation&quot;&gt;&lt;a href=&quot;#motivation&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="self-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/self-supervised/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SimCLR</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/04/20/simclr-jing-du/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/04/20/simclr-jing-du/</id>
+    <published>2020-04-20T04:00:00.000Z</published>
+    <updated>2020-04-21T12:05:56.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;motivation&quot;&gt;&lt;a href=&quot;#motivation&quot; class=&quot;headerlink&quot; title=&quot;motivation&quot;&gt;&lt;/a&gt;motivation&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;generative &amp;amp;
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="self-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/self-supervised/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Monet</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/14/monet/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/03/14/monet/</id>
+    <published>2020-03-14T04:00:00.000Z</published>
+    <updated>2020-03-14T08:32:00.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;img src=&quot;0.jpg&quot; alt&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;1.jpg&quot; alt&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;2.jpg&quot; alt&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;5.jpg&quot; alt&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;6.jpg&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="随笔" scheme="https://larry-11.github.io/larry-11.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="随笔" scheme="https://larry-11.github.io/larry-11.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Optimal Method</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/14/zui-you-hua-fang-fa/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/03/14/zui-you-hua-fang-fa/</id>
+    <published>2020-03-14T04:00:00.000Z</published>
+    <updated>2020-03-14T05:45:22.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;梯度下降法&quot;&gt;&lt;a href=&quot;#梯度下降法&quot; class=&quot;headerlink&quot; title=&quot;梯度下降法&quot;&gt;&lt;/a&gt;梯度下降法&lt;/h1&gt;&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="ML" scheme="https://larry-11.github.io/larry-11.github.io/categories/ML/"/>
+    
+    
+      <category term="ML" scheme="https://larry-11.github.io/larry-11.github.io/tags/ML/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>GAN DISSECTION ICLR19 精读</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/12/gan-dissection-iclr19/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/03/12/gan-dissection-iclr19/</id>
+    <published>2020-03-12T04:00:00.000Z</published>
+    <updated>2020-03-13T04:10:14.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;motivation&quot;&gt;&lt;a href=&quot;#motivation&quot; class=&quot;headerlink&quot; title=&quot;motivation&quot;&gt;&lt;/a&gt;motivation&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;many GAN variants have
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="GAN" scheme="https://larry-11.github.io/larry-11.github.io/tags/GAN/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>信息&amp;熵</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/12/xin-xi-shang/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/03/12/xin-xi-shang/</id>
+    <published>2020-03-12T04:00:00.000Z</published>
+    <updated>2020-03-12T15:31:30.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;自信息&quot;&gt;&lt;a href=&quot;#自信息&quot; class=&quot;headerlink&quot; title=&quot;自信息&quot;&gt;&lt;/a&gt;自信息&lt;/h1&gt;&lt;h2 id=&quot;定义：&quot;&gt;&lt;a href=&quot;#定义：&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="ML" scheme="https://larry-11.github.io/larry-11.github.io/categories/ML/"/>
+    
+    
+      <category term="ML" scheme="https://larry-11.github.io/larry-11.github.io/tags/ML/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MZSR</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/09/mzsr-cvpr20/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/03/09/mzsr-cvpr20/</id>
+    <published>2020-03-09T04:00:00.000Z</published>
+    <updated>2020-03-09T11:24:40.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;motivation&quot;&gt;&lt;a href=&quot;#motivation&quot; class=&quot;headerlink&quot; title=&quot;motivation&quot;&gt;&lt;/a&gt;motivation&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;现有 SISR
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="SR" scheme="https://larry-11.github.io/larry-11.github.io/tags/SR/"/>
+    
+      <category term="Meta Learning" scheme="https://larry-11.github.io/larry-11.github.io/tags/Meta-Learning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Semi-supervised 李宏毅</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/09/semi-supervised/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/03/09/semi-supervised/</id>
+    <published>2020-03-09T04:00:00.000Z</published>
+    <updated>2020-03-09T08:05:02.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Semi-supervised&quot;&gt;&lt;a href=&quot;#Semi-supervised&quot; class=&quot;headerlink&quot; title=&quot;Semi-supervised&quot;&gt;&lt;/a&gt;Semi-supervised&lt;/h1&gt;&lt;h2 id=&quot;Intro&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="DL summary" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-summary/"/>
+    
+    
+      <category term="semi-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/semi-supervised/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SR</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/07/sr-cvpr1819/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/03/07/sr-cvpr1819/</id>
+    <published>2020-03-07T04:00:00.000Z</published>
+    <updated>2020-03-07T10:23:18.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;“Zero-Shot”-Super-Resolution-using-Deep-Internal-Learning-CVPR-2018&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="SR" scheme="https://larry-11.github.io/larry-11.github.io/tags/SR/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Super resolution</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/06/eccv18-sr/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/03/06/eccv18-sr/</id>
+    <published>2020-03-06T04:00:00.000Z</published>
+    <updated>2020-03-06T11:11:24.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;RCAN：Image-Super-Resolution-Using-Very-Deep-Residual-Channel-Attention-Networks&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="SR" scheme="https://larry-11.github.io/larry-11.github.io/tags/SR/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SR summary</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/06/sr-summary/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/03/06/sr-summary/</id>
+    <published>2020-03-06T04:00:00.000Z</published>
+    <updated>2020-03-06T11:44:36.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;SR&quot;&gt;&lt;a href=&quot;#SR&quot; class=&quot;headerlink&quot; title=&quot;SR&quot;&gt;&lt;/a&gt;SR&lt;/h1&gt;&lt;h2 id=&quot;categories&quot;&gt;&lt;a href=&quot;#categories&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="DL summary" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-summary/"/>
+    
+    
+      <category term="SR" scheme="https://larry-11.github.io/larry-11.github.io/tags/SR/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>新的开始</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/04/larry-site/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/03/04/larry-site/</id>
+    <published>2020-03-04T04:00:00.000Z</published>
+    <updated>2020-03-04T13:31:04.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;庆祝小站正式成立！！！&quot;&gt;&lt;a href=&quot;#庆祝小站正式成立！！！&quot; class=&quot;headerlink&quot; title=&quot;庆祝小站正式成立！！！&quot;&gt;&lt;/a&gt;庆祝小站正式成立！！！&lt;/h1&gt;&lt;h1
+        
+      
+    
+    </summary>
+    
+      <category term="随笔" scheme="https://larry-11.github.io/larry-11.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="随笔" scheme="https://larry-11.github.io/larry-11.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Super Resolution</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/02/26/super-resolution/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/02/26/super-resolution/</id>
+    <published>2020-02-26T04:00:00.000Z</published>
+    <updated>2020-03-06T11:11:56.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;SISR&quot;&gt;&lt;a href=&quot;#SISR&quot; class=&quot;headerlink&quot; title=&quot;SISR&quot;&gt;&lt;/a&gt;SISR&lt;/h1&gt;&lt;h2 id=&quot;GAN&quot;&gt;&lt;a href=&quot;#GAN&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="SR" scheme="https://larry-11.github.io/larry-11.github.io/tags/SR/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Meta Learning （Hongyi Li）</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/02/04/meta-learning/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/02/04/meta-learning/</id>
+    <published>2020-02-04T04:00:00.000Z</published>
+    <updated>2020-03-09T06:47:48.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Meta-Learning&quot;&gt;&lt;a href=&quot;#Meta-Learning&quot; class=&quot;headerlink&quot; title=&quot;Meta Learning&quot;&gt;&lt;/a&gt;Meta Learning&lt;/h1&gt;&lt;h2 id=&quot;Introduction&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="DL summary" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-summary/"/>
+    
+    
+      <category term="Meta Learning" scheme="https://larry-11.github.io/larry-11.github.io/tags/Meta-Learning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>light-weight 论文阅读笔记</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2019/11/17/lightweight/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2019/11/17/lightweight/</id>
+    <published>2019-11-17T04:00:00.000Z</published>
+    <updated>2020-03-06T11:11:44.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Light-weight&quot;&gt;&lt;a href=&quot;#Light-weight&quot; class=&quot;headerlink&quot; title=&quot;Light-weight&quot;&gt;&lt;/a&gt;&lt;strong&gt;Light-weight&lt;/strong&gt;&lt;/h1&gt;&lt;h2
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="light-weight" scheme="https://larry-11.github.io/larry-11.github.io/tags/light-weight/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>GAN summary</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2019/11/06/gan/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2019/11/06/gan/</id>
+    <published>2019-11-06T04:00:00.000Z</published>
+    <updated>2020-03-06T11:11:38.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;GAN&quot;&gt;&lt;a href=&quot;#GAN&quot; class=&quot;headerlink&quot; title=&quot;GAN&quot;&gt;&lt;/a&gt;GAN&lt;/h1&gt;&lt;h2 id=&quot;contribution&quot;&gt;&lt;a href=&quot;#contribution&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="GAN" scheme="https://larry-11.github.io/larry-11.github.io/tags/GAN/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>anchor-free detection summary</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2019/07/28/anchor-free/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2019/07/28/anchor-free/</id>
+    <published>2019-07-28T04:00:00.000Z</published>
+    <updated>2020-03-06T11:11:34.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;1、-CornerNet-Detecting-Objects-as-Paired-Keypoints-ECCV2018&quot;&gt;&lt;a href=&quot;#1、-CornerNet-Detecting-Objects-as-Paired-Keypoints-ECCV2018&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="detection" scheme="https://larry-11.github.io/larry-11.github.io/tags/detection/"/>
+    
+  </entry>
+  
+</feed>

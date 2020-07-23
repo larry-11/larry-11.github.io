@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>WGAN</title>
+      <link href="/2020/07/23/wgan/"/>
+      <url>/2020/07/23/wgan/</url>
+      
+        <content type="html"><![CDATA[<h1 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h1><ul><li>GAN训练困难</li><li>生成器和判别器的loss无法指示训练进程</li><li>生成样本缺乏多样性</li></ul><h1 id="contribution"><a href="#contribution" class="headerlink" title="contribution"></a>contribution</h1><ul><li>彻底解决GAN训练不稳定的问题，不再需要小心平衡生成器和判别器的训练程度</li><li>基本解决了collapse mode的问题，确保了生成样本的多样性</li><li>训练过程中终于有一个像交叉熵、准确率这样的数值来指示训练的进程，这个数值越小代表GAN训练得越好，代表生成器产生的图像质量越高</li><li>以上一切好处不需要精心设计的网络架构，最简单的多层全连接网络就可以做到</li></ul><h1 id="method"><a href="#method" class="headerlink" title="method"></a>method</h1><ul><li><p>判别器最后一层去掉sigmoid</p></li><li><p>生成器和判别器的loss不取log</p></li><li><p>每次更新判别器的参数之后把它们的绝对值截断到不超过一个固定常数c</p></li><li><p>不要用基于动量的优化算法（包括momentum和Adam），推荐RMSProp，SGD也行</p><p><img src="image-20200507212006690.png" alt></p></li></ul><h1 id="原始GAN缺陷"><a href="#原始GAN缺陷" class="headerlink" title="原始GAN缺陷"></a>原始GAN缺陷</h1><p>loss函数：<img src="image-20200507212250930.png" alt></p><p>D loss：<img src="image-20200507212314552.png" alt></p><h2 id="第一种原始GAN形式的问题"><a href="#第一种原始GAN形式的问题" class="headerlink" title="第一种原始GAN形式的问题"></a>第一种原始GAN形式的问题</h2><ul><li><p>判别器越好，生成器梯度消失越严重</p></li><li><p>在（近似）最优判别器下，最小化生成器的loss等价于最小化Pr与Pg之间的JS散度，而由于Pr与Pg几乎不可能有不可忽略的重叠，所以无论它们相距多远JS散度都是常数log2，最终导致生成器的梯度（近似）为0，梯度消失</p></li><li><p>推导：</p><ul><li><p>令D(x)偏导为0：<br><img src="image-20200723152623354.png" alt="image-20200723152623354"><br><img src="image-20200723152800832.png" alt="image-20200723152800832"></p></li><li><p>当D(x)训练到最优时：</p><p><img src="image-20200723153928258.png" alt="image-20200723153928258"></p><p><img src="image-20200723153937488.png" alt="image-20200723153937488"></p></li><li><p>转化为JS散度：</p><p><img src="image-20200723154042998.png" alt="image-20200723154042998"></p></li><li><p>当两个分布完全无重叠 ，上式为固定值log2，梯度为0</p></li><li><p>判别器训练得太好，生成器梯度消失，生成器loss降不下去；判别器训练得不好，生成器梯度不准，四处乱跑。只有判别器训练得不好不坏才行，但是这个火候又很难把握</p></li></ul></li></ul><h2 id="第二种原始GAN形式的问题"><a href="#第二种原始GAN形式的问题" class="headerlink" title="第二种原始GAN形式的问题"></a>第二种原始GAN形式的问题</h2><ul><li><p>最小化第二种生成器loss函数，会等价于最小化一个不合理的距离衡量，导致两个问题，一是梯度不稳定，二是collapse mode即多样性不足</p></li><li><p>推导：</p><ul><li><p>KL散度转化为D*形式：<br><img src="image-20200723163617472.png" alt="image-20200723163617472"></p></li><li><p>目标函数等价变形：</p><p><img src="image-20200723163702154.png" alt="image-20200723163702154"></p></li><li><p>同时要最小化生成分布与真实分布的KL散度，却又要最大化两者的JS散度，一个要拉近，一个却要推远，导致在数值上则会导致梯度不稳定</p></li><li><p>第一种错误对应的是“生成器没能生成真实的样本”，惩罚微小；第二种错误对应的是“生成器生成了不真实的样本” ，惩罚巨大。第一种错误对应的是缺乏多样性，第二种错误对应的是缺乏准确性。<img src="image-20200723163855914.png" alt="image-20200723163855914"></p></li><li><p>生成器宁可多生成一些重复但是很“安全”的样本，也不愿意去生成多样性的样本，即<strong>collapse mode</strong></p></li></ul></li><li><p>在原始GAN的（近似）最优判别器下，第一种生成器loss面临梯度消失问题，第二种生成器loss面临优化目标荒谬、梯度不稳定、对多样性与准确性惩罚不平衡导致mode collapse这几个问题</p></li></ul><h1 id="Wasserstein距离"><a href="#Wasserstein距离" class="headerlink" title="Wasserstein距离"></a>Wasserstein距离</h1><ul><li><p>Wasserstein距离（推土机距离）：<img src="image-20200507225703239.png" alt></p><p><img src="image-20200723170255422.png" alt="image-20200723170255422"></p></li><li><p>Wasserstein距离相比KL散度、JS散度的优越性在于，即便两个分布没有重叠，Wasserstein距离仍然能够反映它们的远近</p></li><li><p>如图所示：<br><img src="image-20200723165422500.png" alt="image-20200723165422500"></p></li></ul><h1 id="WGAN"><a href="#WGAN" class="headerlink" title="WGAN"></a>WGAN</h1><ol><li><p>Wasserstrin距离中inf无法直接求解，因此无法转化为loss</p></li><li><p>将Wasserstrin距离转化为：</p><p><img src="image-20200723170056816.png" alt="image-20200723170056816"></p></li><li><p>Lipschitz Function：  输出的变化小于等于输入的变化， k=1时为 1-Lipschitz ，即变化的不要太猛烈</p><p><img src="image-20200723170433471.png" alt="image-20200723170433471"></p></li><li><p>如果没有对D的限制，当D(x1) 和D(x2)为正负无穷时可以最大化2）式，下图左。而现在对D有 1-Lipschitz 限制，则D的取值如下图右：</p><p><img src="image-20200723171414756.png" alt="image-20200723171414756"></p></li><li><p>利用上式的好处是PG可以沿着梯度移动到蓝色Pdata，而原生GAN的判别器D为而二元分类器，输出为sigmoid函数。对于蓝色和橙色的分布，原生GAN为蓝线：对应Pdata的输出值为1，对应PG的输出值为0。所以蓝色曲线在蓝色和橙色分布的梯度为0，根本没有动力去挪动generator的输出来更新。而上式在两个分布附近都有梯度，可以继续更新。</p><p><img src="image-20200723171841661.png" alt="image-20200723171841661"></p></li></ol><h1 id="WGAN优化"><a href="#WGAN优化" class="headerlink" title="WGAN优化"></a>WGAN优化</h1><h2 id="Weight-clipping"><a href="#Weight-clipping" class="headerlink" title="Weight clipping"></a>Weight clipping</h2><ul><li>为了保证满足k-Lipschitz，强制令权重w 限制在c ~ -c之间。在参数更新后，如果w&gt;c，则令w=c， 如果w&lt;-c，则令w=-c。</li><li>直觉上，如果神经网络的权重都限制在一定的范围内，那么网络的输出也会被限定在一定范围内。换句话说，这个网络会属于某个 K-Lipschitz。</li><li>我们其实不关心具体的K是多少，只要它不是正无穷就行，因为它只是会使得梯度变大K倍，并不会影响梯度的方向。</li></ul><h2 id="Gradient-Penalty"><a href="#Gradient-Penalty" class="headerlink" title="Gradient Penalty"></a>Gradient Penalty</h2><ul><li><p><strong>权重分布</strong>：任由weight clipping去独立的限制网络参数的取值范围，有一种可能是大多数网络权重参数会集中在最大值和最小值附近而并不是一个比较好的连续分布，论文的作者通过实验也确实发现是这样一种情况。这毫无疑问带来的结果就是使得discriminator更倾向于拟合一种简单的描述函数，这种函数的泛化能力以及判断能力毫无疑问是非常弱的，那么经过这种discriminator回传的梯度信息的质量也是很差的</p></li><li><p><strong>梯度爆炸/消失</strong>：weight clipping的处理很容易导致梯度消失或者梯度爆炸，因为discriminator虽然相对于generator来说结构较为简单，但其实也是一个多层结构，如果weight clipping的约束比较小的话，那么经过每一层网络，梯度都会变小，多层之后的情况就类似于一个指数衰减了，这样得到的结果就会导致梯度消失，反之则是梯度爆炸</p></li><li><p>前提：</p><ul><li>为了保证 1-Lipschitz ，D(x)梯度小于等于1</li><li>为了提高D辨别能力，D(x)梯度尽可能大</li></ul></li><li><p>WGAN-GP：</p><p><img src="image-20200723174404338.png" alt="image-20200723174404338"></p></li><li><p>Ppenalty采样：</p><p>理论上为在整个样本空间进行采样，这个肯定是不可行的，论文中针对这个问题指出，只需要在generator生成样本和真实样本空间以及之间的区域就可以了，具体步骤如下：</p><ul><li>从真实数据 Pdata 中采样得到一个点</li><li>从生成器生成的数据 PG 中采样得到一个点</li><li>为这两个点连线</li><li>在线上随机采样得到一个点作为 Ppenalty 的点。</li></ul></li></ul><h1 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h1><ol><li><a href="https://lotabout.me/2018/WGAN/" target="_blank" rel="noopener">https://lotabout.me/2018/WGAN/</a></li><li><a href="https://zhuanlan.zhihu.com/p/25071913" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/25071913</a></li><li><a href="https://blog.csdn.net/xiaoxifei/article/details/87542317" target="_blank" rel="noopener">https://blog.csdn.net/xiaoxifei/article/details/87542317</a></li><li><a href="https://www.youtube.com/watch?v=KSN4QYgAtao&amp;lc=z13kz1nqvuqsipqfn23phthasre4evrdo" target="_blank" rel="noopener">https://www.youtube.com/watch?v=KSN4QYgAtao&amp;lc=z13kz1nqvuqsipqfn23phthasre4evrdo</a></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GAN </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>MoCo v2</title>
+      <link href="/2020/04/22/momentum-contrastive-learning-v2/"/>
+      <url>/2020/04/22/momentum-contrastive-learning-v2/</url>
+      
+        <content type="html"><![CDATA[<h1 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h1><ul><li>SimCLR提出projection head &amp; data augmentation能够大大提高表现</li><li>SimCLR训练过程使用过大batch size，需要TPU支持</li></ul><h1 id="contribution"><a href="#contribution" class="headerlink" title="contribution"></a>contribution</h1><ul><li>在MoCo v1中使用了projection head &amp; data augmentation</li><li>通过v1中的queue机制解决SimCLR过大batch size问题（仅concat mini_batch的低维特征向量）</li></ul><h1 id="method"><a href="#method" class="headerlink" title="method"></a>method</h1><p><img src="image-20200422110621465.png" alt></p><ul><li>SimCLR为end2end机制，需要较大batch size来提供negative set</li><li>MoCo通过queue保存negative key，每轮迭代仅encode mini_batch样本</li><li>依旧使用InfoNCE</li></ul><h1 id="experiment"><a href="#experiment" class="headerlink" title="experiment"></a>experiment</h1><p><img src="image-20200422111821704.png" alt></p><h2 id="MLP-head"><a href="#MLP-head" class="headerlink" title="MLP head"></a>MLP head</h2><p><img src="image-20200422111732879.png" alt></p><ul><li>通过两层MLP（ReLU）代替v1中的fc</li><li><em>in contrast to the big leap on ImageNet, the detection gains are smaller</em></li></ul><h2 id="Augmentation"><a href="#Augmentation" class="headerlink" title="Augmentation"></a>Augmentation</h2><ul><li>引入blur augmentation（stronger color distortion在实验中没有较明显的效果提升）</li><li>单纯引入aug+在检测任务中效果优于MLP，但在线性分类中效果较差</li><li><em>linear classification accuracy is not monotonically related to transfer performance in detection</em></li></ul><h2 id="Comparison-with-SimCLR"><a href="#Comparison-with-SimCLR" class="headerlink" title="Comparison with SimCLR"></a>Comparison with SimCLR</h2><p><img src="image-20200422112621430.png" alt></p><h2 id="Computational-cost"><a href="#Computational-cost" class="headerlink" title="Computational cost"></a>Computational cost</h2><p><img src="image-20200422112954818.png" alt></p><ul><li>SimCLR需要更新q、k enconder，而MoCo仅更新q encoder，k encoder通过Momentum update进行更新</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> self-supervised </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SSGAN CVPR2019</title>
+      <link href="/2020/04/22/ssgan-cvpr2019/"/>
+      <url>/2020/04/22/ssgan-cvpr2019/</url>
+      
+        <content type="html"><![CDATA[<h1 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h1><ul><li>Conditional GAN需要大量标签</li><li>GAN训练不稳定：<em>GANs are typically trained using alternating stochastic gradient descent which is often unstable and lacks theoretical guarantees</em></li><li><em>instability, divergence, cyclic behavior, or mode collapse</em></li><li>GAN训练过程中D模块的遗忘现象<ul><li>In non-stationary online environments, neural networks forget previous tasks</li><li>training may become unstable or cyclic</li><li>This issue is usually addressed either by reusing old samples or by applying continual learning techniques</li><li>These issues become more prominent in the context of complex data sets - &gt; conditioning（labeled data）</li><li>CGAN中标记数据可以帮助D模块训练更稳定的表达，并且CGAN对于单一类别训练易于整体数据集训练</li></ul></li></ul><h1 id="contribution"><a href="#contribution" class="headerlink" title="contribution"></a>contribution</h1><ul><li><em>take a step towards bridging the gap between conditional and unconditional GANs</em>，<em>Under the same conditions, the self-supervised GAN attains a similar performance to state-of-the-art conditional counterparts</em></li><li>unsupervised generative model that combines adversarial training with self supervised learning</li><li>add an auxiliary, self-supervised loss to the discriminator</li></ul><h1 id="Key-Issue-Discriminator-Forgetting"><a href="#Key-Issue-Discriminator-Forgetting" class="headerlink" title="Key Issue: Discriminator Forgetting"></a>Key Issue: Discriminator Forgetting</h1><ul><li><p>original value function for GAN</p><p><img src="image-20200422124554575.png" alt></p><p>训练过程中PG(x)参数更新，因此导致D模块在线学习不稳定</p></li><li><p>训练过程中D模块往往会根据G模块学习到的局部特征（纹理、边缘、结构等）来进行惩罚，因此难以学习到整体的有效表达（局部陷阱）</p><p><em>discriminator is not incentivised to maintain a useful data representation as long as the current representation is useful to discriminate between the classes</em></p></li><li><p>训练后期PG = Pdata，D模块输出为常数0.5，因此D模块将无法继续学习到有效信息。</p><p>同时如果训练过程中加入正则化，D模块可能会忽略有效信息而专注于次要信息，因此无法正确辨别</p></li><li><p>常规Uncond-GAN的遗忘现象（500k后遗忘有效表达）<br><img src="image-20200422125628942.png" alt></p></li><li><p>mnist测试，尽管任务相似，训练类别切换时仍存在遗忘现象<br><img src="image-20200422125811573.png" alt></p></li></ul><h1 id="method"><a href="#method" class="headerlink" title="method"></a>method</h1><p> <img src="image-20200422130346468.png" alt></p><h2 id="pretext-task"><a href="#pretext-task" class="headerlink" title="pretext task"></a>pretext task</h2><ul><li><p>引入旋转角度预测，学习到更有效地表达</p></li><li><p>rotation-based loss</p><p><img src="image-20200422160149394.png" alt></p></li></ul><h2 id="Collaborative-Adversarial-Training"><a href="#Collaborative-Adversarial-Training" class="headerlink" title="Collaborative Adversarial Training"></a>Collaborative Adversarial Training</h2><ul><li><em>generator and discriminator collaborate on the task of representation learning, and compete on the generative task</em></li><li>D模块通过预测真实数据旋转角度进行训练</li><li>促进G模块生成具有可检测旋转的真实图片特征的表达</li><li>α&gt;0不能保证收敛到PG = Pdata，因此训练过程中逐渐将α衰减至0</li><li><em>the generator is encouraged to generate images that are rotation-detectable because they share features with real images that are used for rotation classification</em></li></ul><h1 id="experiment"><a href="#experiment" class="headerlink" title="experiment"></a>experiment</h1><p><img src="image-20200422161522929.png" alt></p><p><img src="image-20200422161543467.png" alt></p><p><img src="image-20200422161850627.png" alt></p><p><img src="image-20200422161909392.png" alt></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GAN </tag>
+            
+            <tag> self-supervised </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>MoCo v1</title>
+      <link href="/2020/04/21/momentum-contrastive-learning-v1/"/>
+      <url>/2020/04/21/momentum-contrastive-learning-v1/</url>
+      
+        <content type="html"><![CDATA[<h1 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h1><ul><li>NLP中常用的SSL往往是由于NLP中常使用离散变量（单词），而CV中多数为高维连续变量</li><li>contrastive learning作为字典查询角度需要构建较大的字典</li></ul><h1 id="contribution"><a href="#contribution" class="headerlink" title="contribution"></a>contribution</h1><ul><li>提出MoCo构建用于contrastive learning的large and consistent dictionaries</li><li>purpose：<em>pre-train representations (i.e., features) that can be transferred to downstream tasks by fine-tuning</em></li><li>适用于<em>real-world, billionimage scale, and relatively uncurated scenario</em></li></ul><h1 id="method"><a href="#method" class="headerlink" title="method"></a>method</h1><p><img src="image-20200421221349267.png" alt></p><h2 id="Contrastive-Learning-as-Dictionary-Look-up"><a href="#Contrastive-Learning-as-Dictionary-Look-up" class="headerlink" title="Contrastive Learning as Dictionary Look-up"></a>Contrastive Learning as Dictionary Look-up</h2><ul><li><p>InfoNCE（contrastive loss function） t为温度变量</p><p><img src="image-20200421221109336.png" alt></p></li><li><p>a (K+1)-way softmax-based classifier that tries to classify q as k+</p></li></ul><h2 id="Momentum-Contrast"><a href="#Momentum-Contrast" class="headerlink" title="Momentum Contrast"></a>Momentum Contrast</h2><ul><li>动态字典</li><li>key encoder在训练过程中不断进化</li><li>假设：good features can be learned by a large dictionary that covers a rich set of negative samples, while the encoder for the dictionary keys is kept as consistent as possible despite its evolution</li></ul><h3 id="Dictionary-as-a-queue"><a href="#Dictionary-as-a-queue" class="headerlink" title="Dictionary as a queue"></a>Dictionary as a queue</h3><ul><li><em>At the core of our approach is maintaining the dictionary as a queue of data samples</em></li><li>字典可以大于mini-batch size，可以作为超参数进行调节</li><li>每次更新mini batch个样本，FIFO</li></ul><h3 id="Momentum-update"><a href="#Momentum-update" class="headerlink" title="Momentum update"></a>Momentum update</h3><ul><li><p>使用队列可以扩充字典的大小，但是对key encoder进行反向传播变得更难</p></li><li><p>将query encoder 直接复制给key encoder ，这样快速地改变key encoder会破坏键值表示的一致性，不够稳定</p></li><li><p>队列保存特征图信息，而非原始图像信息</p></li><li><p>momentum update</p><p><img src="image-20200421231524714.png" alt></p></li><li><p>实验中较大的m（0.999）取得较好的结果，</p><p><em>slowly evolving key encoder is a core to making use of a queue</em></p></li></ul><h3 id="Relations-to-previous-mechanisms"><a href="#Relations-to-previous-mechanisms" class="headerlink" title="Relations to previous mechanisms"></a>Relations to previous mechanisms</h3><p><img src="image-20200421231720678.png" alt></p><ul><li>end2end<ul><li>字典大小和mini-batch大小相同，受限于GPU显存</li><li>对大的mini-batch进行优化也是挑战</li></ul></li><li>memory bank<ul><li>包含数据集所有数据的特征表示，从Memory Bank中采样数据不需要进行反向传播，所以能支持比较大的字典</li><li>一个样本的特征表示只在它出现时才在Memory Bank更新，因此具有更少的一致性</li><li>更新只是进行特征表示的更新，不涉及encoder</li></ul></li></ul><h2 id="Pretext-Task"><a href="#Pretext-Task" class="headerlink" title="Pretext Task"></a>Pretext Task</h2><p><img src="image-20200422001549632.png" alt></p><ul><li>2 random view ：positive pair</li><li>queries &amp; keys独立编码</li></ul><h3 id="Technical-details"><a href="#Technical-details" class="headerlink" title="Technical details"></a>Technical details</h3><ul><li>ResNet</li><li>output：128-D</li><li>output：L2-norm</li><li>random color jittering, random horizontal flip, and random grayscale conversion</li></ul><h3 id="Shuffling-BN"><a href="#Shuffling-BN" class="headerlink" title="Shuffling BN"></a>Shuffling BN</h3><ul><li><p>BN会导致模型难以学习到有效的representation</p></li><li><p><em>The model appears to “cheat” the pretext task and easily finds a low-loss solution. This is possibly because the intra-batch communication among samples (caused by BN) leaks information</em></p><p>模型每个batch的内的样本之间communication 泄露了信息导致的</p></li><li><p>shuffling BN：每个GPU分开做BN</p><p>对于键值编码器fk，在当前mini-batch中打乱样本的顺序，再把它们送到GPU上分别进行BN，然后再恢复样本的顺序；</p><p>对于查询编码器fq，不改变样本的顺序。</p><p>这能够保证用于计算查询和其正键值的批统计值出自两个不同的子集</p></li></ul><h1 id="experiment"><a href="#experiment" class="headerlink" title="experiment"></a>experiment</h1><h2 id="Linear-Classification-Protocol"><a href="#Linear-Classification-Protocol" class="headerlink" title="Linear Classification Protocol"></a>Linear Classification Protocol</h2><h3 id="contrastive-loss-mechanisms"><a href="#contrastive-loss-mechanisms" class="headerlink" title="contrastive loss mechanisms"></a>contrastive loss mechanisms</h3><p><img src="image-20200422003719906.png" alt></p><h3 id="momentum"><a href="#momentum" class="headerlink" title="momentum"></a>momentum</h3><p><img src="image-20200422003837786.png" alt></p><h3 id="Comparison-with-previous-results"><a href="#Comparison-with-previous-results" class="headerlink" title="Comparison with previous results"></a>Comparison with previous results</h3><p><img src="image-20200422003935701.png" alt></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> self-supervised </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SimCLR</title>
+      <link href="/2020/04/20/simclr-jing-du/"/>
+      <url>/2020/04/20/simclr-jing-du/</url>
+      
+        <content type="html"><![CDATA[<h1 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h1><ul><li>generative &amp; discriminative:<br><em>pixel-level generation is computationally expensive and may not be necessary for representation learning</em></li></ul><h1 id="contribution"><a href="#contribution" class="headerlink" title="contribution"></a>contribution</h1><ul><li>SSL（自监督）相比SL（监督）更加依赖数据增强</li><li>特征层与最终loss之间引入非线性转化层（MLP）能够提高效果</li><li>归一化的embeddin与合适的温度参数（temperature parameter，softmax）利于表达</li><li>更大的batch-size、较长的训练时长、deeper&amp;wider network都利于SSL</li></ul><h1 id="method"><a href="#method" class="headerlink" title="method"></a>method</h1><h2 id="The-Contrastive-Learning-Framework"><a href="#The-Contrastive-Learning-Framework" class="headerlink" title="The Contrastive Learning Framework"></a>The Contrastive Learning Framework</h2><p><img src="image-20200421173804185.png" alt></p><p>如上图所示，文章主要结构为：</p><ul><li>A stochastic data augmentation module<ul><li>对于同一张图片进行不同组合的augmentation，得到不同multi-view作为positive pair</li><li>文中使用：random cropping，random color distortions, and random Gaussian blur</li></ul></li><li>A neural network base encoder f(·)<ul><li>文中使用：ResNet50</li></ul></li><li>A small neural network projection head g(·)<ul><li>将encoder得到的representations映射到contrastive loss所在latent space</li><li>文中使用两层的MLP</li></ul></li><li>A contrastive loss function<ul><li><img src="image-20200421174416816.png" alt></li><li>sim为余弦相似度</li></ul></li></ul><p>整体算法流程如下：</p><p><img src="image-20200421174505376.png" alt></p><h2 id="Training-with-Large-Batch-Size"><a href="#Training-with-Large-Batch-Size" class="headerlink" title="Training with Large Batch Size"></a>Training with Large Batch Size</h2><ul><li>作者在实验部分调整batch-size（256-8192）</li><li>常见优化器（SGD/Momentum）在大batch-size训练中不稳定，因此选用LARS optimizer</li><li>使用了128 TPU v3 cores。。。</li><li>Global BN<ul><li>多卡BN各自算mean和std会泄露信息，从而用了 global BN</li></ul></li></ul><h2 id="Evaluation-Protocol"><a href="#Evaluation-Protocol" class="headerlink" title="Evaluation Protocol"></a>Evaluation Protocol</h2><ul><li>数据集：ImageNet ILSVRC-2012 dataset</li><li>效果检测：<em>a linear classifier is trained on top of the frozen base network</em></li></ul><h1 id="Data-Augmentation-for-Contrastive-Representation-Learning"><a href="#Data-Augmentation-for-Contrastive-Representation-Learning" class="headerlink" title="Data Augmentation for Contrastive Representation Learning"></a>Data Augmentation for Contrastive Representation Learning</h1><h2 id="Composition-of-data-augmentation-operations-is-crucial-for-learning-good-representations"><a href="#Composition-of-data-augmentation-operations-is-crucial-for-learning-good-representations" class="headerlink" title="Composition of data augmentation operations is crucial for learning good representations"></a>Composition of data augmentation operations is crucial for learning good representations</h2><p><img src="image-20200421175226271.png" alt></p><p><img src="image-20200421175250735.png" alt></p><p>上图展示了常见的数据增强方法，作者在实验部分将其进行对比，发现组合的效果往往大于单独增强（对角线）</p><h2 id="Contrastive-learning-needs-stronger-data-augmentation-than-supervised-learning"><a href="#Contrastive-learning-needs-stronger-data-augmentation-than-supervised-learning" class="headerlink" title="Contrastive learning needs stronger data augmentation than supervised learning"></a>Contrastive learning needs stronger data augmentation than supervised learning</h2><p><img src="image-20200421175630380.png" alt></p><p>作者对比了color distortion的影响，可以看出较大的color distortion对于ssl有促进作用，却抑制sl效果，应该是color distortion加大了train、val之间的分布不均</p><h1 id="Architectures-for-Encoder-and-Head"><a href="#Architectures-for-Encoder-and-Head" class="headerlink" title="Architectures for Encoder and Head"></a>Architectures for Encoder and Head</h1><h2 id="Unsupervised-contrastive-learning-benefits-more-from-bigger-models"><a href="#Unsupervised-contrastive-learning-benefits-more-from-bigger-models" class="headerlink" title="Unsupervised contrastive learning benefits (more) from bigger models"></a>Unsupervised contrastive learning benefits (more) from bigger models</h2><p><img src="image-20200421175936946.png" alt></p><p>可以看出当模型变大参数增多，SSL效果的提升要大于SL</p><h2 id="A-nonlinear-projection-head-improves-the-representation-quality-of-the-layer-before-it"><a href="#A-nonlinear-projection-head-improves-the-representation-quality-of-the-layer-before-it" class="headerlink" title="A nonlinear projection head improves the representation quality of the layer before it"></a>A nonlinear projection head improves the representation quality of the layer before it</h2><p><img src="image-20200421181952116.png" alt></p><ul><li><p>non-linear效果往往比linear效果强3%</p></li><li><p><em>the hidden layer before the projection head is a better representation than the layer after</em><br>因此使用h来进行作为representation</p></li><li><p>z = g(h)在训练过程中对于data transformation不敏感，因此可能会舍弃部分颜色或方向信息，不利于分类</p></li><li><p>下图中可以看出g(h)对于rotation、corrupted、Sobel变换不敏感</p><p><img src="image-20200421182516923.png" alt></p></li></ul><h1 id="Loss-Functions-and-Batch-Size"><a href="#Loss-Functions-and-Batch-Size" class="headerlink" title="Loss Functions and Batch Size"></a>Loss Functions and Batch Size</h1><h2 id="Normalized-cross-entropy-loss-with-adjustable-temperature-works-better-than-alternatives"><a href="#Normalized-cross-entropy-loss-with-adjustable-temperature-works-better-than-alternatives" class="headerlink" title="Normalized cross entropy loss with adjustable temperature works better than alternatives"></a>Normalized cross entropy loss with adjustable temperature works better than alternatives</h2><ul><li>NT-Xent：Normalized Temperature-scaled Cross Entropy取得最优效果</li></ul><p><img src="image-20200421184119087.png" alt></p><p><img src="image-20200421184440737.png" alt></p><ul><li>l2中合适的温度参数可以帮助模型学习hard negative样本</li></ul><p><img src="image-20200421184240775.png" alt></p><h2 id="Contrastive-learning-benefits-more-from-larger-batch-sizes-and-longer-training"><a href="#Contrastive-learning-benefits-more-from-larger-batch-sizes-and-longer-training" class="headerlink" title="Contrastive learning benefits (more) from larger batch sizes and longer training"></a>Contrastive learning benefits (more) from larger batch sizes and longer training</h2><p><img src="image-20200421184620460.png" alt></p><h1 id="Comparison-with-State-of-the-art"><a href="#Comparison-with-State-of-the-art" class="headerlink" title="Comparison with State-of-the-art"></a>Comparison with State-of-the-art</h1><h2 id="Linear-evaluation"><a href="#Linear-evaluation" class="headerlink" title="Linear evaluation"></a>Linear evaluation</h2><p><img src="image-20200421184856747.png" alt></p><h2 id="Semi-supervised-learning"><a href="#Semi-supervised-learning" class="headerlink" title="Semi-supervised learning"></a>Semi-supervised learning</h2><p> <em>sample 1% or 10% of the labeled ILSVRC-12 training datasets in a class-balanced way</em></p><p><img src="image-20200421185018340.png" alt></p><h2 id="Transfer-learning"><a href="#Transfer-learning" class="headerlink" title="Transfer learning"></a>Transfer learning</h2><p>在混合数据集上SSL训练，并在特定数据集上fine-tune</p><p><img src="image-20200421185128805.png" alt></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> self-supervised </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Monet</title>
+      <link href="/2020/03/14/monet/"/>
+      <url>/2020/03/14/monet/</url>
+      
+        <content type="html"><![CDATA[<p><img src="0.jpg" alt></p><p><img src="1.jpg" alt></p><p><img src="2.jpg" alt></p><p><img src="5.jpg" alt></p><p><img src="6.jpg" alt></p><p><img src="7.jpg" alt></p><p><img src="8.jpg" alt></p><p><img src="9.jpg" alt></p><p><img src="10.jpg" alt></p><p><img src="12.jpg" alt></p><p><img src="13.jpg" alt></p><p><img src="14.jpg" alt></p><p><img src="15.jpg" alt></p><p><img src="16.jpg" alt></p><p><img src="17.jpg" alt></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 随笔 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 随笔 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Optimal Method</title>
+      <link href="/2020/03/14/zui-you-hua-fang-fa/"/>
+      <url>/2020/03/14/zui-you-hua-fang-fa/</url>
+      
+        <content type="html"><![CDATA[<h1 id="梯度下降法"><a href="#梯度下降法" class="headerlink" title="梯度下降法"></a>梯度下降法</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><ol><li>一个一阶最优化算法</li><li>函数上当前点对应梯度（或者是近似梯度）的<em>反方向</em>的规定步长距离点进行迭代搜索</li><li>找到一个函数的局部极小值</li></ol><h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p><img src="image-20200314115550697.png" alt></p><p><img src="image-20200314123032520.png" alt></p><h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><ol><li>靠近局部极小值时速度减慢。</li><li>直线搜索可能会产生一些问题。（局部最优）</li><li>可能会“之字型”地下降。（如下图）</li></ol><p><img src="image-20200314115827317.png" alt></p><h1 id="牛顿法"><a href="#牛顿法" class="headerlink" title="牛顿法"></a>牛顿法</h1><h2 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h2><ol><li>利用一阶导数(梯度)和二阶导数(Hessen矩阵)对目标函数进行二次函数近似</li></ol><h2 id="算法-1"><a href="#算法-1" class="headerlink" title="算法"></a>算法</h2><p><img src="image-20200314121320843.png" alt></p><p><img src="image-20200314134256613.png" alt></p><h2 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h2><ol><li>局部牛顿法最突出的优点是收敛速度快，具有局部二阶收敛性，如果初始点远离最小点可能不收敛</li><li>与梯度下降法相比，使用牛顿法收敛更快（使用二阶矩阵，迭代更少次数）。但是每次迭代的时间比梯度下降法长</li></ol><p><img src="image-20200314123247675.png" alt></p><p>​        下图中，红色为牛顿法，绿色为梯度下降法</p><p><img src="image-20200314123302132.png" alt></p><h1 id="坐标下降法"><a href="#坐标下降法" class="headerlink" title="坐标下降法"></a>坐标下降法</h1><h2 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h2><ol><li>简单但却高效的非梯度优化算法</li><li>依次沿着坐标轴的方向循环最小化目标函数值</li></ol><h2 id="算法-2"><a href="#算法-2" class="headerlink" title="算法"></a>算法</h2><p><img src="image-20200314124348050.png" alt></p><p>针对多变量的 xk 选取 i 维度进行优化：</p><p><img src="image-20200314124459706.png" alt></p><h2 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h2><ol><li>对于非平滑函数，坐标下降法可能会遇到问题。下图展示了当函数等高线非平滑时，算法可能在非驻点中断执行。</li></ol><p><img src="image-20200314124524988.png" alt></p><h1 id="凸优化"><a href="#凸优化" class="headerlink" title="凸优化"></a>凸优化</h1><ol><li><p>研究定义于凸集中的凸函数最小化的问题</p></li><li><p>定义：</p><p><img src="image-20200314131431311.png" alt></p></li></ol><h1 id="拉格朗日乘子法"><a href="#拉格朗日乘子法" class="headerlink" title="拉格朗日乘子法"></a>拉格朗日乘子法</h1><h2 id="简介-3"><a href="#简介-3" class="headerlink" title="简介"></a>简介</h2><ol><li>与先前优化方法不同，拉格朗日乘子法寻找多元函数在其变量受到一个或多个条件的约束时的极值的方法</li><li>将一个有<em>n</em>个变量与<em>k</em>个约束条件的最优化问题转换为一个解有<em>n</em> + <em>k</em>个变量的方程组的解的问题</li></ol><h2 id="算法-3"><a href="#算法-3" class="headerlink" title="算法"></a>算法</h2><h3 id="引入拉格朗日乘数-可以为任何数"><a href="#引入拉格朗日乘数-可以为任何数" class="headerlink" title="引入拉格朗日乘数(可以为任何数)"></a>引入拉格朗日乘数(可以为任何数)</h3><p><img src="image-20200314130015194.png" alt></p><h3 id="f-x-y-求极值，g-x-y-c-为约束条件，-对于不同-d-值存在-f-x-y-d-的等高线，当-g-c-与-f-x-y-d-相切时出现极值"><a href="#f-x-y-求极值，g-x-y-c-为约束条件，-对于不同-d-值存在-f-x-y-d-的等高线，当-g-c-与-f-x-y-d-相切时出现极值" class="headerlink" title="f(x,y) 求极值，g(x,y)=c 为约束条件， 对于不同 d 值存在 f(x,y) = d 的等高线，当 g=c 与 f(x,y) = d 相切时出现极值"></a>f(x,y) 求极值，g(x,y)=c 为约束条件， 对于不同 d 值存在 f(x,y) = d 的等高线，当 g=c 与 f(x,y) = d 相切时出现极值</h3><p><img src="image-20200314130457045.png" alt></p><h3 id="向量表示（f，g相切）："><a href="#向量表示（f，g相切）：" class="headerlink" title="向量表示（f，g相切）："></a>向量表示（f，g相切）：</h3><p>将原方程与约束条件综合考虑为一个方程进行优化</p><p><img src="image-20200314130557022.png" alt></p><p><img src="image-20200314130615968.png" alt></p><p><img src="image-20200314130628584.png" alt></p><h3 id="分类讨论"><a href="#分类讨论" class="headerlink" title="分类讨论"></a>分类讨论</h3><ul><li><p>等式约束：</p><p><img src="image-20200314132335938.png" alt></p><p><img src="image-20200314132356225.png" alt></p></li><li><p>不等式约束：</p><p><img src="image-20200314132415063.png" alt></p><p><img src="image-20200314132539769.png" alt></p></li></ul><h3 id="证明（wiki）"><a href="#证明（wiki）" class="headerlink" title="证明（wiki）"></a>证明（wiki）</h3><p><img src="image-20200314130946008.png" alt></p><h1 id="KKT条件"><a href="#KKT条件" class="headerlink" title="KKT条件"></a>KKT条件</h1><ol><li>对于不等式条件约束的优化，拉格朗日乘子没有办法消除它的约束，仅能推导出最优解一定满足的性质</li><li>KKT条件是所有不等式约束的最优解都必须得满足的条件</li><li>满足KKT条件的不一定是最优解，但是最优解一定得满足KKT条件</li></ol><p><img src="image-20200314132840222.png" alt></p><h1 id="拉格朗日对偶"><a href="#拉格朗日对偶" class="headerlink" title="拉格朗日对偶"></a>拉格朗日对偶</h1><h2 id="简介-4"><a href="#简介-4" class="headerlink" title="简介"></a>简介</h2><ol><li>原问题是不可解的情况下，通过对偶问题更易求解</li><li>几乎所有的凸优化问题都满足强对偶性</li></ol><h2 id="算法-4"><a href="#算法-4" class="headerlink" title="算法"></a>算法</h2><p><img src="image-20200314133848354.png" alt></p><h1 id="拉格朗日乘子-amp-KKT-amp-对偶"><a href="#拉格朗日乘子-amp-KKT-amp-对偶" class="headerlink" title="拉格朗日乘子 &amp; KKT &amp; 对偶"></a>拉格朗日乘子 &amp; KKT &amp; 对偶</h1><p><img src="image-20200314133958324.png" alt></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> ML </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ML </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>GAN DISSECTION ICLR19 精读</title>
+      <link href="/2020/03/12/gan-dissection-iclr19/"/>
+      <url>/2020/03/12/gan-dissection-iclr19/</url>
+      
+        <content type="html"><![CDATA[<h1 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h1><ul><li><em>many GAN variants have emerged with improvements in sample quality and training stability. However, they have <strong>not been well visualized or understood</strong>.</em><br>GAN模型不能可视化、不可解释</li><li><strong>current problems：</strong><ol><li>To produce a church image, what knowledge does a GAN need to learn？</li><li>When a GAN sometimes produces terribly unrealistic images, what causes the mistakes?</li><li>Why does one GAN variant work better than another? </li><li>What fundamental differences are encoded in their weights?</li></ol></li></ul><h1 id="contribution"><a href="#contribution" class="headerlink" title="contribution"></a>contribution</h1><p><img src="image-20200311165716891.png" alt></p><ul><li><p><em>present a general method for <strong>visualizing and understanding</strong> GANs at different levels of abstraction, from each neuron, to each object, to the contextual relationship between different objects</em></p><p>探索GAN 内部对物体的表达，以及不同物体的表达之间的联系</p></li><li><p><em>provides the first systematic analysis for understanding the <strong>internal representations</strong> of GANs.</em></p></li><li><p><strong>practical applications：</strong></p><ol><li>comparing internal representations across different layers, GAN variants and datasets</li><li>debugging and improving GANs by locating and ablating “artifact” units (Figure 1e)</li><li>understanding contextual relationships between objects in scenes</li><li>manipulating images with interactive object-level contro</li></ol></li></ul><h1 id="method"><a href="#method" class="headerlink" title="method"></a>method</h1><ul><li><p><strong>goal:</strong> analyze how objects such as trees are encoded by the internal representations of a GAN generator</p></li><li><p>使用中间变量 r 来代替 z，r 拥有表示各类物体的信息</p><p><img src="image-20200313110504212.png" alt></p></li><li><p><strong>how information is encoded in r</strong></p><p><img src="image-20200312232636274.png" alt></p></li><li><p><strong>Dissection：</strong> 通过计算每个class与独立的unit之间的一致性来验证在r中是否有c的显示表示。</p></li><li><p><strong>Intervention：</strong>通过激活/抑制unit来验证units的因果集和units与Object class之间的因果关系。</p></li></ul><h2 id="Characterizing-Units-by-Dissection"><a href="#Characterizing-Units-by-Dissection" class="headerlink" title="Characterizing Units by Dissection"></a>Characterizing Units by Dissection</h2><ul><li><p><strong>intersection-over-union (IoU) measure:</strong></p><p><img src="image-20200312232732634.png" alt></p></li></ul><ol><li><p>将 unit u 上采样至 W*H（生成图片大小）</p><ol start="2"><li>利用 val set 最大化 information quality ratio I/H</li><li>通过 t 得到 binary mask，与 S(x) 计算IoU</li></ol></li></ol><ul><li><strong>problem:</strong></li></ul><ol><li><p><em>an object class that a set of units match closely</em></p><p>一对多映射</p></li><li><p><em>which units are responsible for triggering the rendering of that object?</em></p><p><em>A unit that correlates highly with an output object might not actually cause that output.</em></p><p>IoU 值最高不一定导致物体渲染</p></li><li><p><em>need a way to identify combinations of units that cause an object</em></p><p><em>any output will jointly depend on several parts of the representation</em></p><p>unit-object 之后，需要寻找 unit-unit 之间联系</p></li></ol><p><img src="image-20200312194849366.png" alt></p><ul><li><strong>reason:</strong></li></ul><ol><li><em>“many units can approximately locate emergent object classes when the units are upsampled and thresholded.”</em></li><li><em>“Instead, IQR emphasizes that the reconstructed signal has to keep essential information from the original signal.”</em></li></ol><h2 id="Measuring-Causal-Relationships-Using-Intervention"><a href="#Measuring-Causal-Relationships-Using-Intervention" class="headerlink" title="Measuring Causal Relationships Using Intervention"></a>Measuring Causal Relationships Using Intervention</h2><ul><li><p><strong>interventions:</strong></p><p><img src="image-20200312232751573.png" alt></p></li></ul><ol><li><p><strong>on:</strong>  将 r 置为 k</p><p>其中 k 为输出中含有物体 c 的位置的激活层的均值</p></li><li><p><strong>off:</strong> 将 r 置为 0</p></li><li><p><em>An object is caused by U if the object appears in Xi and disappears from Xa.</em></p></li></ol><ul><li><p><strong>Average Causal Effect (ACE)</strong></p><p><img src="image-20200312232807398.png" alt></p></li></ul><ol><li>通过分割模型 S 表示生成图像 x 中 c 物体所占比例，量化 on/off 差异</li><li>we need to identify a set of units U that maximize the average causal effect δU→c for an object class c</li></ol><ul><li><strong>Finding sets of units with high ACE:</strong></li></ul><ol><li><p><strong>variable:</strong></p><p><img src="image-20200312232826601.png" alt></p></li><li><p><strong>objective:</strong></p><p><img src="image-20200312232841927.png" alt></p></li><li><p><strong>optimize:</strong></p><p><img src="image-20200312232855286.png" alt></p></li><li><p><strong>trick：</strong></p><ul><li><p>优化 α 过程中，存在部分物体 (门) 所占比例过少的现象，因此训练集不仅包括含有门的 output，还包括原始 output 没有门但激活后 output 含有门的部分</p></li><li><p>evaluation 过程中，检测 ablations 使用整体图片作为 P ，insertions 使用均匀采样作为 P</p></li><li><p>初始化 α :<img src="image-20200312232909801.png" alt></p></li></ul></li></ol><ul><li><strong>result:</strong></li></ul><p>如右图所示：ACE 效果优于 IoU</p><p><img src="image-20200312214446854.png" alt></p><h1 id="experiment"><a href="#experiment" class="headerlink" title="experiment"></a>experiment</h1><ul><li><p><strong>Comparing Units Across Datasets, Layers, and Models</strong></p><ol><li><p>Emergence of individual unit object detectors </p><ul><li>更加关注在外观上变化较大的物体对应的 units，因为其更能提取出物体类别的抽象概念</li></ul></li><li><p>Interpretable units for different scene categories</p><ul><li>不同场景中，units 常代表 适合场景的物体。例如厨房中表示厨具或餐桌</li><li>一些 units 可能表示物体的一部分，例如人的头部或身体</li></ul><p><img src="image-20200312224355122.png" alt></p></li><li><p>Interpretable units for different network layers</p><ul><li>浅层表示模糊，中层表示多为物体信息，深层表示多为局部像素特征：材料、颜色</li></ul></li><li><p>Interpretable units for different GAN models</p><ul><li>比较不同GAN方法影响</li></ul><p><img src="image-20200312225020152.png" alt></p></li></ol></li><li><p><strong>Diagnoising and Improving GANs</strong></p><ol><li><em>“analyze the causes of failures in their results”</em></li><li>process：<ul><li>人工标注伪影</li><li>抑制伪影对应units</li></ul></li></ol><p><img src="image-20200312225249410.png" alt></p></li><li><p><strong>Locating Causal Units with Ablation</strong></p><ol><li>通过抑制 units，大部分物体消失：人、窗户，但一部分物体仅减小密度或尺寸，几乎不会消失：桌椅</li><li>这些物体的移除取决于场景类型，窗户在会议场景易于移除，但在其他场景难以移除</li><li>作者认为GAN学习到了某些场景由特定的物体构成：卧室-窗户，因此难以移除</li></ol><p><img src="image-20200312230215734.png" alt></p></li><li><p><strong>Characterizing Contextual Relationship via Insertion</strong></p><ol><li>同一类别激活 units 赋予相同 k 值，但效果与周围物体有很大关系，例如激活与门有关的 units，在墙壁或窗户周围有显著效果，但天空、草丛周围激活，即使改变了 units 在后续层中改变逐渐消失</li></ol><p><img src="image-20200312232034151.png" alt></p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GAN </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>信息&amp;熵</title>
+      <link href="/2020/03/12/xin-xi-shang/"/>
+      <url>/2020/03/12/xin-xi-shang/</url>
+      
+        <content type="html"><![CDATA[<h1 id="自信息"><a href="#自信息" class="headerlink" title="自信息"></a>自信息</h1><h2 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h2><p><img src="image-20200312232426572.png" alt></p><h2 id="理解："><a href="#理解：" class="headerlink" title="理解："></a>理解：</h2><ul><li>自信息量反映了事件发生的不确定性</li><li>发生概率越高的事情，具有的自信息量越少</li><li>发生概率越低的事情，具有的自信息量越多</li></ul><h1 id="信息熵"><a href="#信息熵" class="headerlink" title="信息熵"></a>信息熵</h1><h2 id="定义：-1"><a href="#定义：-1" class="headerlink" title="定义："></a>定义：</h2><p><img src="image-20200312232453234.png" alt></p><h2 id="理解：-1"><a href="#理解：-1" class="headerlink" title="理解："></a>理解：</h2><ul><li>x分布均匀，不确定度越小，信息量越小</li><li>x分布不均匀，不确定度越大，信息量越大</li></ul><h1 id="联合熵"><a href="#联合熵" class="headerlink" title="联合熵"></a>联合熵</h1><h2 id="定义：-2"><a href="#定义：-2" class="headerlink" title="定义："></a>定义：</h2><p><img src="image-20200312232511860.png" alt></p><h2 id="理解：-2"><a href="#理解：-2" class="headerlink" title="理解："></a>理解：</h2><ul><li>表示随机变量 <em>X</em> 和 <em>Y</em> 一起发生时的信息熵，即 <em>X</em> 和 <em>Y</em> 一起发生时的确定度</li><li>表示 <em>X</em> 和 <em>Y</em> 一起发生时产生的信息量</li></ul><h1 id="互信息"><a href="#互信息" class="headerlink" title="互信息"></a>互信息</h1><h2 id="定义：-3"><a href="#定义：-3" class="headerlink" title="定义："></a>定义：</h2><p><img src="image-20200312232526672.png" alt></p><h2 id="理解：-3"><a href="#理解：-3" class="headerlink" title="理解："></a>理解：</h2><ul><li><p>性质：</p><p><img src="image-20200312233121745.png" alt></p></li><li><p>表示 <em>Y</em> 已知使得 <em>X</em> 的不确定度减少了 <em>I</em> </p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> ML </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ML </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>MZSR</title>
+      <link href="/2020/03/09/mzsr-cvpr20/"/>
+      <url>/2020/03/09/mzsr-cvpr20/</url>
+      
+        <content type="html"><![CDATA[<h1 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h1><ul><li>现有 SISR 模型不能挖掘测试图片内部的信息</li><li>SISR 模型仅适用于固定领域：例如使用“bicubic”进行下采样的图片</li><li>ZSSR 需要上千次迭代</li></ul><h1 id="contribution"><a href="#contribution" class="headerlink" title="contribution"></a>contribution</h1><ul><li>通过 meta-transfer learning 为 ZSSR 提供初始参数</li><li>利用了 internal 与 external 信息</li><li><em>“fast, flexible, lightweight and unsupervised at meta-test time”</em>  可应用于实际应用</li></ul><h1 id="method"><a href="#method" class="headerlink" title="method"></a>method</h1><p><img src="image-20200309171528334.png" alt></p><h2 id="Large-scale-Training"><a href="#Large-scale-Training" class="headerlink" title="Large-scale Training"></a>Large-scale Training</h2><ul><li><p>使用 DIV2K 数据集，进行“预训练”，使用“bicubic”下采样</p></li><li><p>loss：<img src="image-20200309172242758.png" alt></p></li><li><p>why：</p><p>（1）SR任务具有相似的属相，因此可以学习到图片的能够代表HR的有效表示</p><p>（2）MAML训练不稳定，使用 pre-trained 来简化训练</p></li></ul><h2 id="Meta-Transfer-Learning"><a href="#Meta-Transfer-Learning" class="headerlink" title="Meta-Transfer Learning"></a>Meta-Transfer Learning</h2><ul><li><p>借鉴 MAML 思想，输出初始权重</p></li><li><p><em>In this step, we seek to find a sensitive and transferable initial point of the parameter space where a few gradient updates lead to large performance improvements</em></p></li><li><p><em>external dataset for meta-training, internal learning for meta-test</em></p><p>why： <em>we intend our meta-learner to more focus on the kernel-agnostic property with the help of a large-scale external dataset</em></p></li><li><p>用大量不同模糊核k合成训练数据集：<img src="image-20200309181946514.png" alt></p></li><li><p>模糊核分布：<img src="image-20200309182629382.png" alt></p></li><li><p>meta-data 分为 D(tr) 与 D(te)：task-level training, task-level test</p></li><li><p>task-level training: <img src="image-20200309182852335.png" alt></p></li><li><p>meta-objective: <img src="image-20200309182921770.png" alt></p></li><li><p>meta-training: <img src="image-20200309182945472.png" alt></p></li></ul><h2 id="Meta-Test"><a href="#Meta-Test" class="headerlink" title="Meta-Test"></a>Meta-Test</h2><ul><li>通过 <em>“kernel estimation algorithms”</em> 从输入图像中得到 blur kernel</li><li>meta-transfer learning 对相应的kernel 生成初始权重</li></ul><h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p><img src="image-20200309184409434.png" alt></p><p><img src="image-20200309184429461.png" alt></p><h1 id="experiment"><a href="#experiment" class="headerlink" title="experiment"></a>experiment</h1><p><img src="image-20200309185128226.png" alt></p><p><img src="image-20200309184704620.png" alt></p><p>实验效果能够看出其快速适应的特点</p><h1 id="advantage"><a href="#advantage" class="headerlink" title="advantage"></a>advantage</h1><ul><li>综合内部外部信息</li><li>快速适应</li></ul><h1 id="disadvantage"><a href="#disadvantage" class="headerlink" title="disadvantage"></a>disadvantage</h1><ul><li><em>“kernel estimation algorithms”</em> 通过输入的 LR 图片预测 blur kernel，影响模型整体性能</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SR </tag>
+            
+            <tag> Meta Learning </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Semi-supervised 李宏毅</title>
+      <link href="/2020/03/09/semi-supervised/"/>
+      <url>/2020/03/09/semi-supervised/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Semi-supervised"><a href="#Semi-supervised" class="headerlink" title="Semi-supervised"></a>Semi-supervised</h1><h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><ul><li><p>supervised learning：</p><p><img src="image-20200309144949140.png" alt></p></li><li><p>Semi-supervised learning：</p><p><img src="image-20200309145015366.png" alt></p></li><li><p>Why？ 利用好未标注信息</p><p><img src="image-20200309145102909.png" alt></p></li><li><p>Why helps？ 假设影响效果</p><p><img src="image-20200309145258396.png" alt></p></li></ul><h2 id="Generative-Model"><a href="#Generative-Model" class="headerlink" title="Generative Model"></a>Generative Model</h2><p>类似EM，逐步逼近</p><p><img src="image-20200309150057821.png" alt></p><p><img src="image-20200309150307629.png" alt></p><h2 id="Low-density-Separation"><a href="#Low-density-Separation" class="headerlink" title="Low-density Separation"></a>Low-density Separation</h2><h3 id="self-training"><a href="#self-training" class="headerlink" title="self training"></a>self training</h3><p><img src="image-20200309150526844.png" alt></p><p><img src="image-20200309150912805.png" alt></p><p>hard label有绝对的类别，soft label为各类别概率</p><h3 id="Entropy-based"><a href="#Entropy-based" class="headerlink" title="Entropy-based"></a>Entropy-based</h3><p><img src="image-20200309151321244.png" alt></p><h3 id="Semi-supervised-SVM"><a href="#Semi-supervised-SVM" class="headerlink" title="Semi-supervised SVM"></a>Semi-supervised SVM</h3><p><img src="image-20200309151833922.png" alt></p><h2 id="Smoothness-Assumption"><a href="#Smoothness-Assumption" class="headerlink" title="Smoothness Assumption"></a>Smoothness Assumption</h2><h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><p><img src="image-20200309152101626.png" alt></p><h3 id="Application"><a href="#Application" class="headerlink" title="Application"></a>Application</h3><p><img src="image-20200309152253696.png" alt></p><p><img src="image-20200309152411421.png" alt></p><h3 id="Approach"><a href="#Approach" class="headerlink" title="Approach"></a>Approach</h3><h4 id="Cluster"><a href="#Cluster" class="headerlink" title="Cluster"></a>Cluster</h4><p><img src="image-20200309152450444.png" alt></p><p><img src="image-20200309152649530.png" alt></p><h4 id="Graph-based"><a href="#Graph-based" class="headerlink" title="Graph-based"></a>Graph-based</h4><p><img src="image-20200309152829189.png" alt></p><p><img src="image-20200309153144204.png" alt></p><p> <img src="image-20200309153417329.png" alt></p><p><img src="image-20200309153554298.png" alt></p><p><img src="image-20200309153743118.png" alt="image-20200309153743118"></p><h2 id="Better-Representation"><a href="#Better-Representation" class="headerlink" title="Better Representation"></a>Better Representation</h2><p>找到本质信息</p><p><img src="image-20200309154008397.png" alt></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL summary </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> semi-supervised </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SR</title>
+      <link href="/2020/03/07/sr-cvpr1819/"/>
+      <url>/2020/03/07/sr-cvpr1819/</url>
+      
+        <content type="html"><![CDATA[<h1 id="“Zero-Shot”-Super-Resolution-using-Deep-Internal-Learning-CVPR-2018"><a href="#“Zero-Shot”-Super-Resolution-using-Deep-Internal-Learning-CVPR-2018" class="headerlink" title="“Zero-Shot” Super-Resolution using Deep Internal Learning (CVPR 2018)"></a>“Zero-Shot” Super-Resolution using Deep Internal Learning (CVPR 2018)</h1><h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation:"></a><strong>Motivation:</strong></h2><p>1.传统SR方法会在测试数据满足训练数据的一些条件时（ideal），有着极好的效果，但是如果测试数据没有满足约束时（no-ideal），效果会很差。</p><h2 id="Model"><a href="#Model" class="headerlink" title="Model:"></a><strong>Model:</strong></h2><p><img src="image-20200307181958254.png" alt></p><p>1.ZSSR是在test的同时训练的，但是因为网络结构小，因此和SotA supervised CNNs相比test的时间相差不多</p><p>2.理论基础：“the internal entropy of patches inside a single image is much smaller than the external entropy of patches in a general collection of natural images”<br> 因此不选用训练集训练模型，而选用单张图片进行ZSSR</p><p>3.对于测试图片I，先进行下采样得到Is，随后选用（I，Is）作为训练集来进行模型训练</p><p>4.在传统数据集上，效果不显著；no-ideal测试集上效果显著</p><p><img src="image-20200307182024033.png" alt></p><p><img src="image-20200307182030696.png" alt></p><h2 id="Advantage"><a href="#Advantage" class="headerlink" title="Advantage:"></a><strong>Advantage:</strong></h2><p>1.针对测试图片来训练模型，提高模型的实用性</p><h2 id="Disadvantage"><a href="#Disadvantage" class="headerlink" title="Disadvantage"></a><strong>Disadvantage</strong></h2><p>1.ZSSR方法更容易生成图像内部已有的类似信息，而通过外部训练数据学习的超分辨算法，如EDSR+，更易学习到图像外部信息</p><h1 id="Recovering-Realistic-Texture-in-Image-Super-resolution-by-Deep-Spatial-Feature-Transform-CVPR-2018）"><a href="#Recovering-Realistic-Texture-in-Image-Super-resolution-by-Deep-Spatial-Feature-Transform-CVPR-2018）" class="headerlink" title="Recovering Realistic Texture in Image Super-resolution by Deep Spatial Feature Transform(CVPR 2018）"></a>Recovering Realistic Texture in Image Super-resolution by Deep Spatial Feature Transform(CVPR 2018）</h1><h2 id="Motivation-1"><a href="#Motivation-1" class="headerlink" title="Motivation:"></a><strong>Motivation:</strong></h2><p>1.实际应用中，许多物体在低分辨率下非常相似，例如左图中的墙壁与植物，如果不提前加语义信息，则很难复原真实细节</p><p><img src="image-20200307182112863.png" alt></p><h2 id="Model-1"><a href="#Model-1" class="headerlink" title="Model:"></a><strong>Model:</strong></h2><p>1.整体思路与SROBB类似，同样是根据分割结果来进行优化。不同之处在于，作者在特征提取阶段便考虑到分割信息，而SROBB仅在最终loss处考虑</p><p><img src="image-20200307182121962.png" alt></p><h2 id="Advantage-1"><a href="#Advantage-1" class="headerlink" title="Advantage:"></a><strong>Advantage:</strong></h2><p>1.加入分割模型有针对性地提取信息，凸显细节</p><h2 id="Disadvantage-1"><a href="#Disadvantage-1" class="headerlink" title="Disadvantage"></a><strong>Disadvantage</strong></h2><p>1.没有使用content loss</p><h1 id="Zoom-to-Learn-Learn-to-Zoom-CVPR-2019"><a href="#Zoom-to-Learn-Learn-to-Zoom-CVPR-2019" class="headerlink" title="Zoom to Learn, Learn to Zoom (CVPR 2019)"></a>Zoom to Learn, Learn to Zoom (CVPR 2019)</h1><p><strong>Motivation:</strong></p><p>1.现有的基于学习的超分辨率方法不使用真实的传感器数据，而是对经过处理的RGB图像进行操作</p><p>2.通过对高分辨率RGB图像重新采样来合成传感器数据是对真实传感器数据和噪声的一种过于简化的近似，间接降低了输入中的噪声水平，导致图像质量较差</p><p><strong>Model:</strong></p><p>1.每个场景的7个光学变焦设置下采集了7幅图像</p><p><img src="image-20200307182154747.png" alt></p><p>2.Contextual Bilateral Loss：contextual loss不考虑像素点之间的空间信息，因此造成很多不准确的特征匹配。因此作者将空间区域也加入到损失函数中。</p><p><img src="image-20200307182207451.png" alt></p><p><img src="image-20200307182222132.png" alt></p><p><img src="image-20200307182228708.png" alt></p><p>3.最终损失函数如下，类似content loss+ perceptual loss：</p><p><img src="image-20200307182241211.png" alt></p><p><strong>Advantage:</strong></p><p>1.使用RAW进行超分，相比经过ISP处理的JPG，RAW有丰富的信息</p><p>2.提出CoBi Loss解决不对齐的问题</p><p>3.为真实的计算变焦提供一个数据集SR-RAW</p><p><img src="image-20200307182249496.png" alt></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SR </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Super resolution</title>
+      <link href="/2020/03/06/eccv18-sr/"/>
+      <url>/2020/03/06/eccv18-sr/</url>
+      
+        <content type="html"><![CDATA[<h1 id="RCAN：Image-Super-Resolution-Using-Very-Deep-Residual-Channel-Attention-Networks"><a href="#RCAN：Image-Super-Resolution-Using-Very-Deep-Residual-Channel-Attention-Networks" class="headerlink" title="RCAN：Image Super-Resolution Using Very Deep Residual Channel Attention Networks"></a>RCAN：Image Super-Resolution Using Very Deep Residual Channel Attention Networks</h1><h2 id="motivation："><a href="#motivation：" class="headerlink" title="motivation："></a>motivation：</h2><ul><li>在图像超分辨领域，卷积神经网络的深度非常重要，但过深的网络却难以训练。</li><li>低分辨率的输入以及特征包含丰富的低频信息，但却在通道间被平等对待，因此阻碍了网络的表示能力。</li></ul><h2 id="contribution："><a href="#contribution：" class="headerlink" title="contribution："></a>contribution：</h2><ul><li>提出了一个深度残差通道注意力网络（RCAN）。特别地，作者设计了一个残差中的残差（RIR）结构来构造深层网络，每个 RIR 结构由数个残差组（RG）以及长跳跃连接（LSC）组成，每个 RG 则包含一些残差块和短跳跃连接（SSC）。</li><li>提出了一种通道注意力机制（CA），通过考虑通道之间的相互依赖性来自适应地重新调整特征。</li></ul><h2 id="method："><a href="#method：" class="headerlink" title="method："></a>method：</h2><p><img src="image-20200306165058127.png" alt></p><p>准备10个残差组(RG)，其中每组包含20个残差通道注意模块(RCAB)</p><h3 id="RIR（Residual-In-Residual）架构"><a href="#RIR（Residual-In-Residual）架构" class="headerlink" title="RIR（Residual In Residual）架构"></a>RIR（Residual In Residual）架构</h3><p>RG（Residual Group）作为基本模块，LSC（Long Skip Connection）则用来进行粗略的残差学习，在每个 RG 内部则叠加数个简单的残差块和 SSC（Short Skip Connection）。</p><p>LSC、SSC 和残差块内部的短连接可以允许丰富的低频信息直接通过恒等映射向后传播，这可以保证信息的流动，加速网络的训练。</p><h3 id="CA（Channel-Attention）机制"><a href="#CA（Channel-Attention）机制" class="headerlink" title="CA（Channel Attention）机制"></a>CA（Channel Attention）机制</h3><p><img src="image-20200306165649288.png" alt></p><p>类似Autoencoder，先进行全局池化（GP），随后依次进行下采样，上采用，激活函数，得到通道描述。</p><h3 id="RCAB-Residual-channel-attention-block-基本模块"><a href="#RCAB-Residual-channel-attention-block-基本模块" class="headerlink" title="RCAB (Residual channel attention block) 基本模块"></a>RCAB (Residual channel attention block) 基本模块</h3><p><img src="image-20200306165953838.png" alt></p><p>结合 CA 和残差</p><h3 id="loss"><a href="#loss" class="headerlink" title="loss"></a>loss</h3><p>网络的损失函数是 L1 损失</p><h2 id="advantage"><a href="#advantage" class="headerlink" title="advantage:"></a>advantage:</h2><ul><li>在模型结构上进行改性，增加网络深度，通过LSC与SSC更好的提取了输入图片的低频信息</li><li>引入注意力机制</li></ul><h2 id="disadvantage"><a href="#disadvantage" class="headerlink" title="disadvantage:"></a>disadvantage:</h2><ul><li>仍使用L1损失</li><li>模型过大，速度慢</li></ul><h1 id="Fast-Accurate-and-Lightweight-Super-Resolution-with-Cascading-Residual-Network"><a href="#Fast-Accurate-and-Lightweight-Super-Resolution-with-Cascading-Residual-Network" class="headerlink" title="Fast, Accurate, and Lightweight Super-Resolution with Cascading Residual Network"></a>Fast, Accurate, and Lightweight Super-Resolution with Cascading Residual Network</h1><h2 id="motivation：-1"><a href="#motivation：-1" class="headerlink" title="motivation："></a>motivation：</h2><ul><li>目前的主流的方法都是奔着性能表现去的，并没有考虑实际应用的情况</li><li>目前最常用方法是减少参数的数量，实现这一目标的方法有很多，但最简单和有效的方法是使用递归网络。然而，这些模型有两个缺点：<br>（1）在将输入图像输入CNN模型之前，先对其进行上采样（？？？难以理解）<br>（2）增加网络的深度或宽度，以补偿由于使用递归网络而造成的损失。这些点使模型能够在重构时维持图像的细节，但增加了操作次数和时间</li></ul><h2 id="contribution：-1"><a href="#contribution：-1" class="headerlink" title="contribution："></a>contribution：</h2><ul><li>提出一种快速，精确并且轻量级的网络</li></ul><h2 id="method：-1"><a href="#method：-1" class="headerlink" title="method："></a>method：</h2><p><img src="image-20200306171812173.png" alt></p><ul><li>全局和局部级联连接</li><li>中间特征是级联的，且被组合在1×1大小的卷积块中</li><li>使多级表示和快捷连接，让信息传递更高效</li></ul><h3 id="advancement："><a href="#advancement：" class="headerlink" title="advancement："></a>advancement：</h3><ul><li>结合多层的特征，可以学习到多水平的表示。</li><li>级联可以让低层的特征很快的传播到高层。</li></ul><h3 id="Efficient-Cascading-Residual-Network"><a href="#Efficient-Cascading-Residual-Network" class="headerlink" title="Efficient Cascading Residual Network"></a>Efficient Cascading Residual Network</h3><p><img src="image-20200306172843168.png" alt></p><ul><li><p>使用group conv，优点是使用者可以通过调整分组数来调整网络的速度和效果</p><p>使用group conv而是不是 depthwise convolution，作者解释说group conv比 depthwise convolution可以更好的调整模型的有效性。</p></li><li><p>引入了递归神经网络的思想，这里是让级联模块的参数能够被共享,从而达到减少参数的目的</p></li></ul><h2 id="experiment"><a href="#experiment" class="headerlink" title="experiment"></a>experiment</h2><p><img src="image-20200306174638404.png" alt></p><h2 id="advantage："><a href="#advantage：" class="headerlink" title="advantage："></a>advantage：</h2><ul><li>减少para：   递归神经网络，共享权重</li><li>减少FLOPs：有限FLOPs提高表现-&gt;多层级联</li></ul><h2 id="disadvantage："><a href="#disadvantage：" class="headerlink" title="disadvantage："></a>disadvantage：</h2><ul><li>损失函数仍为L1</li></ul><h1 id="To-learn-image-super-resolution-use-a-GAN-to-learn-how-to-do-image-degradation-first"><a href="#To-learn-image-super-resolution-use-a-GAN-to-learn-how-to-do-image-degradation-first" class="headerlink" title="To learn image super-resolution, use a GAN to learn how to do image degradation first"></a>To learn image super-resolution, use a GAN to learn how to do image degradation first</h1><h2 id="motivation：-2"><a href="#motivation：-2" class="headerlink" title="motivation："></a>motivation：</h2><ul><li>传统的SR的方法获取LR的手段是人工获取，比如通过双线性下采样或者是先通过一个模糊核然后在进行双线性下采样。但是真实世界的图像往往具有复杂的退化模型，比如运动、去焦、压缩、传感器噪声等复杂的情况。所以目前一些主流的SR方法可能在人造的LR图像上重建效果很好，但是在真实世界图像上表现不一定很好。</li></ul><h2 id="contribution：-2"><a href="#contribution：-2" class="headerlink" title="contribution："></a>contribution：</h2><ul><li>提出一种2个阶段的处理，分别是High-to-Low GAN和Low-to-High GAN</li><li>提出 GAN-centered ，也就是以GAN损失作为主导，pixel损失作为辅导</li></ul><h2 id="method：-2"><a href="#method：-2" class="headerlink" title="method："></a>method：</h2><p><img src="image-20200306181449004.png" alt></p><h4 id="High-to-Low"><a href="#High-to-Low" class="headerlink" title="High-to-Low"></a>High-to-Low</h4><p><img src="image-20200306182000373.png" alt></p><p>普通的ResNets堆叠而成的，其中ResNets使用的pre-activation而且不使用BatchNorm，结果如下：</p><p>其中输出区别为不同输入噪音向量</p><p><img src="image-20200306182119329.png" alt></p><h4 id="Low-to-High"><a href="#Low-to-High" class="headerlink" title="Low-to-High"></a>Low-to-High</h4><p><img src="image-20200306182226496.png" alt></p><h4 id="D"><a href="#D" class="headerlink" title="D"></a>D</h4><p><img src="image-20200306182407661.png" alt></p><ul><li>共两组D模块，用于LR、HR判别</li><li>成对输入</li></ul><h4 id="loss-1"><a href="#loss-1" class="headerlink" title="loss"></a>loss</h4><p><img src="image-20200306182535236.png" alt></p><p><img src="image-20200306182546854.png" alt></p><ul><li>GAN损失占主导</li><li>pixel损失：MSE</li><li>GAN损失：作者发现<strong>WGAN-GP</strong>和<strong>SN-GAN</strong>表现差不多。作者在本篇文章中选择了后者</li></ul><h2 id="advantage：-1"><a href="#advantage：-1" class="headerlink" title="advantage："></a>advantage：</h2><ul><li>更贴近实际应用，提出HR2LR</li><li>提出GAN-centered的损失函数计算</li><li>使用FID作为评价指标</li></ul><h2 id="disadvantage：-1"><a href="#disadvantage：-1" class="headerlink" title="disadvantage："></a>disadvantage：</h2><ul><li>模型简单</li><li>针对性设计，应用场景较为单一，未必适用于普遍场景</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SR </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SR summary</title>
+      <link href="/2020/03/06/sr-summary/"/>
+      <url>/2020/03/06/sr-summary/</url>
+      
+        <content type="html"><![CDATA[<h1 id="SR"><a href="#SR" class="headerlink" title="SR"></a>SR</h1><h2 id="categories"><a href="#categories" class="headerlink" title="categories"></a>categories</h2><ul><li>supervised SR（有监督学习的图像超分辨率）</li><li>unsupervised SR（无监督学习的图像超分辨率）</li><li>domain-specific SR （特定应用领域的图像超分辨率）</li></ul><h2 id="dataset"><a href="#dataset" class="headerlink" title="dataset"></a>dataset</h2><p><img src="image-20200306194236412.png" alt></p><h2 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h2><p><img src="image-20200306194207180.png" alt></p><h2 id="innovation"><a href="#innovation" class="headerlink" title="innovation"></a>innovation</h2><ol><li><p>Framework ：</p><ul><li>lightweight：考虑实际应用</li><li>Local and Global Information：大的感受野可以提供更多的纹理信息</li><li>Low- and High-level Information：低层为颜色边缘信息，高层为目标信息</li><li>Context-specific Attention：结合特定内容的注意力机制</li><li>Upsampling Layers：multi-scale</li></ul></li><li><p>Learning Strategies</p><ul><li>loss：pixel，VGG，GAN 最有效的损失函数还不明确</li><li>Normalization：代替BN</li></ul></li><li><p>Evaluation Metric</p><ul><li>SRGAN提出传统的PSNR/SSIM图像质量评价方法存在缺陷，存在细节模糊但数值较高情况</li></ul></li><li><p>unsupervised SR</p><ul><li>常见方法为 Bicubic 方法获得LR图像，用LR-HR作为SR网络的训练数据，这样SR问题会变成预先定义图像退化过程的逆过程，在自然低分辨率图像上应用这类SR方法效果较差</li><li>目前多方法多围绕cycle-GAN</li></ul></li><li><p>Real World Scenaries</p><ul><li>Dealing with Various Degradation：解决多种图像退化问题，针对不同方式获得的LR图像</li><li>Domain-specific Applications：视频监控、人脸识别、目标跟踪等应用场景</li><li>Multi-scale Super-resolution：任意缩放因子</li><li>Zoom：基于真实环境中的图像退化模型<br>Zoom to Learn, Learn to Zoom<br>Camera Lens Super-Resolution</li></ul></li><li><p>multi-task SR</p><ul><li>Recovering Realistic Texture in Image Super-resolution by Deep Spatial Feature Transform</li></ul></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL summary </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SR </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>新的开始</title>
+      <link href="/2020/03/04/larry-site/"/>
+      <url>/2020/03/04/larry-site/</url>
+      
+        <content type="html"><![CDATA[<h1 id="庆祝小站正式成立！！！"><a href="#庆祝小站正式成立！！！" class="headerlink" title="庆祝小站正式成立！！！"></a>庆祝小站正式成立！！！</h1><h1 id="Celebrate-the-establishment-of-Larry-Site"><a href="#Celebrate-the-establishment-of-Larry-Site" class="headerlink" title="Celebrate the establishment of Larry Site! !! !!"></a>Celebrate the establishment of Larry Site! !! !!</h1>]]></content>
+      
+      
+      <categories>
+          
+          <category> 随笔 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 随笔 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Super Resolution</title>
+      <link href="/2020/02/26/super-resolution/"/>
+      <url>/2020/02/26/super-resolution/</url>
+      
+        <content type="html"><![CDATA[<h1 id="SISR"><a href="#SISR" class="headerlink" title="SISR"></a>SISR</h1><h2 id="GAN"><a href="#GAN" class="headerlink" title="GAN"></a>GAN</h2><h3 id="SRGAN-CVPR2017"><a href="#SRGAN-CVPR2017" class="headerlink" title="SRGAN (CVPR2017)"></a>SRGAN (CVPR2017)</h3><ul><li><p>训练网络时用均方差作为损失函数，虽然能够获得很高的峰值信噪比，但是恢复出来的图像通常会丢失高频细节，使人不能有好的视觉感受。</p></li><li><p>MSE代价函数使重建结果有较高的信噪比，但是缺少了高频信息，出现过度平滑的纹理。</p></li><li><p>损失函数</p><p><img src="image-20200227231314003.png" alt></p></li></ul><h3 id="ESRGAN-ECCV2018"><a href="#ESRGAN-ECCV2018" class="headerlink" title="ESRGAN (ECCV2018)"></a>ESRGAN (ECCV2018)</h3><ul><li><p>改进感知域损失函数，使用<strong>激活前</strong>的VGG特征，这个改进会提供更尖锐的边缘和更符合视觉的结果。</p></li><li><p>GAN网络改进为Relativistic average GAN (RaGAN)</p></li><li><p>网络的基本单元从基本的残差单元变为Residual-in-Residual Dense Block (RRDB)</p></li><li><p>当训练集和测试集的统计量有很大不同的时候，BN层就会倾向于生成不好的伪影，并且限制模型的泛化能力。作者发现，BN层在网络比较深，而且在GAN框架下进行训练的时候，更会产生伪影。这些伪影偶尔出现在迭代和不同的设置中，违反了对训练稳定性能的需求。所以为了稳定的训练和一致的性能，作者去掉了BN层。</p></li><li><p>对残差信息进行scaling，即将残差信息乘以一个0到1之间的数，用于防止不稳定</p></li><li><p>损失函数</p><p><img src="image-20200227231642371.png" alt></p></li></ul><h3 id="SROBB-ICCV-2019"><a href="#SROBB-ICCV-2019" class="headerlink" title="SROBB (ICCV 2019)"></a>SROBB (ICCV 2019)</h3><ul><li><p>mid-level信息：纹理信息</p><p>low-level信息：边缘信息</p></li><li><p>浅层网络提取感知信息：适用边缘，纹理处模糊</p><p>深层网络提取感知信息：适用纹理，图片引入噪声</p><p><strong>低层的特征对于重建边来说是更有效的，中间层的特征对于重建纹理来说是更有效的</strong></p><p><img src="image-20200228141728188.png" alt></p></li><li><p>分区域：<br><strong>背景：</strong>天空、植物、地面和水，这些区域主要包含的是<strong>纹理</strong>信息，用符号background表示，其对应的是<strong>mid-level</strong>特征。</p><p><strong>边界</strong>：区分物体和背景的边，这些区域主要包含的是<strong>边和块</strong>信息，作者通过处理拓宽了这些区域，用符号boundary表示，其对应的是<strong>low-level</strong>特征。</p><p><strong>物体</strong>：除了上面所说的背景所包含的4类，用符号object表示，其对应的是<strong>high-level</strong>特征。</p></li><li><p>区域区分</p><p><img src="image-20200228162410278.png" alt></p></li><li><p>感知损失函数</p><p><img src="image-20200228175935771.png" alt></p></li><li><p>网络结构（延用SRGAN）</p><p><img src="image-20200228162440113.png" alt></p></li></ul><h3 id="RankSRGAN-ICCV-2019"><a href="#RankSRGAN-ICCV-2019" class="headerlink" title="RankSRGAN (ICCV 2019)"></a>RankSRGAN (ICCV 2019)</h3><ul><li><p>创新点：将不可微的图像感知质量指标通过Ranker模块转化为可微可优化的值</p></li><li><p>网络架构</p><p><img src="image-20200228175302369.png" alt></p></li><li><p><strong>Stage1：</strong>生成成对的带有排序标签的图像（rank images）。通过不同的 SR 方法对公开的SR 数据集进行处理，生成超分辨率图像，然后对这些图像用所中的感知指标（如 NIQE）进行评价得到质量评价得分，接着根据分数对成对图像进行排序。按照得分高低，图像的排序标签分别为1~n（1表示最好，n则为最差）。这里选择的SR 方法为 ESRGAN 和 SRGAN，数据集则是 DIV2K 和 Flicker2K。</p></li><li><p><strong>Stage2：</strong>训练 Ranker，<strong>也是论文核心的创新点</strong>。论文采用了孪生神经网络结构，网络分支共享权值。同时提出了 margin-ranking loss，对 Ranker 进行优化。训练后的Ranker具有根据图像的感知得分对图像进行排名的能力。</p><p><img src="image-20200228175441824.png" alt></p></li><li><p><strong>Stage 3:</strong> 引入 rank-content loss。当Ranker训练完成之后，Ranker 作为一个评价网络生成 rank-content loss。生成的图像输入Ranker中以预测排名分数。rank-content loss 定义如下：</p><p><img src="image-20200228175500131.png" alt></p><p>最终的网络结构中，网络结构与 SRGAN 相同，不过引入了额外的 Ranker-content loss。</p></li></ul><h2 id="Autoencoder"><a href="#Autoencoder" class="headerlink" title="Autoencoder"></a>Autoencoder</h2><h3 id="SAN-（CVPR-2019）"><a href="#SAN-（CVPR-2019）" class="headerlink" title="SAN （CVPR 2019）"></a>SAN （CVPR 2019）</h3><ul><li><p>CNN模型限制：</p><p>大多数基于CNN的SR方法没有充分利用原始LR图像的信息，导致相当低的性能</p><p>大多数CNN-based models主要专注于设计更深或是更宽的网络，以学习更有判别力的高层特征，却很少发掘层间特征的内在相关性，从而妨碍了CNN的表达能力</p></li><li><p>模型结构：</p><p><img src="image-20200302163238530.png" alt></p></li><li><p>NLGR: 区域级非局部模块RL-NL + 一个同源残差组结构SSRG</p><p>同源残差连接：把LR的特征加到每个group的输入x中，这种连接不仅可以帮助深度CNN的训练，同时还可以传递LR图像中丰富的低频信息给high-level的层</p></li><li><p>RL-NL模块</p><p>将图像划分为<em>k</em>x<em>k</em>大小，在每个region中进行non-local操作</p><p>local：针对感受野</p><p>conv、pooling：local</p><p>FC：non-local，global</p><p>Non-local block：<img src="image-20200302171603723.png" alt></p><p>mask由相似性给出</p><p>g是一个映射函数，将一个点映射成一个向量，可以看成是计算一个点的特征</p><p><img src="image-20200302171616023.png" alt></p></li><li><p>SSRG: G个局部模块LSRAG + 同源残差连接结构SSC</p><p>所谓同源残差连接，就是把LR的特征加到每个group的输入x中，这种连接不仅可以帮助深度CNN的训练，同时还可以传递LR图像中丰富的低频信息给high-level的层</p></li><li><p>LSRAG：</p><p>与NLGR不同，采用local的残差连接，非同源残差连接</p></li><li><p>SOCA：二阶通道注意力机制，得到通道注意力</p></li></ul><h3 id="SRFBN-（CVPR-2019）"><a href="#SRFBN-（CVPR-2019）" class="headerlink" title="SRFBN （CVPR 2019）"></a>SRFBN （CVPR 2019）</h3><ul><li><p>回传（RNN，常见的直接前向传递模块的弊端是前面的层无法直接利用后面层的信息）</p><p>循环迭代T次，每次迭代都计算loss值，T次迭代后平均loss更新权重</p><p><img src="https://i.loli.net/2019/05/07/5cd129e15e956.png" alt></p></li><li><p>反馈模块（综合HR与LR信息）</p><p><img src="https://i.loli.net/2019/05/07/5cd13184b60a3.png" alt></p></li><li><p>缺点：计算量过大，demo阶段仍需要多次循环迭代</p></li></ul><h3 id="Meta-SR-CVPR-2019"><a href="#Meta-SR-CVPR-2019" class="headerlink" title="Meta-SR (CVPR 2019)"></a>Meta-SR (CVPR 2019)</h3><ul><li><p>提出一个动态预测每一缩放因子的滤波器权重的新网络，从而无需为每一缩放因子存储权重，取而代之，存储小的权重预测网络更为方便</p></li><li><p>包含两个模块：特征学习模块和 Meta-Upscale 模块，后者的提出用于替代传统的放大模块</p></li><li><p>Meta-Upscale</p><p><img src="image-20200304211749018.png" alt></p><p><img src="image-20200304211806610.png" alt></p><p>1) Location Projection： 把像素投射到 LR 图像上，即找到与像素（i, j）对应的像素（i′, j′）</p><p>​    向下取整</p><p><img src="image-20200304211922259.png" alt></p><p>2) Weight Prediction： 为 SR 图像上每个像素预测对应滤波器的权重</p><p>​    应用meta-learning （<strong>为何 Vij 使用偏差表示？</strong>）</p><p>​                                <img src="image-20200304211937830.png" alt></p><p><img src="image-20200304211906363.png" alt></p><p>3) Feature Mapping：利用预测得到的权重将 LR 图像的特征映射回 SR 图像空间以计算其像素值</p></li></ul><h1 id="RefSR"><a href="#RefSR" class="headerlink" title="RefSR"></a>RefSR</h1><h2 id="CrossNet-ECCV-2018"><a href="#CrossNet-ECCV-2018" class="headerlink" title="CrossNet (ECCV 2018)"></a>CrossNet (ECCV 2018)</h2><ul><li><p>将参考HR图像的高频细节迁移到LR图像</p></li><li><p>本文提出一种端到端的全卷积神经网络，使用了跨尺度扭曲，包含图像编码器，跨尺度扭曲层和融合解码器：<strong>编码器</strong>主要用于提取参考图片和LR图片的多尺度特征，</p><p><strong>跨尺度变形层</strong>用于将参考的特征图和LR特征图进行空间对齐，</p><p><strong>解码器</strong>将这些特征图进行合并从而生成HR图片。</p></li><li><p>网络结构</p><p><img src="image-20200228202251954.png" alt></p></li><li><p>损失函数</p><p><img src="image-20200228202416602.png" alt></p></li></ul><h1 id="综合"><a href="#综合" class="headerlink" title="综合"></a>综合</h1><h2 id="SRNTT-CVPR-2019"><a href="#SRNTT-CVPR-2019" class="headerlink" title="SRNTT (CVPR 2019)"></a>SRNTT (CVPR 2019)</h2><ul><li><p>SISR：</p><p>纹理不够清晰</p><p>加上感知损失，纹理清晰了但是大多是捏造的，不符合真实情况</p></li><li><p>RefSR：</p><p>Ref需要跟LR足够相似</p><p>只学习了Ref的像素级特征，或者一些浅层的特征</p><p>Ref需要与LR对齐的</p></li><li><p>通过在特征空间上匹配的方法，将语义相关的特征进行迁移。</p></li><li><p>框架：包含局部纹理特征匹配（交换）和纹理迁移两部分</p><p>论文将输入图片与参考图片先转化为同一分辨率，随后将图像<strong>分块计算</strong>。</p><p><strong>swap</strong>：找到参考图片中与输入图片相似度（内积）最大的块，并替换输入图片中对应块，输入纹理转换</p><p><img src="image-20200229003557885.png" alt></p></li><li><p>纹理迁移</p><p><img src="image-20200229005424330.png" alt></p></li><li><p>损失函数</p><p>重构损失：</p><p><img src="image-20200229010026666.png" alt></p><p>感知损失：</p><p><img src="image-20200229010034890.png" alt></p><p>对抗损失：</p><p><img src="image-20200229010041668.png" alt></p><p>纹理损失：</p><p><img src="image-20200229010144944.png" alt></p></li><li><p>数据集 成对数据集（需要ref）</p><p><img src="image-20200229010259679.png" alt></p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SR </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Meta Learning （Hongyi Li）</title>
+      <link href="/2020/02/04/meta-learning/"/>
+      <url>/2020/02/04/meta-learning/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Meta-Learning"><a href="#Meta-Learning" class="headerlink" title="Meta Learning"></a>Meta Learning</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h3 id="Meta-Learning-Learn-2-Learn"><a href="#Meta-Learning-Learn-2-Learn" class="headerlink" title="Meta Learning = Learn 2 Learn"></a>Meta Learning = Learn 2 Learn</h3><h3 id="Life-Long-Learning-amp-Meta-Learning"><a href="#Life-Long-Learning-amp-Meta-Learning" class="headerlink" title="Life-Long Learning &amp; Meta Learning"></a>Life-Long Learning &amp; Meta Learning</h3><p>Life-Long Learning: 不断用同一个模型进行学习</p><p>Meta Learning: 不同任务拥有不同的模型</p><h3 id="ML"><a href="#ML" class="headerlink" title="ML"></a>ML</h3><p><img src="image-20200204142328027.png" alt></p><h3 id="Meta-Learning-1"><a href="#Meta-Learning-1" class="headerlink" title="Meta Learning"></a>Meta Learning</h3><p><img src="image-20200204142350120.png" alt></p><h3 id="Machine-Learning-amp-Meta-Learning"><a href="#Machine-Learning-amp-Meta-Learning" class="headerlink" title="Machine Learning &amp; Meta Learning"></a>Machine Learning &amp; Meta Learning</h3><p><img src="image-20200204142525193.png" alt></p><h2 id="Training"><a href="#Training" class="headerlink" title="Training"></a>Training</h2><h3 id="Loss函数，多任务loss值之和"><a href="#Loss函数，多任务loss值之和" class="headerlink" title="Loss函数，多任务loss值之和"></a>Loss函数，多任务loss值之和</h3><p><img src="image-20200204143128683.png" alt></p><h3 id="数据集划分"><a href="#数据集划分" class="headerlink" title="数据集划分"></a>数据集划分</h3><p>ML为训练集&amp;测试集，Meta Learning为训练任务&amp;测试任务</p><p><img src="image-20200204143322759.png" alt></p><h3 id="Meta-Learning常与few-shot-learning联系，仅用少量数据集进行训练"><a href="#Meta-Learning常与few-shot-learning联系，仅用少量数据集进行训练" class="headerlink" title="Meta Learning常与few-shot learning联系，仅用少量数据集进行训练"></a>Meta Learning常与few-shot learning联系，仅用少量数据集进行训练</h3><h3 id="Support-amp-Query-set"><a href="#Support-amp-Query-set" class="headerlink" title="Support &amp; Query set"></a>Support &amp; Query set</h3><p><img src="image-20200204144029253.png" alt></p><h3 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h3><p><img src="image-20200204144126330.png" alt></p><h2 id="Omniglot"><a href="#Omniglot" class="headerlink" title="Omniglot"></a>Omniglot</h2><h3 id="Few-Shot-Classification"><a href="#Few-Shot-Classification" class="headerlink" title="Few-Shot Classification"></a>Few-Shot Classification</h3><p><img src="image-20200204144643335.png" alt></p><h2 id="常见方法"><a href="#常见方法" class="headerlink" title="常见方法"></a>常见方法</h2><h3 id="MAML"><a href="#MAML" class="headerlink" title="MAML"></a>MAML</h3><h4 id="固定模型架构，仅针对初始化参数"><a href="#固定模型架构，仅针对初始化参数" class="headerlink" title="固定模型架构，仅针对初始化参数"></a>固定模型架构，仅针对初始化参数</h4><p><img src="image-20200204145154001.png" alt></p><h4 id="MAML-amp-Model-Pre-Training"><a href="#MAML-amp-Model-Pre-Training" class="headerlink" title="MAML &amp; Model Pre-Training"></a>MAML &amp; Model Pre-Training</h4><p><img src="image-20200204145458988.png" alt><br><img src="image-20200204145530859.png" alt><br><img src="image-20200204145558559.png" alt></p><h4 id="MAML训练仅update一次，测试中为取得更好效果可update多次"><a href="#MAML训练仅update一次，测试中为取得更好效果可update多次" class="headerlink" title="MAML训练仅update一次，测试中为取得更好效果可update多次"></a>MAML训练仅update一次，测试中为取得更好效果可update多次</h4><p><img src="image-20200204145858562.png" alt></p><h4 id="Example：拟合三角函数"><a href="#Example：拟合三角函数" class="headerlink" title="Example：拟合三角函数"></a>Example：拟合三角函数</h4><p><img src="image-20200204150034660.png" alt><br><img src="image-20200204150319806.png" alt> </p><h4 id="数学推理"><a href="#数学推理" class="headerlink" title="数学推理"></a>数学推理</h4><p><img src="image-20200204151409192.png" alt></p><h4 id="first-order-approximation-近似简化计算"><a href="#first-order-approximation-近似简化计算" class="headerlink" title="first-order approximation 近似简化计算"></a>first-order approximation 近似简化计算</h4><p><img src="image-20200204151527685.png" alt><br><img src="image-20200204151613428.png" alt></p><h4 id="实际应用："><a href="#实际应用：" class="headerlink" title="实际应用："></a>实际应用：</h4><p>MAML参数进行两次update：</p><p> （1）得到训练后参数theta</p><p>  （2）得到theta对loss的偏微分，用于更新初始参数</p><p><img src="image-20200204152145493.png" alt></p><h3 id="Reptile"><a href="#Reptile" class="headerlink" title="Reptile"></a>Reptile</h3><h4 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h4><p><img src="image-20200204162459449.png" alt></p><h4 id="区别：Pre-train-amp-MAML-amp-Reptile"><a href="#区别：Pre-train-amp-MAML-amp-Reptile" class="headerlink" title="区别：Pre-train &amp; MAML &amp; Reptile"></a>区别：Pre-train &amp; MAML &amp; Reptile</h4><p><img src="image-20200204162516883.png" alt></p><h2 id="Gradient-Descent-as-LSTM"><a href="#Gradient-Descent-as-LSTM" class="headerlink" title="Gradient Descent as LSTM"></a>Gradient Descent as LSTM</h2><h3 id="V1"><a href="#V1" class="headerlink" title="V1"></a>V1</h3><h4 id="GD视为LSTM简化版："><a href="#GD视为LSTM简化版：" class="headerlink" title="GD视为LSTM简化版："></a>GD视为LSTM简化版：</h4><p>input &amp; forget gate的参数并非学习而来，而是人为设定</p><p><img src="image-20200204191826717.png" alt></p><h4 id="LSTM-for-GD"><a href="#LSTM-for-GD" class="headerlink" title="LSTM for GD"></a>LSTM for GD</h4><p>动态调整学习率并对先前参数进行处理</p><p><img src="image-20200204192217178.png" alt></p><h4 id="training"><a href="#training" class="headerlink" title="training"></a>training</h4><p><img src="image-20200204192420750.png" alt></p><h4 id="简化运算"><a href="#简化运算" class="headerlink" title="简化运算"></a>简化运算</h4><p><img src="image-20200204192639254.png" alt></p><h4 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h4><p>LSTM适用于所有参数的更新，仅有一个LSTM cell</p><p>training&amp;testing 应用不同model：CNN&amp;RNN (MAML无法做到)</p><p><img src="image-20200204192844628.png" alt></p><h3 id="v2"><a href="#v2" class="headerlink" title="v2"></a>v2</h3><p>下层LSTM类似于倒数（加速度）<br><img src="image-20200204193331312.png" alt></p><h2 id="Metric-based-Approach"><a href="#Metric-based-Approach" class="headerlink" title="Metric-based Approach"></a>Metric-based Approach</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><img src="image-20200204210726424.png" alt></p><h3 id="Face-Verification-amp-Face-Identification"><a href="#Face-Verification-amp-Face-Identification" class="headerlink" title="Face Verification &amp; Face Identification"></a>Face Verification &amp; Face Identification</h3><p>Face Identification:判断是一组人中哪一个</p><p>Face Verification:判断是否是同一个人</p><p><img src="image-20200204210930504.png" alt></p><h3 id="Face-Verification训练"><a href="#Face-Verification训练" class="headerlink" title="Face Verification训练"></a>Face Verification训练</h3><p>类似word2vec</p><p><img src="image-20200204211516701.png" alt></p><p><img src="image-20200204211728786.png" alt></p><h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p><img src="image-20200204214507405.png" alt></p><h4 id="Prototypical-Network"><a href="#Prototypical-Network" class="headerlink" title="Prototypical Network"></a>Prototypical Network</h4><p>效果大于Matching</p><p><img src="image-20200204214643877.png" alt></p><p>n-shots情景，对embedding取平均值：<br><img src="image-20200204214816320.png" alt></p><h4 id="Matching-Network"><a href="#Matching-Network" class="headerlink" title="Matching Network:"></a>Matching Network:</h4><p><img src="image-20200204214856730.png" alt></p><h4 id="Relation-Network"><a href="#Relation-Network" class="headerlink" title="Relation Network"></a>Relation Network</h4><p>不同于Prototypical Network &amp; Matching Network，Relation Network采用两个module，第一个用于提取embedding，第二个用于计算class与test set的embedding之间的相似度。</p><p>（彩色长方体为提取出的各类别embedding，黄色为输入embedding）</p><p>之前方法的相似度使用特定的计算方式（eg.余弦）</p><p><img src="image-20200204221345831.png" alt></p><h3 id="Imaginary-Data"><a href="#Imaginary-Data" class="headerlink" title="Imaginary Data"></a>Imaginary Data</h3><p>GAN网络部分与learning+prediction网络共同权重更新进行训练</p><p><img src="image-20200204222016936.png" alt></p><h2 id="Test-as-RNN"><a href="#Test-as-RNN" class="headerlink" title="Test as RNN"></a>Test as RNN</h2><h4 id="一般思路-general"><a href="#一般思路-general" class="headerlink" title="一般思路 general"></a>一般思路 general</h4><p>但实验中模型无法成功训练</p><p><img src="image-20200204222426498.png" alt></p><h3 id="MANN-amp-SNAIL"><a href="#MANN-amp-SNAIL" class="headerlink" title="MANN &amp; SNAIL"></a>MANN &amp; SNAIL</h3><p>SNAIL类似wavenet网络构造，加强输入之间的联系</p><p><img src="image-20200204222710008.png" alt></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL summary </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Meta Learning </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>light-weight 论文阅读笔记</title>
+      <link href="/2019/11/17/lightweight/"/>
+      <url>/2019/11/17/lightweight/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Light-weight"><a href="#Light-weight" class="headerlink" title="Light-weight"></a><strong>Light-weight</strong></h1><h2 id="SqueezeNet-Alexnet"><a href="#SqueezeNet-Alexnet" class="headerlink" title="SqueezeNet (Alexnet)"></a>SqueezeNet (Alexnet)</h2><h3 id="1-1-Architecture"><a href="#1-1-Architecture" class="headerlink" title="1.1  Architecture"></a>1.1  Architecture</h3><p><img src="clip_image002.png" alt></p><h3 id="1-2-key-words"><a href="#1-2-key-words" class="headerlink" title="1.2  key words"></a>1.2  key words</h3><h4 id="1-2-1-architectural-design-strategies"><a href="#1-2-1-architectural-design-strategies" class="headerlink" title="1.2.1     architectural design strategies"></a>1.2.1     architectural design strategies</h4><p>1.2.1.1   replace 3x3 filters with 1x1 filters</p><p>1.2.1.2   decrease the number of input channels to 3x3 filters</p><p>1.2.1.3   downsample late in the network so the conv layers have larger activation maps</p><h4 id="1-2-2-fire-model"><a href="#1-2-2-fire-model" class="headerlink" title="1.2.2     fire model"></a>1.2.2     fire model</h4><p>1.2.2.1   squeeze</p><p>filter : 1x1</p><p>target: decrease the number of channel</p><p>1.2.2.2   expand</p><p>filter : 1x1 &amp; 3x3</p><p>target: extract the feature map and replace 3x3 filters with 1x1 filters</p><p><img src="clip_image005.png" alt></p><h1 id="MobileNet-Convolution"><a href="#MobileNet-Convolution" class="headerlink" title="MobileNet (Convolution)"></a>MobileNet (Convolution)</h1><h3 id="2-1-Architecture"><a href="#2-1-Architecture" class="headerlink" title="2.1  Architecture"></a>2.1  Architecture</h3><p><img src="clip_image007.png" alt></p><h3 id="2-2-Key-word"><a href="#2-2-Key-word" class="headerlink" title="2.2  Key word"></a>2.2  Key word</h3><h4 id="2-2-1-depthwise-separable-convolution"><a href="#2-2-1-depthwise-separable-convolution" class="headerlink" title="2.2.1     depthwise separable convolution"></a>2.2.1     depthwise separable convolution</h4><p>2.2.1.1   depthwise convolution</p><p><img src="clip_image009.png" alt></p><p>2.2.1.2   pointwise convolution</p><p><img src="clip_image011.png" alt></p><p>2.2.1.3   Calculated amount</p><p>Normal conv:         <img src="clip_image013.png" alt></p><p>depthwise conv:  <img src="clip_image015.png" alt></p><p>pointwise conv:  <img src="clip_image017.png" alt></p><p>2.2.1.4   Compared</p><p><img src="clip_image019.png" alt></p><h4 id="2-2-2-Compress-parameters"><a href="#2-2-2-Compress-parameters" class="headerlink" title="2.2.2     Compress parameters"></a>2.2.2     Compress parameters</h4><p><img src="clip_image021.png" alt></p><p>The number of the filters *=α (0.25, 0.5, 0.75)</p><h2 id="ShuffleNet-ResNet"><a href="#ShuffleNet-ResNet" class="headerlink" title="ShuffleNet (ResNet)"></a>ShuffleNet (ResNet)</h2><h3 id="3-1-Architecture"><a href="#3-1-Architecture" class="headerlink" title="3.1  Architecture"></a>3.1  Architecture</h3><p><img src="clip_image023.png" alt></p><p>作用：分组卷积防止边缘效应</p><p>方式：矩阵转置</p><p><img src="clip_image025.png" alt></p><h3 id="3-2-key-words"><a href="#3-2-key-words" class="headerlink" title="3.2  key words"></a>3.2  key words</h3><h4 id="3-2-1-Group-conv"><a href="#3-2-1-Group-conv" class="headerlink" title="3.2.1     Group conv"></a>3.2.1     Group conv</h4><p><img src="clip_image027.png" alt></p><p>Traditional conv</p><p><img src="clip_image029.png" alt></p><p>Group conv</p><h4 id="3-2-2-Channel-Shuffle-for-Group-Convolutions"><a href="#3-2-2-Channel-Shuffle-for-Group-Convolutions" class="headerlink" title="3.2.2     Channel Shuffle for Group Convolutions"></a>3.2.2     Channel Shuffle for Group Convolutions</h4><p><img src="clip_image031.png" alt></p><p>(1)   Input channel: g*n</p><p>(2)   Reshape(g*n)</p><p>(3)   Transpose(n*g)</p><p>(4)   Flatten</p><h2 id="Mobilenet-v2"><a href="#Mobilenet-v2" class="headerlink" title="Mobilenet v2"></a>Mobilenet v2</h2><h3 id="4-1-key-word"><a href="#4-1-key-word" class="headerlink" title="4.1  key word"></a>4.1  key word</h3><p>Linear Bottleneck, Inverted Residual Blocks</p><h3 id="4-2-Linear-Bottleneck-v1-v2"><a href="#4-2-Linear-Bottleneck-v1-v2" class="headerlink" title="4.2  Linear Bottleneck( v1, v2 )"></a>4.2  Linear Bottleneck( v1, v2 )</h3><p><img src="clip_image033.png" alt></p><h4 id="4-2-1-V2-在-DW-卷积之前新加了一个-PW-卷积"><a href="#4-2-1-V2-在-DW-卷积之前新加了一个-PW-卷积" class="headerlink" title="4.2.1     V2 在 DW 卷积之前新加了一个 PW 卷积"></a>4.2.1     V2 在 DW 卷积之前新加了一个 PW 卷积</h4><p>这么做的原因，是因为 DW 卷积由于本身的计算特性决定它自己没有改变通道数的能力，上一层给它多少通道，它就只能输出多少通道。所以如果上一层给的通道数本身很少的话，DW 也只能很委屈的在低维空间提特征，因此效果不够好。现在 V2 为了改善这个问题，给每个 DW 之前都配备了一个 PW，专门用来升维，定义升维系数t，这样不管输入通道数Cin是多是少，经过第一个 PW 升维之后，DW 都是在相对的更高维t*Cin进行着辛勤工作的。</p><h4 id="4-2-2-V2-去掉了第二个-PW-的激活函数"><a href="#4-2-2-V2-去掉了第二个-PW-的激活函数" class="headerlink" title="4.2.2     V2 去掉了第二个 PW 的激活函数"></a>4.2.2     V2 去掉了第二个 PW 的激活函数</h4><p>论文作者称其为 Linear Bottleneck。这么做的原因，是因为作者认为激活函数在高维空间能够有效的增加非线性，而在低维空间时则会破坏特征，不如线性的效果好。由于第二个 PW 的主要功能就是降维，因此按照上面的理论，降维之后就不宜再使用 ReLU6 了。</p><h3 id="4-3-Inverted-Residual-Blocks-Resnet-v2"><a href="#4-3-Inverted-Residual-Blocks-Resnet-v2" class="headerlink" title="4.3  Inverted Residual Blocks( Resnet, v2 )"></a>4.3  Inverted Residual Blocks( Resnet, v2 )</h3><p><img src="clip_image035.png" alt></p><p>4.3.1     ResNet 使用 标准卷积 提特征，MobileNet v2始终使用 DW卷积 提特征。</p><p>4.3.2     ResNet 先降维 (0.25倍)、卷积、再升维，而 MobileNet V2 则是 先升维 (6倍)、卷积、再降维。直观的形象上来看，ResNet 的微结构是沙漏形，而 MobileNet V2 则是纺锤形，刚好相反。因此论文作者将 MobileNet V2 的结构称为 Inverted Residual Block。这么做也是因为使用DW卷积而作的适配，希望特征提取能够在高维进行。</p><h2 id="MobileNet-v3"><a href="#MobileNet-v3" class="headerlink" title="MobileNet v3"></a>MobileNet v3</h2><h3 id="5-1-Motivation"><a href="#5-1-Motivation" class="headerlink" title="5.1  Motivation"></a>5.1  Motivation</h3><p>MobileNetV1 深度可分离卷积</p><p>MobileNetV2 线性瓶颈的倒残差结构</p><p>MnasNet 基于squeeze and excitation结构的轻量级注意力模型</p><p><img src="clip_image037.png" alt></p><p><img src="clip_image039.png" alt></p><h3 id="5-2-网络结构"><a href="#5-2-网络结构" class="headerlink" title="5.2  网络结构"></a>5.2  网络结构</h3><p>platform-aware NAS 在计算和参数量受限的前提下搜索网络的各个模块</p><p>NetAdapt 对各个模块确定之后网络层的微调，主要是确定每层的filter数量</p><h3 id="5-3-网络优化"><a href="#5-3-网络优化" class="headerlink" title="5.3  网络优化"></a>5.3  网络优化</h3><h4 id="5-3-1-手工设计"><a href="#5-3-1-手工设计" class="headerlink" title="5.3.1     手工设计"></a>5.3.1     手工设计</h4><p><img src="clip_image041.png" alt></p><h4 id="5-3-2-激活函数"><a href="#5-3-2-激活函数" class="headerlink" title="5.3.2     激活函数"></a>5.3.2     激活函数</h4><p><img src="clip_image043.png" alt></p><p><img src="clip_image045.png" alt></p><h2 id="shuffleNet-v2"><a href="#shuffleNet-v2" class="headerlink" title="shuffleNet v2"></a>shuffleNet v2</h2><h3 id="6-1-key-word"><a href="#6-1-key-word" class="headerlink" title="6.1  key word"></a>6.1  key word</h3><p>MAC(Memory Access Cost), GPU并行性</p><h3 id="6-2-motivation"><a href="#6-2-motivation" class="headerlink" title="6.2  motivation"></a>6.2  motivation</h3><p>之前论文FLOPs作为评估一个模型的性能指标，但是在ShuffleNet v2的论文中作者指出这个指标是间接的，因为一个模型实际的运行时间除了要把计算操作算进去之外，还有例如内存读写，GPU并行性，文件IO等也应该考虑进去。最直接的方案还应该回归到最原始的策略，即直接在同一个硬件上观察每个模型的运行时间。如图4所示，在整个模型的计算周期中，FLOPs耗时仅占50%左右，如果我们能优化另外50%，我们就能够在不损失计算量的前提下进一步提高模型的效率。</p><h3 id="6-3-高效模型的设计准则"><a href="#6-3-高效模型的设计准则" class="headerlink" title="6.3  高效模型的设计准则"></a>6.3  高效模型的设计准则</h3><p>6.3.1     当输入通道数和输出通道数相同时，MAC最小</p><p><img src="clip_image047.png" alt></p><p>6.3.2     MAC与分组数量g成正比</p><p><img src="clip_image049.png" alt></p><p>6.3.3     网络的分支数量降低并行能力</p><p><img src="clip_image051.png" alt></p><p>如图4所示，通过控制卷积的通道数来使5组对照试验的FLOPs相同，通过实验我们发现它们按效率从高到低排列依次是 (a) &gt; (b) &gt; (d) &gt; (c) &gt; (e)</p><p>6.3.4     Element-wise操作是非常耗时的</p><p><img src="clip_image053.png" alt></p><p>之前论文在计算FLOPs时往往只考虑卷积中的乘法操作，但是一些Element-wise操作（例如ReLU激活，偏置，单位加等）往往被忽略掉。作者指出这些Element-wise操作看似数量很少，但它对模型的速度影响非常大。尤其是深度可分离卷积这种MAC/FLOPs比值较高的算法。图5中统计了ShuffleNet v1和MobileNet v2中各个操作在GPU和ARM上的消耗时间占比。</p><h3 id="6-4-Architecture"><a href="#6-4-Architecture" class="headerlink" title="6.4  Architecture"></a>6.4  Architecture</h3><p><img src="clip_image055.png" alt></p><p>(1)   在(c)中ShuffleNet v2使用了一个通道分割（Channel Split）操作。这个操作非常简单，即将 c 个输入Feature分成 c1 和 c2 两组，一般情况下 c1 = c2 。这种设计是为了尽量控制分支数，为了满足G3。</p><p>(2)   在分割之后的两个分支，左侧是一个直接映射，右侧是一个输入通道数和输出通道数均相同的深度可分离卷积，为了满足G1。</p><p>(3)   在右侧的卷积中， 1*1 卷积并没有使用分组卷积，为了满足G2。</p><p>(4)   最后在合并的时候均是使用拼接操作，为了满足G4。</p><p>(5)   在堆叠ShuffleNet v2的时候，通道拼接，通道洗牌和通道分割可以合并成1个element-wise操作，也是为了满足G4。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> light-weight </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>GAN summary</title>
+      <link href="/2019/11/06/gan/"/>
+      <url>/2019/11/06/gan/</url>
+      
+        <content type="html"><![CDATA[<h1 id="GAN"><a href="#GAN" class="headerlink" title="GAN"></a>GAN</h1><h2 id="contribution"><a href="#contribution" class="headerlink" title="contribution"></a>contribution</h2><p>提出了可以让电脑进行“创造”的GAN网络。</p><h2 id="method"><a href="#method" class="headerlink" title="method"></a>method</h2><p><em>The generative model can be thought of as analogous to a team of counterfeiters,trying to produce fake currency and use it without detection, while the discriminative model is analogous to the police, trying to detect the counterfeit currency.</em><br>如图所示，GAN包括了两个部分，即生成器 generator 与判别器 discriminator。生成器主要用来学习真实图像分布从而让自身生成的图像更加真实，以骗过判别器。判别器则需要对接收的图片进行真假判别。在整个过程中，生成器努力地让生成的图像更加真实，而判别器则努力地去识别出图像的真假，这个过程相当于一个二人博弈，随着时间的推移，生成器和判别器在不断地进行对抗，最终两个网络达到了一个动态均衡：生成器生成的图像接近于真实图像分布，而判别器识别不出真假图像，对于给定图像的预测为真的概率基本接近 0.5（相当于随机猜测类别）。</p><p><img src="gan.png" alt></p><h3 id="loss"><a href="#loss" class="headerlink" title="loss"></a>loss</h3><p> V(D,G) 作为模型的loss函数，其中对于D网络，为了增强其对于真伪图片的分辨能力，因此应当 <em>max V(D,G)</em> ，对于G模型，为了使其生成的图片与真实图片之间的差距尽可能的小，因此应当 <em>min V(D,G)</em> 。</p><p><img src="gan-a1.png" alt></p><h3 id="tranining"><a href="#tranining" class="headerlink" title="tranining"></a>tranining</h3><p>在模型训练过程中，先在数据集中选取 <em>batch_size</em> 个图片 x ，同时随机生成 <em>batch_size</em> 个噪声 z 。随后将 z 传入generator模型，生成 <em>batch_size</em> 个虚假的生成图片 G(z) ，随后将 x 与 G(z) 传入discriminator模型进行真伪判别并进行反向传播更新模型参数。</p><p> k 次更新后，再对generator模型进行参数更新。注意这是为了使得G模型更新速率维持在一个较慢的水平，同时防止D模型在有限的数据集上发生过拟合现象。</p><p><img src="gan-a2.png" alt></p><p>如图所示，图中黑色点线表示真实的数据分布，表示在真实数据集中图片质量为以均值为中心的高斯分布，绿色曲线表示随机噪音z在经过G模型后的G(z)数据分布，可以看出在GAN网络的训练过程中,在最开始的时候，随机噪声z经过G模型后映射到x空间，但因为G模型的权重未经过训练，因此生成的多为较为粗糙的图片。蓝色虚线表示D模型的分布，可以看出D模型在训练初期，虽然自身分辨能力也很弱，但因为G模型生成图片过于粗糙，因此可以较好地辨别真伪，但在训练后期，当G模型已经能生成较为逼真的图片后，D模型对于图片真伪的判别概率趋紧0.5。</p><p><img src="gan-a3.png" alt></p><h2 id="advantage"><a href="#advantage" class="headerlink" title="advantage"></a>advantage</h2><p>1.GAN是一种生成式模型，相比较其他生成模型（玻尔兹曼机和GSNs）只用到了反向传播,而不需要复杂的马尔科夫链</p><p>2.相比其他所有模型,GAN可以产生更加清晰，真实的样本,因为在其他有监督学习的图片生成模型中，一个输入对应多个输出，因此最终输出结果为多个可能的均值，造成最终输出较为模糊。</p><p>3.GAN采用的是一种无监督的学习方式训练，可以被广泛用在无监督学习和半监督学习领域，在之后的论文DCGAN中，便将GAN网络中的D模型作为特征提取部分进行无监督学习。</p><p>4.相比于变分自编码器, GAN没有引入任何决定性偏置( deterministic bias),变分方法引入决定性偏置,因为他们优化对数似然的下界,而不是似然度本身,这看起来导致了VAEs生成的实例比GANs更模糊</p><p>5.相比VAE,GANs没有变分下界,如果鉴别器训练良好,那么生成器可以完美的学习到训练样本的分布.换句话说,GANs是渐进一致的,但是VAE是有偏差的</p><p>6.GAN应用较为简单，例如应用到一些场景上，比如图片风格迁移，超分辨率，图像补全，去噪，避免了损失函数设计的困难，只需对抗训练便可得到较好的结果。</p><h2 id="disadvantage"><a href="#disadvantage" class="headerlink" title="disadvantage"></a>disadvantage</h2><p>1.如图所示， <em>log(1-D(x))</em>  是我们计算时 G 的 loss function，但是我们发现，在  D(x)  接近于 0 的时候，这个函数十分平滑，梯度非常的小。这就会导致，在训练的初期，G 想要骗过 D，变化十分的缓慢，而上面的函数，趋势和下面的是一样的，都是递减的。但是它的优势是在  D(x)  接近 0 的时候，梯度很大，有利于训练，在  D(x)  越来越大之后，梯度减小，这也很符合实际，在初期应该训练速度更快，到后期速度减慢。</p><p><img src="gan-a4.png" alt></p><p>2.GAN不适合处理离散形式的数据，比如文本</p><p>3.GAN存在训练不稳定、梯度消失、模式崩溃的问题</p><h1 id="DGAN"><a href="#DGAN" class="headerlink" title="DGAN"></a>DGAN</h1><h2 id="contribution-1"><a href="#contribution-1" class="headerlink" title="contribution"></a>contribution</h2><p>1.用CNN来替代GAN中的多层感知机</p><p>2.利用GAN网络对抗训练后的D模型进行特征提取并应用到无监督分类任务</p><p>3.将GAN中的卷积核可视化</p><h2 id="method-1"><a href="#method-1" class="headerlink" title="method"></a>method</h2><h3 id="model"><a href="#model" class="headerlink" title="model"></a>model</h3><p>1.将pooling层convolutions替代，其中，在discriminator上用stridedconvolutions替代，在generator上用fractional-strided convolutions替代</p><p>2.在generator和discriminator上都使用batchnorm，防止generator把所有的样本都收敛到同一个点，直接将BN应用到所有层会导致样本震荡和模型不稳定，通过在generator输出层和discriminator输入层不采用BN可以防止这种现象。</p><p>3.移除全连接层，global pooling增加了模型的稳定性，但伤害了收敛速度。</p><p>4.在generator的除了输出层外的所有层使用ReLU，输出层采用tanh。</p><p>5.在discriminator的所有层上使用LeakyReLU。</p><p><img src="dcgan.png" alt></p><p>其中DCGAN的G模型结构如上图所示，这里的conv层是fractionally-strided convolution，其作用是在改变feature map的通道数的同时，扩大feature map的分辨率。具体操作方式如下图所示：</p><p><img src="dcgan-a1.png" alt></p><h3 id="无监督分类任务"><a href="#无监督分类任务" class="headerlink" title="无监督分类任务"></a>无监督分类任务</h3><p>利用GAN网络在1000个数据集上对抗训练后的D模型进行特征提取并应用到无监督分类任务,在CIFAR-10上测试所得结果如下图所示：</p><p><img src="dcgan-a2.png" alt></p><p>可以看出，在较少的feature map的限制下，DCGAN+L2-SVM仍有较好的表现。</p><p>同时可以看出在此处仍将D模型作为单一的特征提取工具，而无法在新的数据集上进行无监督的适应性的训练，因此仍有一定的局限性，在FAIR 2018ECCV的论文<em>Deep Clustering for Unsupervised Learning of Visual Features</em>中提出了利用深度学习的无监督分类模型，可以借鉴以提高在无监督分类任务上的表现。</p><h3 id="漫游隐空间"><a href="#漫游隐空间" class="headerlink" title="漫游隐空间"></a>漫游隐空间</h3><p>如图所示，作者随机生成9个噪音 z 后，对其进行微调后发现生成图片有逐渐地转换，例如第6行逐渐出现了窗口。</p><p><img src="dcgan-a3.png" alt></p><p>本文中我觉得比较有意思的部分是，作者试图在将GAN网络通过随机噪音生成的图片进行控制。</p><p>作者首先将数据集中带有窗户的图片中的窗口部分标注出来，随后在G模型的倒数第二层加入一个判别层来对像素点判别是否在窗口范围，如果是就将这特征图舍弃，因此最终生成的是没有窗口的图片。</p><p>如下图中第1行中所示，是没有移除窗口特征图所生成的图片，第2行为移除可窗口特征图所生成的图片，可以看出第一行中有窗户而第二行没有，效果较为明显。</p><p><img src="dcgan-a4.png" alt></p><h3 id="卷积核可视化"><a href="#卷积核可视化" class="headerlink" title="卷积核可视化"></a>卷积核可视化</h3><p>如图所示，右侧训练过后的D模型卷积核对卧室中的床相应比较明显，相对于左侧的随机卷积核更能够提取卧室的特点。</p><p><img src="dcgan-a5-1583467057010.png" alt></p><h3 id="向量结构"><a href="#向量结构" class="headerlink" title="向量结构"></a>向量结构</h3><p>如下图所示，类似word2vec的思想，将最初始的 z 与最后G模型生成的图片进行对应，因此$ z $向量的加减导致图像的修改。值得注意的是为了使结果稳定，向量的输入均是取三个类似图片对应向量的平均。</p><p><img src="dcgan-a6.png" alt></p><h2 id="advantage-1"><a href="#advantage-1" class="headerlink" title="advantage"></a>advantage</h2><p>1.将Conv应用到GAN网络中，大大提高了GAN网络的表现力</p><p>2.尝试对隐空间进行解析，并进行了一些实验</p><p>3.将GAN网络利用到传统的无监督学习分类任务，并取得一定的效果</p><h2 id="disadvantage-1"><a href="#disadvantage-1" class="headerlink" title="disadvantage"></a>disadvantage</h2><p>1.对隐空间的理解仍处于比较初级的阶段，并且无法达到对结果预先的控制</p><p>2.G模型较为简单，难以生成分辨率较大的清晰图像</p><h1 id="CGAN"><a href="#CGAN" class="headerlink" title="CGAN"></a>CGAN</h1><h2 id="contribution-2"><a href="#contribution-2" class="headerlink" title="contribution"></a>contribution</h2><p>在生成模型（D）和判别模型（G）的建模中均引入条件变量y（conditional variable y），将无监督GAN变成有监督的CGAN，对生成结果进行控制。</p><h2 id="method-2"><a href="#method-2" class="headerlink" title="method"></a>method</h2><p>与其他生成式模型相比，GAN这种竞争的方式不再要求一个假设的数据分布，即不需要formulate p(x)，而是使用一种分布直接进行采样sampling，从而真正达到理论上可以完全逼近真实数据，这也是GAN最大的优势。然而，这种不需要预先建模的方法缺点是太过自由了，对于较大的图片，较多的 pixel的情形，基于简单 GAN 的方式就不太可控了。为了解决GAN太过自由这个问题，一个很自然的想法是给GAN加一些约束，于是便有了CGAN。</p><p>这项工作提出了一种带条件约束的GAN，在生成模型（D）和判别模型（G）的建模中均引入条件变量y（conditional variable y），使用额外信息y对模型增加条件，可以指导数据生成过程。这些条件变量y可以基于多种信息，例如类别标签，用于图像修复的部分数据，来自不同模态（modality）的数据。如果条件变量y是类别标签，可以看做CGAN 是把纯无监督的 GAN 变成有监督的模型的一种改进。</p><h3 id="model-1"><a href="#model-1" class="headerlink" title="model"></a>model</h3><p>如下图所示，在传统GAN的基础上，生成器和判别器都增加额外信息 y为条件, y 可以使任意信息,例如类别信息,或者其他模态的数据。通过将额外信息 y 输送给判别模型和生成模型,作为输入层的一部分,从而实现条件GAN。在生成模型中,先验输入噪声 p(z) 和条件信息 y 联合组成了联合隐层表征。对抗训练框架在隐层表征的组成方式方面相当地灵活。类似地，CGAN 的目标函数是带有条件概率的二人极小极大值博弈（two-player minimax game ）</p><p><img src="cgan.png" alt></p><h3 id="loss-1"><a href="#loss-1" class="headerlink" title="loss"></a>loss</h3><p>与传统GAN不同，在判别器进行真伪判别的同时，也会对图片对标签进行判别，因此使得G模型在尽可能地生成更加逼真的图片的同时，尽可能地也生成与输入条件变量 y 尽可能匹配的图片。由此实现了对GAN生成图片的控制。</p><p><img src="cgan-a1.png" alt></p><p>传统img2img方法因为在训练集中存在一对多的对应关系，因此在最终输出的时候模型汇总和考虑多种可能输出的结果，最终选取他们的平均作为最终输出，因此导致最终输出图片较为模糊。</p><p>而CGAN因为输出而除了条件变量 y （img）以外仍有随机噪音 z ，因此能够避免这种局限性。</p><p><img src="cgan-a2.png" alt></p><p><img src="cgan-a3.png" alt></p><h3 id="training"><a href="#training" class="headerlink" title="training"></a>training</h3><p>每行的CGAN按照相同的条件变量 y 值生成相同的数字，整体实验效果较为明显：</p><p><img src="cgan-a4.png" alt></p><h2 id="advantage-2"><a href="#advantage-2" class="headerlink" title="advantage"></a>advantage</h2><p>1.对GAN网络添加约束，可以按照预期生成相应得图片。</p><p>2.尝试了文字标签与图片的跨模态转换，并取得一定的实验效果</p><h2 id="disadvantage-2"><a href="#disadvantage-2" class="headerlink" title="disadvantage"></a>disadvantage</h2><p>1.有监督学习需要大量的标签，如果继续将模型复杂化则需要更大的数据集与更多的标签来训练网络，因此会大大提高模型训练的成本</p><h1 id="Info-GAN"><a href="#Info-GAN" class="headerlink" title="Info_GAN"></a>Info_GAN</h1><h2 id="contribution-3"><a href="#contribution-3" class="headerlink" title="contribution"></a>contribution</h2><p>让GAN网络通过无监督学习学习到了可解释的特征表示</p><h2 id="method-3"><a href="#method-3" class="headerlink" title="method"></a>method</h2><p>在传统GAN网络的G模型与D模型的基础上，info_gan增加了一个Q模型，其与D模型共享权重，但在最后FC层的时候有所不同: D模型负责判别图片的真伪，而Q模型负责输出c值与先前输入的latent code  c 值相对应</p><p><img src="infogan.png" alt></p><h3 id="latent-code"><a href="#latent-code" class="headerlink" title="latent code"></a>latent code</h3><p>既然原始的噪声是杂乱无章的，那就人为地加上一些限制，于是作者把原来的噪声输入分解成两部分：一是原来的z；二是由若干个latent variables拼接而成的latent code c，这些latent variables会有一个先验的概率分布，且可以是离散的或连续的，用于代表生成数据的不同特征维度，比如MNIST实验的latent variables就可以由一个取值范围为0-9的离散随机变量（用于表示数字）和两个连续的随机变量（分别用于表示倾斜度和粗细度）构成。</p><p>但仅有这个设定还不够，因为GAN中Generator的学习具有很高的自由度，很容易将latent code作为噪音z的一部分而使其失去表达能力。</p><h3 id="mutual-information"><a href="#mutual-information" class="headerlink" title="mutual information"></a>mutual information</h3><p>作者从信息论中得到启发，提出了基于互信息（mutual information）的正则化项。c的作用是对生成数据的分布施加影响，于是需要对这两者的关系建模，在信息论中，互信息I(X;Y)用来衡量“已知Y的情况下可获取多少有关X的信息”，公式如下所示：<br>$$<br>I(X ; Y)=H(X)-H(X | Y)=H(Y)-H(Y | X)<br>$$<br>因此在加入互信息的概念之后，作者为了让先前的latent code与生成图片尽可能地关联，因此修改loss函数，如下所示：<br>$$<br>\min _{G} \max _{D} V_{I}(D, G)=V(D, G)-\lambda I(c ; G(z, c))<br>$$<br><img src="infogan-a1.png" alt></p><p>在训练过程中，传统GAN因为没有互信息的约束，这个增加的c和一般的噪声z并没有太多区别，为能学到隐含的信息。而infogan则在训练过程中逐渐学习到相应的信息</p><h3 id="experiment"><a href="#experiment" class="headerlink" title="experiment"></a>experiment</h3><p>作者在实验部分，选用了mnist数据集，对于latent code，作者设定了一个one-hot类型的离散值（0-9），同时还设置了两个位于-1到1之间的连续值进行训练，在随后的结果中可以发现，离散值对应mnist数据集中0-9的数字类别，两个离散值则对应着数字的粗细与倾斜程度。最终结果如下图所示。</p><p><img src="infogan-a2.png" alt></p><h2 id="advantage-3"><a href="#advantage-3" class="headerlink" title="advantage"></a>advantage</h2><p>1.使GAN网络通过无监督学习学习到隐含的信息</p><p>2.将信息论中的理论引入GAN网络的搭建中，加强了latent code与生成图片之间的联系</p><h2 id="disadvantage-3"><a href="#disadvantage-3" class="headerlink" title="disadvantage"></a>disadvantage</h2><p>1.在训练结果出来之前无法提前预知提前设置的latent code所对应的意义是什么，因此有可能无监督学习到没意义的信心</p><h1 id="Dual-GAN"><a href="#Dual-GAN" class="headerlink" title="Dual_GAN"></a>Dual_GAN</h1><h2 id="contribution-4"><a href="#contribution-4" class="headerlink" title="contribution"></a>contribution</h2><p>在没有标签数据的前提下，实现在两个不同的域之间的图像转换。</p><h2 id="method-4"><a href="#method-4" class="headerlink" title="method"></a>method</h2><p>DualGAN将基本的 GAN 再进一步扩展为两个相互耦合的的 GAN，其中存在着两个生成器和两个判别器。其中第一个生成器  G_a 可以将素描（U）翻译为照片（V）， G_a  所完成的任务正是我们最终想要完成的目的，与这个生成器对应的有一个判别器  D_a 。与此同时，构建与之对偶的另一个生成器  G_b ，将照片转换为素描，与这个生成器所对应的同样有一个判别器  D_b 。</p><p><img src="dualgan.png" alt></p><h3 id="G"><a href="#G" class="headerlink" title="G"></a>G</h3><p>通过生成器$G_A可以对素描图片 u 进行翻译，最终得到类似照片的图片，其中包含的噪声为 z，翻译的结果即为G_{A}(u, z)，把这个翻译的结果扔给另一个专门用于生成素描图片的生成器 $G_{B}$，得到的结果<br>$$<br>G_{B}\left(G_{A}(u, z), z^{\prime}\right)<br>$$<br> 即为对原有的素描图片的一次重构，这里的 z’ 同样是噪声。接下来考虑与这一过程对偶的一个过程，首先将照片 v 用生成器 G_b 翻译为素描图<br>$$<br>G_{B}\left(v, z^{\prime}\right)<br>$$<br>，然后再用生成器G_{A}对生成的素描图进行翻译，得到<br>$$<br>G_{A}\left(G_{B}\left(v, z^{\prime}\right), z\right)<br>$$</p><h3 id="D"><a href="#D" class="headerlink" title="D"></a>D</h3><p>与生成器  G_A  对应的判别器  D_A  判断一张图片是否像一张照片，而与生成器  G_B  对应的判别器  D_B  则判断一张图片是否像一张素描图。对应于上面提到的对偶的生成过程，系统最终希望最小化重构误差，即希望最小化在两次迭代后得到的结果与原始图片之间的误差<br>$$<br>\left|G_{A}\left(G_{B}\left(v, z^{\prime}\right), z\right)-v\right|<br>$$<br>和<br>$$<br>\left|G_{B}\left(G_{A}(u, z), z^{\prime}\right)-u\right|<br>$$</p><h3 id="experiment-amp-result"><a href="#experiment-amp-result" class="headerlink" title="experiment &amp; result"></a>experiment &amp; result</h3><p><img src="dualgan-a1.png" alt></p><p><img src="dualgan-a2.png" alt></p><h2 id="advantage-4"><a href="#advantage-4" class="headerlink" title="advantage"></a>advantage</h2><p>1.通过无监督学习实现了两个不同的域之间的图片转换</p><h2 id="disadvantage-4"><a href="#disadvantage-4" class="headerlink" title="disadvantage"></a>disadvantage</h2><p>1.生成图片分辨率限制</p><h1 id="Cycle-GAN"><a href="#Cycle-GAN" class="headerlink" title="Cycle_GAN"></a>Cycle_GAN</h1><h2 id="contribution-5"><a href="#contribution-5" class="headerlink" title="contribution"></a>contribution</h2><p>与Dual_GAN相似，实现在两个不同的域之间的图像转换。</p><h2 id="method-5"><a href="#method-5" class="headerlink" title="method"></a>method</h2><p><img src="cyclegan.png" alt></p><p>cycle_gan与dual_gan基本原理相似，唯一不同点在于dual_gan中G模型的输入为 G_{A}(u, z) ，而cycle_gan中G模型的输入为 G_{A}(u)，舍弃了随机噪音 z 。</p><p>因此相比于传统GAN中的G模型，cycle_gan中的G模型更多的类似于encoder/decoder模型。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GAN </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>anchor-free detection summary</title>
+      <link href="/2019/07/28/anchor-free/"/>
+      <url>/2019/07/28/anchor-free/</url>
+      
+        <content type="html"><![CDATA[<h1 id="1、-CornerNet-Detecting-Objects-as-Paired-Keypoints-ECCV2018"><a href="#1、-CornerNet-Detecting-Objects-as-Paired-Keypoints-ECCV2018" class="headerlink" title="1、 CornerNet: Detecting Objects as Paired Keypoints  ECCV2018"></a>1、 CornerNet: Detecting Objects as Paired Keypoints  ECCV2018</h1><h2 id="1-1-Motivation"><a href="#1-1-Motivation" class="headerlink" title="1.1  Motivation"></a>1.1  Motivation</h2><p>现有检测方法通常需要一组非常大的anchor boxes，这在正负样本之间造成了巨大的不平衡，减慢了训练速度。</p><p>anchor boxes的使用引入了许多超参数和设计选择，包括多少个box，大小和宽高比。</p><h2 id="1-2-Contribution"><a href="#1-2-Contribution" class="headerlink" title="1.2  Contribution"></a>1.2  Contribution</h2><p>CornerNet，一种新的one stage目标检测方法，可以消除anchor boxes。</p><h2 id="1-3-CornerNet"><a href="#1-3-CornerNet" class="headerlink" title="1.3  CornerNet"></a>1.3  CornerNet</h2><p><img src="clip_image002.png" alt></p><p>本文将一个目标物体检测为一对关键点——边界框的左上角和右下角。 本文使用单个卷积网络来预测同一物体类别的所有实例的左上角的热图，所有右下角的热图，以及每个检测到的角点的嵌入向量。 嵌入用于对属于同一目标的一对角点进行分组——训练网络以预测它们的类似嵌入。 该方法极大地简化了网络的输出，并且无需设计anchor boxes。</p><h2 id="1-4-Corner-pooling"><a href="#1-4-Corner-pooling" class="headerlink" title="1.4  Corner pooling"></a>1.4  Corner pooling</h2><p><img src="clip_image004.png" alt></p><p>Corner pooling是一种新型的池化层，可帮助卷积网络更好地定位边界框的角点。 边界框的一角通常在目标之外，参考圆形的情况。在这种情况下，角点不能根据当前的信息进行定位。相反，为了确定像素位置是否有左上角，需要水平地向右看目标的最上面边界，垂直地向底部看物体的最左边边界。 这激发了本文的corner pooling layer：它包含两个特征图; 在每个像素位置，它最大池化从第一个特征映射到右侧的所有特征向量，最大池化从第二个特征映射下面的所有特征向量，然后将两个池化结果一起添加。</p><h1 id="2、-CenterNet-Keypoint-Triplets-for-Object-Detection-CVPR2019"><a href="#2、-CenterNet-Keypoint-Triplets-for-Object-Detection-CVPR2019" class="headerlink" title="2、 CenterNet Keypoint Triplets for Object Detection CVPR2019"></a>2、 CenterNet Keypoint Triplets for Object Detection CVPR2019</h1><h2 id="2-1-motivation"><a href="#2-1-motivation" class="headerlink" title="2.1  motivation"></a>2.1  motivation</h2><p>目标检测中，基于关键点的方法经常出现大量不正确的边界框，主要是由于缺乏对相关剪裁区域的额外监督造成的。</p><h2 id="2-2-contribution"><a href="#2-2-contribution" class="headerlink" title="2.2  contribution"></a>2.2  contribution</h2><p>如果预测的边界框与ground truth有较高的IoU,则中心关键点预测出相同类别的概率要高，反之亦然。因此提出在进行inference时，当通过一组关键点产生了一个边界框，我们继续观察是否具有同类别的一个关键点落入区域的中心，即使用三个点表示目标。</p><h2 id="2-3-Object-Detection-as-Keypoint-Triplets"><a href="#2-3-Object-Detection-as-Keypoint-Triplets" class="headerlink" title="2.3  Object Detection as Keypoint Triplets"></a>2.3  Object Detection as Keypoint Triplets</h2><p><img src="clip_image006.png" alt></p><p>网络分为两部分，cascade corner pooling &amp; center pooling</p><p>2.3.1 cascade corner pooling：</p><p>增加原始的corner pooling感知内部信息的功能。结合了feature map中目标物内部及边界方向的响应值和的最大值来预测角点。</p><p>2.3.2 center pooling：</p><p>用于预测中心关键点的分支，有利于中心获得更多目标物的中心区域，进而更易感知proposal的中心区域。通过取中心位置横向与纵向响应值的和的最大值实现此方法。</p><p>2.3.3 process：</p><p>（1）根据其分数选择前k个关键点。</p><p>（2）根据对应的偏移量将center keypoint remap至输入图中。</p><p>（3）为每一个边界框定义一个中心区域（如下图所示），并确保中心区域存在中心关键点，同时，保证该点的类别要与边界框的类别一致。如果中心区域检测到了中心关键点，则用左上角，右下角及中心点的分数的平均值更新边界框的分数，并保存该边界框。如果未检测到中心点，则移除该边界框。</p><p><img src="clip_image008.png" alt></p><h1 id="3、-CornerNet-Lite-Efficient-Keypoint-Based-Object-Detection-ArXiv-2019"><a href="#3、-CornerNet-Lite-Efficient-Keypoint-Based-Object-Detection-ArXiv-2019" class="headerlink" title="3、 CornerNet-Lite: Efficient Keypoint Based Object Detection ArXiv 2019"></a>3、 CornerNet-Lite: Efficient Keypoint Based Object Detection ArXiv 2019</h1><h2 id="3-1-motivation："><a href="#3-1-motivation：" class="headerlink" title="3.1 motivation："></a>3.1 motivation：</h2><p>CnornerNet无法达到实时监测的要求，难以同时保障准确性和检测速度</p><h2 id="3-2-contribution"><a href="#3-2-contribution" class="headerlink" title="3.2 contribution"></a>3.2 contribution</h2><p>提出了两种算法CornerNet-Saccade（高准确率优先）和CornerNet-Squeeze（高实时性优先）</p><h2 id="3-2-CornerNet-Saccade"><a href="#3-2-CornerNet-Saccade" class="headerlink" title="3.2 CornerNet-Saccade"></a>3.2 CornerNet-Saccade</h2><p><img src="clip_image010.png" alt></p><p>CornerNet-Saccade通过减少像素的个数来加速前向速度，使用注意力机制，首先缩小一幅图像，产生一个attention map，再进行放大和后续处理，原始的CornerNet在多个尺度上进行全卷积操作，而CornerNet-Saccade选取若干个分辨率的裁剪区域来检测，在COCO数据集上达到43.2的AP，速度是190ms一张图片，相比于原来速度提升了6倍。</p><h2 id="3-3-CornerNet-Squeeze"><a href="#3-3-CornerNet-Squeeze" class="headerlink" title="3.3 CornerNet-Squeeze"></a>3.3 CornerNet-Squeeze</h2><p>CornerNet-Squeeze 减少每个像素点上需要处理的步骤来加速前向，它融合了SqueezeNet 和MobileNet 的思想，引入了一个紧凑的主干网络，这个主干网络中大量使用了 1×1的卷积，bottleneck层，以及深度可分离卷积。有了新的主干网络，CornerNet-Squeeze 在 COCO上的AP是34.4，速度是30ms每张图片。</p><h1 id="4、-Bottom-up-Object-Detection-by-Grouping-Extreme-and-Center-Points-arxiv2019"><a href="#4、-Bottom-up-Object-Detection-by-Grouping-Extreme-and-Center-Points-arxiv2019" class="headerlink" title="4、 Bottom-up Object Detection by Grouping Extreme and Center Points  arxiv2019"></a>4、 Bottom-up Object Detection by Grouping Extreme and Center Points  arxiv2019</h1><h2 id="4-1-motivation"><a href="#4-1-motivation" class="headerlink" title="4.1 motivation"></a>4.1 motivation</h2><p>针对CornerNet误检的缺陷</p><h2 id="4-2-contribution"><a href="#4-2-contribution" class="headerlink" title="4.2 contribution"></a>4.2 contribution</h2><p><img src="clip_image012.png" alt></p><p>对于一个组合（左、右、上、下四个点），计算其中心点的位置。如果在heatmap上，中心点对应的的分数高于阈值，则认为存在目标，其分数为五个点的平均值。</p><h2 id="4-3-problems"><a href="#4-3-problems" class="headerlink" title="4.3 problems"></a>4.3 problems</h2><p>（1）速度慢，需要检测的点更多了（每类都要上下左右中）</p><p>（2）需要标注extreme point，不过可以通过coco的segmentation得到</p><p>（3）比Cornernet没有明显提升</p><h1 id="5、-Objects-as-Points-CVPR2019"><a href="#5、-Objects-as-Points-CVPR2019" class="headerlink" title="5、 Objects as Points CVPR2019"></a>5、 Objects as Points CVPR2019</h1><h2 id="5-1-motivation"><a href="#5-1-motivation" class="headerlink" title="5.1 motivation"></a>5.1 motivation</h2><p> 传统使用anchor的检测方法的缺陷</p><h2 id="5-2-contribution"><a href="#5-2-contribution" class="headerlink" title="5.2 contribution"></a>5.2 contribution</h2><p><img src="clip_image014.png" alt></p><p>论文通过目标中心点来呈现目标，然后在中心点位置回归出目标bounding box的尺寸大小。 因此将目标检测问题变成了一个标准的关键点估计问题。我们仅仅将图像传入全卷积网络，得到一个热力图，热力图峰值点即中心点，每个特征图的峰值点位置预测了目标的宽高信息。模型训练采用标准的监督学习，推理仅仅是单个前向传播网络，不存在NMS这类后处理。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> detection </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>PCA</title>
+      <link href="/2019/07/10/pca/"/>
+      <url>/2019/07/10/pca/</url>
+      
+        <content type="html"><![CDATA[<h1 id="向量内积"><a href="#向量内积" class="headerlink" title="向量内积"></a>向量内积</h1><p>向量投影</p><h1 id="基变换的矩阵表示"><a href="#基变换的矩阵表示" class="headerlink" title="基变换的矩阵表示"></a>基变换的矩阵表示</h1><p><img src="clip_image002.png" alt></p><p>R决定基变换后数据维度，若R&lt;M，则为降维变换</p><h1 id="协方差矩阵"><a href="#协方差矩阵" class="headerlink" title="协方差矩阵"></a>协方差矩阵</h1><h2 id="（1）方差（数据分离程度）"><a href="#（1）方差（数据分离程度）" class="headerlink" title="（1）方差（数据分离程度）"></a>（1）方差（数据分离程度）</h2><p><img src="clip_image004.png" alt></p><p>预处理：各字段减去均值，使得新字段均值为零，简化方差</p><p>​    问题转换：寻找一个低维基，使得所有数据变换为这个基上的坐标表示后，方差值最大</p><h2 id="（2-）协方差（数据相关性）"><a href="#（2-）协方差（数据相关性）" class="headerlink" title="（2 ）协方差（数据相关性）"></a>（2 ）协方差（数据相关性）</h2><p>​    <img src="clip_image006.png" alt></p><p>​    cov（基）== 0，正交基</p><p>优化目标：将一组N维向量降为K维（K大于0，小于N），其目标是选择K个单位（模为1）正交基，使得原始数据变换到这组基上后，各字段两两间协方差为0，而字段的方差则尽可能大（在正交的约束下，取最大的K个方差）</p><h2 id="（3）协方差矩阵"><a href="#（3）协方差矩阵" class="headerlink" title="（3）协方差矩阵"></a>（3）协方差矩阵</h2><p><img src="clip_image008.png" alt></p><p><img src="file:///C:/Users/ADMINI~1/AppData/Local/Temp/msohtmlclip1/01/clip_image010.png" alt></p><p>对角线为a、b方差。其余部分为ab协方差，优化目标统一</p><h2 id="（4）协方差矩阵对角化"><a href="#（4）协方差矩阵对角化" class="headerlink" title="（4）协方差矩阵对角化"></a>（4）协方差矩阵对角化</h2><p>设原始数据矩阵X对应的协方差矩阵为C，而P是一组基按行组成的矩阵，设Y=PX，则Y为X对P做基变换后的数据。设Y的协方差矩阵为D</p><p><img src="clip_image012.png" alt></p><h1 id="优化目标"><a href="#优化目标" class="headerlink" title="优化目标"></a>优化目标</h1><p>寻找一个矩阵P，满足D是一个对角矩阵，并且对角元素按从大到小依次排列，那么P的前K行就是要寻找的基，用P的前K行组成的矩阵乘以X就使得X从N维降到了K维并满足上述优化条件</p><p><img src="clip_image014.png" alt></p><p>其中e为特征向量</p><p><img src="clip_image016.png" alt></p><p>其中Lamda为特征值</p><p><img src="clip_image018.png" alt></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> ML </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ML </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Sparse Coding</title>
+      <link href="/2019/06/13/xi-shu-bian-ma/"/>
+      <url>/2019/06/13/xi-shu-bian-ma/</url>
+      
+        <content type="html"><![CDATA[<h1 id="基本定义："><a href="#基本定义：" class="headerlink" title="基本定义："></a>基本定义：</h1><p> 无监督学习，“超完备基（over-complete bases）”</p><p><img src="clip_image002.png" alt></p><h1 id="完备基-amp-超完备基"><a href="#完备基-amp-超完备基" class="headerlink" title="完备基 &amp; 超完备基"></a>完备基 &amp; 超完备基</h1><p>​    PCA通过协方差矩阵奇异值分解求得完备基</p><p>​    <img src="clip_image004.png" alt></p><p>​    超完备基</p><p>​    <img src="clip_image006.png" alt></p><h1 id="稀疏编码代价函数"><a href="#稀疏编码代价函数" class="headerlink" title="稀疏编码代价函数"></a>稀疏编码代价函数</h1><p>  <img src="clip_image008.png" alt></p><p>第一项可解释为一个“重构项（reconstruction term）”，这一项迫使稀疏编码算法为输入向量提供一个高拟合度的线性表达式；</p><p>第二项即“稀疏惩罚项（sparsity penalty term）”，它使输入向量的表达式变得“稀疏”，也就是系数向量a变得稀疏；</p><p>常量 λ 是一个变换量，由它来控制这两项式子的相对重要性</p><h1 id="稀疏性量度"><a href="#稀疏性量度" class="headerlink" title="稀疏性量度"></a>稀疏性量度</h1><p>​    <img src="clip_image010.png" alt>    （L0范式）</p><p>​    <img src="clip_image012.png" alt>          （L1正则化）</p><p>​    <img src="clip_image014.png" alt>      （对数形式）</p><h1 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h1><p>（1）训练对象：超完备基Φ（字典）和系数向量a</p><p>（2）关于系数向量a的优化：</p><p>使用 L1 范式作为稀疏惩罚函数，对 a(j)i的学习过程就简化为求解“由 L1 范式正则化的最小二乘法问题”，这个问题函数在域 a(j)i内为凸，已经有很多技术方法来解决这个问题。 使用对数形式的稀疏惩罚函数，则可以采用基于梯度算法的方法，如共轭梯度法。</p><p>（3）关于字典Φ的优化： </p><p>使用 L2 范式约束来学习基向量，同样可以简化为一个带有二次约束的最小二乘问题，其问题函数在域 Φ 内也为凸。 </p>]]></content>
+      
+      
+      <categories>
+          
+          <category> ML </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ML </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>
