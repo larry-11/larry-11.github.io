@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://larry-11.github.io/larry-11.github.io/about/index.html</loc>
+    
+    <lastmod>2020-07-23T17:10:16.724Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://larry-11.github.io/larry-11.github.io/2020/07/23/wgan/</loc>
     
     <lastmod>2020-07-23T17:04:01.490Z</lastmod>
@@ -107,13 +114,6 @@
   </url>
   
   <url>
-    <loc>https://larry-11.github.io/larry-11.github.io/about/index.html</loc>
-    
-    <lastmod>2020-03-07T15:39:04.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://larry-11.github.io/larry-11.github.io/2020/03/07/sr-cvpr1819/</loc>
     
     <lastmod>2020-03-07T10:23:18.000Z</lastmod>
@@ -198,14 +198,14 @@
   </url>
   
   <url>
-    <loc>https://larry-11.github.io/larry-11.github.io/friends/index.html</loc>
+    <loc>https://larry-11.github.io/larry-11.github.io/tags/index.html</loc>
     
     <lastmod>2020-03-04T04:12:46.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://larry-11.github.io/larry-11.github.io/tags/index.html</loc>
+    <loc>https://larry-11.github.io/larry-11.github.io/friends/index.html</loc>
     
     <lastmod>2020-03-04T04:12:46.000Z</lastmod>
     
