@@ -469,14 +469,14 @@ contribution
 </li>
 <li><p>推导：</p>
 <ul>
-<li><p>令D(x)偏导为0：<br><img src="image-20200723152623354.png" alt="image-20200723152623354"><br><img src="image-20200723152800832.png" alt="image-20200723152800832"></p>
+<li><p>令D(x)偏导为0：<br><img src="image-20200723152623354.png" alt><br><img src="image-20200723152800832.png" alt></p>
 </li>
 <li><p>当D(x)训练到最优时：</p>
-<p><img src="image-20200723153928258.png" alt="image-20200723153928258"></p>
-<p><img src="image-20200723153937488.png" alt="image-20200723153937488"></p>
+<p><img src="image-20200723153928258.png" alt></p>
+<p><img src="image-20200723153937488.png" alt></p>
 </li>
 <li><p>转化为JS散度：</p>
-<p><img src="image-20200723154042998.png" alt="image-20200723154042998"></p>
+<p><img src="image-20200723154042998.png" alt></p>
 </li>
 <li><p>当两个分布完全无重叠 ，上式为固定值log2，梯度为0</p>
 </li>
@@ -490,14 +490,14 @@ contribution
 </li>
 <li><p>推导：</p>
 <ul>
-<li><p>KL散度转化为D*形式：<br><img src="image-20200723163617472.png" alt="image-20200723163617472"></p>
+<li><p>KL散度转化为D*形式：<br><img src="image-20200723163617472.png" alt></p>
 </li>
 <li><p>目标函数等价变形：</p>
-<p><img src="image-20200723163702154.png" alt="image-20200723163702154"></p>
+<p><img src="image-20200723163702154.png" alt></p>
 </li>
 <li><p>同时要最小化生成分布与真实分布的KL散度，却又要最大化两者的JS散度，一个要拉近，一个却要推远，导致在数值上则会导致梯度不稳定</p>
 </li>
-<li><p>第一种错误对应的是“生成器没能生成真实的样本”，惩罚微小；第二种错误对应的是“生成器生成了不真实的样本” ，惩罚巨大。第一种错误对应的是缺乏多样性，第二种错误对应的是缺乏准确性。<img src="image-20200723163855914.png" alt="image-20200723163855914"></p>
+<li><p>第一种错误对应的是“生成器没能生成真实的样本”，惩罚微小；第二种错误对应的是“生成器生成了不真实的样本” ，惩罚巨大。第一种错误对应的是缺乏多样性，第二种错误对应的是缺乏准确性。<img src="image-20200723163855914.png" alt></p>
 </li>
 <li><p>生成器宁可多生成一些重复但是很“安全”的样本，也不愿意去生成多样性的样本，即<strong>collapse mode</strong></p>
 </li>
@@ -508,27 +508,27 @@ contribution
 </ul>
 <h1 id="Wasserstein距离"><a href="#Wasserstein距离" class="headerlink" title="Wasserstein距离"></a>Wasserstein距离</h1><ul>
 <li><p>Wasserstein距离（推土机距离）：<img src="image-20200507225703239.png" alt></p>
-<p><img src="image-20200723170255422.png" alt="image-20200723170255422"></p>
+<p><img src="image-20200723170255422.png" alt></p>
 </li>
 <li><p>Wasserstein距离相比KL散度、JS散度的优越性在于，即便两个分布没有重叠，Wasserstein距离仍然能够反映它们的远近</p>
 </li>
-<li><p>如图所示：<br><img src="image-20200723165422500.png" alt="image-20200723165422500"></p>
+<li><p>如图所示：<br><img src="image-20200723165422500.png" alt></p>
 </li>
 </ul>
 <h1 id="WGAN"><a href="#WGAN" class="headerlink" title="WGAN"></a>WGAN</h1><ol>
 <li><p>Wasserstrin距离中inf无法直接求解，因此无法转化为loss</p>
 </li>
 <li><p>将Wasserstrin距离转化为：</p>
-<p><img src="image-20200723170056816.png" alt="image-20200723170056816"></p>
+<p><img src="image-20200723170056816.png" alt></p>
 </li>
 <li><p>Lipschitz Function：  输出的变化小于等于输入的变化， k=1时为 1-Lipschitz ，即变化的不要太猛烈</p>
-<p><img src="image-20200723170433471.png" alt="image-20200723170433471"></p>
+<p><img src="image-20200723170433471.png" alt></p>
 </li>
 <li><p>如果没有对D的限制，当D(x1) 和D(x2)为正负无穷时可以最大化2）式，下图左。而现在对D有 1-Lipschitz 限制，则D的取值如下图右：</p>
-<p><img src="image-20200723171414756.png" alt="image-20200723171414756"></p>
+<p><img src="image-20200723171414756.png" alt></p>
 </li>
 <li><p>利用上式的好处是PG可以沿着梯度移动到蓝色Pdata，而原生GAN的判别器D为而二元分类器，输出为sigmoid函数。对于蓝色和橙色的分布，原生GAN为蓝线：对应Pdata的输出值为1，对应PG的输出值为0。所以蓝色曲线在蓝色和橙色分布的梯度为0，根本没有动力去挪动generator的输出来更新。而上式在两个分布附近都有梯度，可以继续更新。</p>
-<p><img src="image-20200723171841661.png" alt="image-20200723171841661"></p>
+<p><img src="image-20200723171841661.png" alt></p>
 </li>
 </ol>
 <h1 id="WGAN优化"><a href="#WGAN优化" class="headerlink" title="WGAN优化"></a>WGAN优化</h1><h2 id="Weight-clipping"><a href="#Weight-clipping" class="headerlink" title="Weight clipping"></a>Weight clipping</h2><ul>
@@ -548,7 +548,7 @@ contribution
 </ul>
 </li>
 <li><p>WGAN-GP：</p>
-<p><img src="image-20200723174404338.png" alt="image-20200723174404338"></p>
+<p><img src="image-20200723174404338.png" alt></p>
 </li>
 <li><p>Ppenalty采样：</p>
 <p>理论上为在整个样本空间进行采样，这个肯定是不可行的，论文中针对这个问题指出，只需要在generator生成样本和真实样本空间以及之间的区域就可以了，具体步骤如下：</p>
