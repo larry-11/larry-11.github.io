@@ -48,7 +48,7 @@
     <link href="https://larry-11.github.io/larry-11.github.io/2020/07/24/simclr-v2/"/>
     <id>https://larry-11.github.io/larry-11.github.io/2020/07/24/simclr-v2/</id>
     <published>2020-07-24T04:00:00.000Z</published>
-    <updated>2020-07-24T11:27:30.102Z</updated>
+    <updated>2020-07-24T12:20:47.705Z</updated>
     
     <summary type="html">
     
@@ -63,6 +63,32 @@
     </summary>
     
       <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="self-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/self-supervised/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Knowledge Distillation</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/07/24/zhi-shi-zheng-liu/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/07/24/zhi-shi-zheng-liu/</id>
+    <published>2020-07-24T04:00:00.000Z</published>
+    <updated>2020-07-24T13:26:51.582Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;定义&quot;&gt;&lt;a href=&quot;#定义&quot; class=&quot;headerlink&quot; title=&quot;定义&quot;&gt;&lt;/a&gt;定义&lt;/h1&gt;&lt;p&gt;把复杂模型或者多个模型Ensemble（Teacher）学到的知识 迁移到另一个轻量级模型（ Student
+        
+      
+    
+    </summary>
+    
+      <category term="DL summary" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-summary/"/>
     
     
       <category term="self-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/self-supervised/"/>
@@ -521,32 +547,6 @@
     
     
       <category term="Meta Learning" scheme="https://larry-11.github.io/larry-11.github.io/tags/Meta-Learning/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>light-weight 论文阅读笔记</title>
-    <link href="https://larry-11.github.io/larry-11.github.io/2019/11/17/lightweight/"/>
-    <id>https://larry-11.github.io/larry-11.github.io/2019/11/17/lightweight/</id>
-    <published>2019-11-17T04:00:00.000Z</published>
-    <updated>2020-03-06T11:11:44.000Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;Light-weight&quot;&gt;&lt;a href=&quot;#Light-weight&quot; class=&quot;headerlink&quot; title=&quot;Light-weight&quot;&gt;&lt;/a&gt;&lt;strong&gt;Light-weight&lt;/strong&gt;&lt;/h1&gt;&lt;h2
-        
-      
-    
-    </summary>
-    
-      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
-    
-    
-      <category term="light-weight" scheme="https://larry-11.github.io/larry-11.github.io/tags/light-weight/"/>
     
   </entry>
   
