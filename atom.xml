@@ -44,6 +44,32 @@
   </entry>
   
   <entry>
+    <title>SimCLR v2</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/07/24/simclr-v2/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/07/24/simclr-v2/</id>
+    <published>2020-07-24T04:00:00.000Z</published>
+    <updated>2020-07-24T11:27:30.102Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Method&quot;&gt;&lt;a href=&quot;#Method&quot; class=&quot;headerlink&quot; title=&quot;Method&quot;&gt;&lt;/a&gt;Method&lt;/h1&gt;&lt;h2 id=&quot;SimCLR-v2&quot;&gt;&lt;a href=&quot;#SimCLR-v2&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="self-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/self-supervised/"/>
+    
+  </entry>
+  
+  <entry>
     <title>WGAN</title>
     <link href="https://larry-11.github.io/larry-11.github.io/2020/07/23/wgan/"/>
     <id>https://larry-11.github.io/larry-11.github.io/2020/07/23/wgan/</id>
@@ -521,32 +547,6 @@
     
     
       <category term="light-weight" scheme="https://larry-11.github.io/larry-11.github.io/tags/light-weight/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>GAN summary</title>
-    <link href="https://larry-11.github.io/larry-11.github.io/2019/11/06/gan/"/>
-    <id>https://larry-11.github.io/larry-11.github.io/2019/11/06/gan/</id>
-    <published>2019-11-06T04:00:00.000Z</published>
-    <updated>2020-03-06T11:11:38.000Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;GAN&quot;&gt;&lt;a href=&quot;#GAN&quot; class=&quot;headerlink&quot; title=&quot;GAN&quot;&gt;&lt;/a&gt;GAN&lt;/h1&gt;&lt;h2 id=&quot;contribution&quot;&gt;&lt;a href=&quot;#contribution&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
-    
-    
-      <category term="GAN" scheme="https://larry-11.github.io/larry-11.github.io/tags/GAN/"/>
     
   </entry>
   

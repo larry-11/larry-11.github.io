@@ -29,6 +29,31 @@
     
     
     <entry>
+      <title>SimCLR v2</title>
+      <link href="/2020/07/24/simclr-v2/"/>
+      <url>/2020/07/24/simclr-v2/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h1><h2 id="SimCLR-v2"><a href="#SimCLR-v2" class="headerlink" title="SimCLR v2"></a>SimCLR v2</h2><ul><li>deeper but less wider network:<ul><li>152-layer ResNet with 3× wider channels </li><li>selective kernels (SK) ,channel-wise attention mechanism</li><li>obtain a 29% relative improvement in top-1 accuracy when fine-tuned on 1% of labeled examples</li></ul></li><li>deep projection (non-linear):<ul><li>instead of throwing away g(·) entirely after pretraining as in SimCLR, we fine-tune from a middle layer</li><li>use a 3-layer projection head and fine-tuning from the 1st layer of projection head</li><li>14% relative improvement in top-1 accuracy when fine-tuned on 1% of labeled examples</li></ul></li><li>memory mechanism (MoCo):<ul><li>designates a memory network (with a moving average of weights for stabilization) whose output will be buffered as negative examples</li><li>yields an improvement of ∼1% for linear evaluation as well as when fine-tuning on 1% of labeled examples</li></ul></li></ul><h2 id="Fine-tuning"><a href="#Fine-tuning" class="headerlink" title="Fine-tuning"></a>Fine-tuning</h2><ul><li>incorporate part of the MLP projection head into the base encoder during the fine-tuning</li></ul><h2 id="Self-training-knowledge-distillation-via-unlabeled-examples"><a href="#Self-training-knowledge-distillation-via-unlabeled-examples" class="headerlink" title="Self-training / knowledge distillation via unlabeled examples"></a>Self-training / knowledge distillation via unlabeled examples</h2><ul><li><p>mean-teacher model:</p><ul><li><p>use the fine-tuned network as a teacher to impute labels for training a student network</p></li><li><p>loss:<br><img src="image-20200724192650230.png" alt></p><p><img src="image-20200724192716778.png" alt></p></li></ul></li></ul><h1 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h1><p>[<a href="https://blog.voidful.tech/paper%20reading/2020/06/28/paper-notes-simclr/]" target="_blank" rel="noopener">https://blog.voidful.tech/paper%20reading/2020/06/28/paper-notes-simclr/]</a>(<a href="https://blog.voidful.tech/paper" target="_blank" rel="noopener">https://blog.voidful.tech/paper</a> reading/2020/06/28/paper-notes-simclr/)</p><p><a href="https://arxiv.org/pdf/2006.07733.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/2006.07733.pdf</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> self-supervised </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>WGAN</title>
       <link href="/2020/07/23/wgan/"/>
       <url>/2020/07/23/wgan/</url>

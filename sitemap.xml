@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://larry-11.github.io/larry-11.github.io/2020/07/24/simclr-v2/</loc>
+    
+    <lastmod>2020-07-24T11:27:30.102Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://larry-11.github.io/larry-11.github.io/about/index.html</loc>
     
     <lastmod>2020-07-23T17:10:16.724Z</lastmod>
@@ -184,14 +191,14 @@
   </url>
   
   <url>
-    <loc>https://larry-11.github.io/larry-11.github.io/categories/index.html</loc>
+    <loc>https://larry-11.github.io/larry-11.github.io/friends/index.html</loc>
     
     <lastmod>2020-03-04T04:12:46.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://larry-11.github.io/larry-11.github.io/contact/index.html</loc>
+    <loc>https://larry-11.github.io/larry-11.github.io/categories/index.html</loc>
     
     <lastmod>2020-03-04T04:12:46.000Z</lastmod>
     
@@ -205,7 +212,7 @@
   </url>
   
   <url>
-    <loc>https://larry-11.github.io/larry-11.github.io/friends/index.html</loc>
+    <loc>https://larry-11.github.io/larry-11.github.io/contact/index.html</loc>
     
     <lastmod>2020-03-04T04:12:46.000Z</lastmod>
     
