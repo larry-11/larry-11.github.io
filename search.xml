@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>DiffAug</title>
+      <link href="/2020/07/29/diffaugmentation/"/>
+      <url>/2020/07/29/diffaugmentation/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><ul><li>GANs heavily rely on vast quantities of diverse and high-quality training examples</li><li>reduce the amount of training data results in drastic degradation in the performance</li></ul><p><img src="image-20200731004813949.png" alt></p><h1 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h1><ul><li>提出DiffAug，使用可微分数据增强来对D &amp; G模块进行反向传播权重更新</li><li>SOTA</li></ul><h1 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h1><p><img src="image-20200731005107842.png" alt></p><p>对G &amp; D模块进行优化，因此需要可微分的数据增强方式，能够使loss反向传播至G</p><h2 id="Augment-reals-only"><a href="#Augment-reals-only" class="headerlink" title="Augment reals only"></a>Augment reals only</h2><p><img src="image-20200731005242301.png" alt></p><p>仅对D模块输入的真实图片进行数据增强</p><h2 id="Augment-D-only"><a href="#Augment-D-only" class="headerlink" title="Augment D only"></a>Augment D only</h2><p><img src="image-20200731005256157.png" alt></p><p>对D模块输入的真实/生成图片均进行数据增强</p><h2 id="Differentiable-Augmentation-for-GANs"><a href="#Differentiable-Augmentation-for-GANs" class="headerlink" title="Differentiable Augmentation for GANs"></a>Differentiable Augmentation for GANs</h2><p><img src="image-20200731005312298.png" alt></p><p>前两种方法反而会导致模型效果变差</p><p>在D模块优化的基础上对G模块优化的生成图片进行数据增强</p><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> DiffAugment_pytorch <span class="token keyword">import</span> DiffAugment<span class="token comment" spellcheck="true"># from DiffAugment_tf import DiffAugment</span>policy <span class="token operator">=</span> <span class="token string">'color,translation,cutout'</span> <span class="token comment" spellcheck="true"># Welcome to discover more DiffAugment transformations!</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token comment" spellcheck="true"># Training loop: update D</span>reals <span class="token operator">=</span> sample_real_images<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># a batch of real images</span>z <span class="token operator">=</span> sample_latent_vectors<span class="token punctuation">(</span><span class="token punctuation">)</span>fakes <span class="token operator">=</span> Generator<span class="token punctuation">(</span>z<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># a batch of fake images</span>real_scores <span class="token operator">=</span> Discriminator<span class="token punctuation">(</span>DiffAugment<span class="token punctuation">(</span>reals<span class="token punctuation">,</span> policy<span class="token operator">=</span>policy<span class="token punctuation">)</span><span class="token punctuation">)</span>fake_scores <span class="token operator">=</span> Discriminator<span class="token punctuation">(</span>DiffAugment<span class="token punctuation">(</span>fakes<span class="token punctuation">,</span> policy<span class="token operator">=</span>policy<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true"># Calculating D's loss based on real_scores and fake_scores...</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token comment" spellcheck="true"># Training loop: update G</span>z <span class="token operator">=</span> sample_latent_vectors<span class="token punctuation">(</span><span class="token punctuation">)</span>fakes <span class="token operator">=</span> Generator<span class="token punctuation">(</span>z<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># a batch of fake images</span>fake_scores <span class="token operator">=</span> Discriminator<span class="token punctuation">(</span>DiffAugment<span class="token punctuation">(</span>fakes<span class="token punctuation">,</span> policy<span class="token operator">=</span>policy<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true"># Calculating G's loss based on fake_scores...</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="Compare"><a href="#Compare" class="headerlink" title="Compare"></a>Compare</h2><p><img src="image-20200731005523675.png" alt></p><h1 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h1><h2 id="ImageNet"><a href="#ImageNet" class="headerlink" title="ImageNet"></a>ImageNet</h2><p><img src="image-20200731005732489.png" alt></p><h2 id="CIFAR10-100"><a href="#CIFAR10-100" class="headerlink" title="CIFAR10/100"></a>CIFAR10/100</h2><p><img src="image-20200731005706618.png" alt></p><h2 id="Model-Size"><a href="#Model-Size" class="headerlink" title="Model Size"></a>Model Size</h2><p><img src="image-20200731005826367.png" alt></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> self-supervised </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>BYOL</title>
       <link href="/2020/07/24/byol/"/>
       <url>/2020/07/24/byol/</url>

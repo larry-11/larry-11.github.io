@@ -4,16 +4,13 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="MoCo v2, SYSU CV GAN">
+    <meta name="keywords" content="DiffAug, SYSU CV GAN">
     <meta name="baidu-site-verification" content>
     <meta name="google-site-verification" content>
     <meta name="360-site-verification" content>
-    <meta name="description" content="motivation
-SimCLR提出projection head &amp;amp; data augmentation能够大大提高表现
-SimCLR训练过程使用过大batch size，需要TPU支持
-
-contribution
-在MoCo ">
+    <meta name="description" content="Motivation
+GANs heavily rely on vast quantities of diverse and high-quality training examples
+reduce the amount of train">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -21,7 +18,7 @@ contribution
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>MoCo v2 | Larry Site</title>
+    <title>DiffAug | Larry Site</title>
     <link rel="icon" type="image/jpeg" href="/bio.jpg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -263,13 +260,13 @@ contribution
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        MoCo v2
+                        DiffAug
                     </div>
                 </div>
             </div>
@@ -404,7 +401,7 @@ contribution
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2020-04-22
+                    2020-07-29
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -418,7 +415,7 @@ contribution
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    217
+                    275
                 </div>
                 
 
@@ -436,36 +433,47 @@ contribution
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h1><ul>
-<li>SimCLR提出projection head &amp; data augmentation能够大大提高表现</li>
-<li>SimCLR训练过程使用过大batch size，需要TPU支持</li>
+                <h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><ul>
+<li>GANs heavily rely on vast quantities of diverse and high-quality training examples</li>
+<li>reduce the amount of training data results in drastic degradation in the performance</li>
 </ul>
-<h1 id="contribution"><a href="#contribution" class="headerlink" title="contribution"></a>contribution</h1><ul>
-<li>在MoCo v1中使用了projection head &amp; data augmentation</li>
-<li>通过v1中的queue机制解决SimCLR过大batch size问题（仅concat mini_batch的低维特征向量）</li>
+<p><img src="image-20200731004813949.png" alt></p>
+<h1 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h1><ul>
+<li>提出DiffAug，使用可微分数据增强来对D &amp; G模块进行反向传播权重更新</li>
+<li>SOTA</li>
 </ul>
-<h1 id="method"><a href="#method" class="headerlink" title="method"></a>method</h1><p><img src="image-20200422110621465.png" alt></p>
-<ul>
-<li>SimCLR为end2end机制，需要较大batch size来提供negative set</li>
-<li>MoCo通过queue保存negative key，每轮迭代仅encode mini_batch样本</li>
-<li>依旧使用InfoNCE</li>
-</ul>
-<h1 id="experiment"><a href="#experiment" class="headerlink" title="experiment"></a>experiment</h1><p><img src="image-20200422111821704.png" alt></p>
-<h2 id="MLP-head"><a href="#MLP-head" class="headerlink" title="MLP head"></a>MLP head</h2><p><img src="image-20200422111732879.png" alt></p>
-<ul>
-<li>通过两层MLP（ReLU）代替v1中的fc</li>
-<li><em>in contrast to the big leap on ImageNet, the detection gains are smaller</em></li>
-</ul>
-<h2 id="Augmentation"><a href="#Augmentation" class="headerlink" title="Augmentation"></a>Augmentation</h2><ul>
-<li>引入blur augmentation（stronger color distortion在实验中没有较明显的效果提升）</li>
-<li>单纯引入aug+在检测任务中效果优于MLP，但在线性分类中效果较差</li>
-<li><em>linear classification accuracy is not monotonically related to transfer performance in detection</em></li>
-</ul>
-<h2 id="Comparison-with-SimCLR"><a href="#Comparison-with-SimCLR" class="headerlink" title="Comparison with SimCLR"></a>Comparison with SimCLR</h2><p><img src="image-20200422112621430.png" alt></p>
-<h2 id="Computational-cost"><a href="#Computational-cost" class="headerlink" title="Computational cost"></a>Computational cost</h2><p><img src="image-20200422112954818.png" alt></p>
-<ul>
-<li>SimCLR需要更新q、k enconder，而MoCo仅更新q encoder，k encoder通过Momentum update进行更新</li>
-</ul>
+<h1 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h1><p><img src="image-20200731005107842.png" alt></p>
+<p>对G &amp; D模块进行优化，因此需要可微分的数据增强方式，能够使loss反向传播至G</p>
+<h2 id="Augment-reals-only"><a href="#Augment-reals-only" class="headerlink" title="Augment reals only"></a>Augment reals only</h2><p><img src="image-20200731005242301.png" alt></p>
+<p>仅对D模块输入的真实图片进行数据增强</p>
+<h2 id="Augment-D-only"><a href="#Augment-D-only" class="headerlink" title="Augment D only"></a>Augment D only</h2><p><img src="image-20200731005256157.png" alt></p>
+<p>对D模块输入的真实/生成图片均进行数据增强</p>
+<h2 id="Differentiable-Augmentation-for-GANs"><a href="#Differentiable-Augmentation-for-GANs" class="headerlink" title="Differentiable Augmentation for GANs"></a>Differentiable Augmentation for GANs</h2><p><img src="image-20200731005312298.png" alt></p>
+<p>前两种方法反而会导致模型效果变差</p>
+<p>在D模块优化的基础上对G模块优化的生成图片进行数据增强</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> DiffAugment_pytorch <span class="token keyword">import</span> DiffAugment
+<span class="token comment" spellcheck="true"># from DiffAugment_tf import DiffAugment</span>
+policy <span class="token operator">=</span> <span class="token string">'color,translation,cutout'</span> 
+<span class="token comment" spellcheck="true"># Welcome to discover more DiffAugment transformations!</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token comment" spellcheck="true"># Training loop: update D</span>
+reals <span class="token operator">=</span> sample_real_images<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># a batch of real images</span>
+z <span class="token operator">=</span> sample_latent_vectors<span class="token punctuation">(</span><span class="token punctuation">)</span>
+fakes <span class="token operator">=</span> Generator<span class="token punctuation">(</span>z<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># a batch of fake images</span>
+real_scores <span class="token operator">=</span> Discriminator<span class="token punctuation">(</span>DiffAugment<span class="token punctuation">(</span>reals<span class="token punctuation">,</span> policy<span class="token operator">=</span>policy<span class="token punctuation">)</span><span class="token punctuation">)</span>
+fake_scores <span class="token operator">=</span> Discriminator<span class="token punctuation">(</span>DiffAugment<span class="token punctuation">(</span>fakes<span class="token punctuation">,</span> policy<span class="token operator">=</span>policy<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># Calculating D's loss based on real_scores and fake_scores...</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token comment" spellcheck="true"># Training loop: update G</span>
+z <span class="token operator">=</span> sample_latent_vectors<span class="token punctuation">(</span><span class="token punctuation">)</span>
+fakes <span class="token operator">=</span> Generator<span class="token punctuation">(</span>z<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># a batch of fake images</span>
+fake_scores <span class="token operator">=</span> Discriminator<span class="token punctuation">(</span>DiffAugment<span class="token punctuation">(</span>fakes<span class="token punctuation">,</span> policy<span class="token operator">=</span>policy<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># Calculating G's loss based on fake_scores...</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Compare"><a href="#Compare" class="headerlink" title="Compare"></a>Compare</h2><p><img src="image-20200731005523675.png" alt></p>
+<h1 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h1><h2 id="ImageNet"><a href="#ImageNet" class="headerlink" title="ImageNet"></a>ImageNet</h2><p><img src="image-20200731005732489.png" alt></p>
+<h2 id="CIFAR10-100"><a href="#CIFAR10-100" class="headerlink" title="CIFAR10/100"></a>CIFAR10/100</h2><p><img src="image-20200731005706618.png" alt></p>
+<h2 id="Model-Size"><a href="#Model-Size" class="headerlink" title="Model Size"></a>Model Size</h2><p><img src="image-20200731005826367.png" alt></p>
 
             </div>
             <hr />
@@ -500,9 +508,9 @@ contribution
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《MoCo v2》
+                    《DiffAug》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/04/22/momentum-contrastive-learning-v2/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/07/29/diffaugmentation/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Liangyu Cui
             </a> is licensed under a
@@ -542,29 +550,30 @@ contribution
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="/2020/07/23/wgan/">
+                <a href="/2020/07/29/diffaugmentation/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="WGAN">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="DiffAug">
                         
-                        <span class="card-title">WGAN</span>
+                        <span class="card-title">DiffAug</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Wasserstein GAN
+                            Differentiable Augmentation for Data-Efficient GAN Training
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-07-23
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-07-29
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -577,11 +586,12 @@ contribution
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/GAN/" target="_blank">
-                        <span class="chip bg-color">GAN</span>
+                    <a href="/tags/self-supervised/" target="_blank">
+                        <span class="chip bg-color">self-supervised</span>
                     </a>
                     
                 </div>
@@ -595,24 +605,24 @@ contribution
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/04/22/ssgan-cvpr2019/">
+                <a href="/2020/07/24/byol/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="SSGAN CVPR2019">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="BYOL">
                         
-                        <span class="card-title">SSGAN CVPR2019</span>
+                        <span class="card-title">BYOL</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Self-Supervised GANs via Auxiliary Rotation Loss
+                            Bootstrap Your Own Latent
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-22
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-07-24
                             </span>
                         <span class="publish-author">
                             
@@ -631,10 +641,6 @@ contribution
                     
                     <a href="/tags/self-supervised/" target="_blank">
                         <span class="chip bg-color">self-supervised</span>
-                    </a>
-                    
-                    <a href="/tags/GAN/" target="_blank">
-                        <span class="chip bg-color">GAN</span>
                     </a>
                     
                 </div>
