@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://larry-11.github.io/larry-11.github.io/"/>
-  <updated>2020-07-30T16:58:47.149Z</updated>
+  <updated>2020-07-31T17:14:46.996Z</updated>
   <id>https://larry-11.github.io/larry-11.github.io/</id>
   
   <author>
@@ -17,11 +17,38 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>sinGAN</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/07/31/singan/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/07/31/singan/</id>
+    <published>2020-07-31T04:00:00.000Z</published>
+    <updated>2020-07-31T17:14:46.996Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Motivation&quot;&gt;&lt;a href=&quot;#Motivation&quot; class=&quot;headerlink&quot; title=&quot;Motivation&quot;&gt;&lt;/a&gt;Motivation&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;unconditional GANs
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="GAN" scheme="https://larry-11.github.io/larry-11.github.io/tags/GAN/"/>
+    
+  </entry>
+  
+  <entry>
     <title>DiffAug</title>
     <link href="https://larry-11.github.io/larry-11.github.io/2020/07/29/diffaugmentation/"/>
     <id>https://larry-11.github.io/larry-11.github.io/2020/07/29/diffaugmentation/</id>
     <published>2020-07-29T04:00:00.000Z</published>
-    <updated>2020-07-30T16:58:47.149Z</updated>
+    <updated>2020-07-31T05:39:56.643Z</updated>
     
     <summary type="html">
     
@@ -39,7 +66,7 @@
       <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
     
     
-      <category term="self-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/self-supervised/"/>
+      <category term="GAN" scheme="https://larry-11.github.io/larry-11.github.io/tags/GAN/"/>
     
   </entry>
   
@@ -198,9 +225,9 @@
       <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
     
     
-      <category term="self-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/self-supervised/"/>
-    
       <category term="GAN" scheme="https://larry-11.github.io/larry-11.github.io/tags/GAN/"/>
+    
+      <category term="self-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/self-supervised/"/>
     
   </entry>
   
@@ -522,32 +549,6 @@
     
     
       <category term="随笔" scheme="https://larry-11.github.io/larry-11.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Super Resolution</title>
-    <link href="https://larry-11.github.io/larry-11.github.io/2020/02/26/super-resolution/"/>
-    <id>https://larry-11.github.io/larry-11.github.io/2020/02/26/super-resolution/</id>
-    <published>2020-02-26T04:00:00.000Z</published>
-    <updated>2020-03-06T11:11:56.000Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;SISR&quot;&gt;&lt;a href=&quot;#SISR&quot; class=&quot;headerlink&quot; title=&quot;SISR&quot;&gt;&lt;/a&gt;SISR&lt;/h1&gt;&lt;h2 id=&quot;GAN&quot;&gt;&lt;a href=&quot;#GAN&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
-    
-    
-      <category term="SR" scheme="https://larry-11.github.io/larry-11.github.io/tags/SR/"/>
     
   </entry>
   
