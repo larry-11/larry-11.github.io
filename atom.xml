@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://larry-11.github.io/larry-11.github.io/"/>
-  <updated>2020-07-31T17:14:46.996Z</updated>
+  <updated>2020-08-22T14:00:27.574Z</updated>
   <id>https://larry-11.github.io/larry-11.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PULSE</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/08/21/pulse/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/08/21/pulse/</id>
+    <published>2020-08-21T04:00:00.000Z</published>
+    <updated>2020-08-22T14:00:27.574Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;PULSE&quot;&gt;&lt;a href=&quot;#PULSE&quot; class=&quot;headerlink&quot; title=&quot;PULSE&quot;&gt;&lt;/a&gt;PULSE&lt;/h1&gt;&lt;h2 id=&quot;motivation&quot;&gt;&lt;a href=&quot;#motivation&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="GAN" scheme="https://larry-11.github.io/larry-11.github.io/tags/GAN/"/>
+    
+      <category term="self-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/self-supervised/"/>
+    
+  </entry>
   
   <entry>
     <title>sinGAN</title>
@@ -523,32 +551,6 @@
     
     
       <category term="SR" scheme="https://larry-11.github.io/larry-11.github.io/tags/SR/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>新的开始</title>
-    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/04/larry-site/"/>
-    <id>https://larry-11.github.io/larry-11.github.io/2020/03/04/larry-site/</id>
-    <published>2020-03-04T04:00:00.000Z</published>
-    <updated>2020-03-04T13:31:04.000Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;庆祝小站正式成立！！！&quot;&gt;&lt;a href=&quot;#庆祝小站正式成立！！！&quot; class=&quot;headerlink&quot; title=&quot;庆祝小站正式成立！！！&quot;&gt;&lt;/a&gt;庆祝小站正式成立！！！&lt;/h1&gt;&lt;h1
-        
-      
-    
-    </summary>
-    
-      <category term="随笔" scheme="https://larry-11.github.io/larry-11.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-      <category term="随笔" scheme="https://larry-11.github.io/larry-11.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
     
   </entry>
   

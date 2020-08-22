@@ -4,11 +4,13 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="anchor-free detection summary, SYSU CV GAN">
+    <meta name="keywords" content="PULSE, SYSU CV GAN">
     <meta name="baidu-site-verification" content>
     <meta name="google-site-verification" content>
     <meta name="360-site-verification" content>
-    <meta name="description" content="1、 CornerNet: Detecting Objects as Paired Keypoints  ECCV20181.1  Motivation现有检测方法通常需要一组非常大的anchor boxes，这在正负样本之间造成了巨大的不">
+    <meta name="description" content="PULSEmotivation
+LR-HR image pair
+MSE loss leads to smooth result “ As a result, MSE should not be used alone as a measur">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -16,7 +18,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>anchor-free detection summary | Larry Site</title>
+    <title>PULSE | Larry Site</title>
     <link rel="icon" type="image/jpeg" href="/bio.jpg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -258,13 +260,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        anchor-free detection summary
+                        PULSE
                     </div>
                 </div>
             </div>
@@ -375,8 +377,12 @@
                     
                     <div class="article-tag">
                         
-                        <a href="/tags/detection/" target="_blank">
-                            <span class="chip bg-color">detection</span>
+                        <a href="/tags/GAN/" target="_blank">
+                            <span class="chip bg-color">GAN</span>
+                        </a>
+                        
+                        <a href="/tags/self-supervised/" target="_blank">
+                            <span class="chip bg-color">self-supervised</span>
                         </a>
                         
                     </div>
@@ -399,7 +405,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2019-07-28
+                    2020-08-21
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -413,14 +419,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.5k
+                    215
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    5 Min
+                    1 Min
                 </div>
                 
                 
@@ -431,40 +437,25 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="1、-CornerNet-Detecting-Objects-as-Paired-Keypoints-ECCV2018"><a href="#1、-CornerNet-Detecting-Objects-as-Paired-Keypoints-ECCV2018" class="headerlink" title="1、 CornerNet: Detecting Objects as Paired Keypoints  ECCV2018"></a>1、 CornerNet: Detecting Objects as Paired Keypoints  ECCV2018</h1><h2 id="1-1-Motivation"><a href="#1-1-Motivation" class="headerlink" title="1.1  Motivation"></a>1.1  Motivation</h2><p>现有检测方法通常需要一组非常大的anchor boxes，这在正负样本之间造成了巨大的不平衡，减慢了训练速度。</p>
-<p>anchor boxes的使用引入了许多超参数和设计选择，包括多少个box，大小和宽高比。</p>
-<h2 id="1-2-Contribution"><a href="#1-2-Contribution" class="headerlink" title="1.2  Contribution"></a>1.2  Contribution</h2><p>CornerNet，一种新的one stage目标检测方法，可以消除anchor boxes。</p>
-<h2 id="1-3-CornerNet"><a href="#1-3-CornerNet" class="headerlink" title="1.3  CornerNet"></a>1.3  CornerNet</h2><p><img src="clip_image002.png" alt></p>
-<p>本文将一个目标物体检测为一对关键点——边界框的左上角和右下角。 本文使用单个卷积网络来预测同一物体类别的所有实例的左上角的热图，所有右下角的热图，以及每个检测到的角点的嵌入向量。 嵌入用于对属于同一目标的一对角点进行分组——训练网络以预测它们的类似嵌入。 该方法极大地简化了网络的输出，并且无需设计anchor boxes。</p>
-<h2 id="1-4-Corner-pooling"><a href="#1-4-Corner-pooling" class="headerlink" title="1.4  Corner pooling"></a>1.4  Corner pooling</h2><p><img src="clip_image004.png" alt></p>
-<p>Corner pooling是一种新型的池化层，可帮助卷积网络更好地定位边界框的角点。 边界框的一角通常在目标之外，参考圆形的情况。在这种情况下，角点不能根据当前的信息进行定位。相反，为了确定像素位置是否有左上角，需要水平地向右看目标的最上面边界，垂直地向底部看物体的最左边边界。 这激发了本文的corner pooling layer：它包含两个特征图; 在每个像素位置，它最大池化从第一个特征映射到右侧的所有特征向量，最大池化从第二个特征映射下面的所有特征向量，然后将两个池化结果一起添加。</p>
-<h1 id="2、-CenterNet-Keypoint-Triplets-for-Object-Detection-CVPR2019"><a href="#2、-CenterNet-Keypoint-Triplets-for-Object-Detection-CVPR2019" class="headerlink" title="2、 CenterNet Keypoint Triplets for Object Detection CVPR2019"></a>2、 CenterNet Keypoint Triplets for Object Detection CVPR2019</h1><h2 id="2-1-motivation"><a href="#2-1-motivation" class="headerlink" title="2.1  motivation"></a>2.1  motivation</h2><p>目标检测中，基于关键点的方法经常出现大量不正确的边界框，主要是由于缺乏对相关剪裁区域的额外监督造成的。</p>
-<h2 id="2-2-contribution"><a href="#2-2-contribution" class="headerlink" title="2.2  contribution"></a>2.2  contribution</h2><p>如果预测的边界框与ground truth有较高的IoU,则中心关键点预测出相同类别的概率要高，反之亦然。因此提出在进行inference时，当通过一组关键点产生了一个边界框，我们继续观察是否具有同类别的一个关键点落入区域的中心，即使用三个点表示目标。</p>
-<h2 id="2-3-Object-Detection-as-Keypoint-Triplets"><a href="#2-3-Object-Detection-as-Keypoint-Triplets" class="headerlink" title="2.3  Object Detection as Keypoint Triplets"></a>2.3  Object Detection as Keypoint Triplets</h2><p><img src="clip_image006.png" alt></p>
-<p>网络分为两部分，cascade corner pooling &amp; center pooling</p>
-<p>2.3.1 cascade corner pooling：</p>
-<p>增加原始的corner pooling感知内部信息的功能。结合了feature map中目标物内部及边界方向的响应值和的最大值来预测角点。</p>
-<p>2.3.2 center pooling：</p>
-<p>用于预测中心关键点的分支，有利于中心获得更多目标物的中心区域，进而更易感知proposal的中心区域。通过取中心位置横向与纵向响应值的和的最大值实现此方法。</p>
-<p>2.3.3 process：</p>
-<p>（1）根据其分数选择前k个关键点。</p>
-<p>（2）根据对应的偏移量将center keypoint remap至输入图中。</p>
-<p>（3）为每一个边界框定义一个中心区域（如下图所示），并确保中心区域存在中心关键点，同时，保证该点的类别要与边界框的类别一致。如果中心区域检测到了中心关键点，则用左上角，右下角及中心点的分数的平均值更新边界框的分数，并保存该边界框。如果未检测到中心点，则移除该边界框。</p>
-<p><img src="clip_image008.png" alt></p>
-<h1 id="3、-CornerNet-Lite-Efficient-Keypoint-Based-Object-Detection-ArXiv-2019"><a href="#3、-CornerNet-Lite-Efficient-Keypoint-Based-Object-Detection-ArXiv-2019" class="headerlink" title="3、 CornerNet-Lite: Efficient Keypoint Based Object Detection ArXiv 2019"></a>3、 CornerNet-Lite: Efficient Keypoint Based Object Detection ArXiv 2019</h1><h2 id="3-1-motivation："><a href="#3-1-motivation：" class="headerlink" title="3.1 motivation："></a>3.1 motivation：</h2><p>CnornerNet无法达到实时监测的要求，难以同时保障准确性和检测速度</p>
-<h2 id="3-2-contribution"><a href="#3-2-contribution" class="headerlink" title="3.2 contribution"></a>3.2 contribution</h2><p>提出了两种算法CornerNet-Saccade（高准确率优先）和CornerNet-Squeeze（高实时性优先）</p>
-<h2 id="3-2-CornerNet-Saccade"><a href="#3-2-CornerNet-Saccade" class="headerlink" title="3.2 CornerNet-Saccade"></a>3.2 CornerNet-Saccade</h2><p><img src="clip_image010.png" alt></p>
-<p>CornerNet-Saccade通过减少像素的个数来加速前向速度，使用注意力机制，首先缩小一幅图像，产生一个attention map，再进行放大和后续处理，原始的CornerNet在多个尺度上进行全卷积操作，而CornerNet-Saccade选取若干个分辨率的裁剪区域来检测，在COCO数据集上达到43.2的AP，速度是190ms一张图片，相比于原来速度提升了6倍。</p>
-<h2 id="3-3-CornerNet-Squeeze"><a href="#3-3-CornerNet-Squeeze" class="headerlink" title="3.3 CornerNet-Squeeze"></a>3.3 CornerNet-Squeeze</h2><p>CornerNet-Squeeze 减少每个像素点上需要处理的步骤来加速前向，它融合了SqueezeNet 和MobileNet 的思想，引入了一个紧凑的主干网络，这个主干网络中大量使用了 1×1的卷积，bottleneck层，以及深度可分离卷积。有了新的主干网络，CornerNet-Squeeze 在 COCO上的AP是34.4，速度是30ms每张图片。</p>
-<h1 id="4、-Bottom-up-Object-Detection-by-Grouping-Extreme-and-Center-Points-arxiv2019"><a href="#4、-Bottom-up-Object-Detection-by-Grouping-Extreme-and-Center-Points-arxiv2019" class="headerlink" title="4、 Bottom-up Object Detection by Grouping Extreme and Center Points  arxiv2019"></a>4、 Bottom-up Object Detection by Grouping Extreme and Center Points  arxiv2019</h1><h2 id="4-1-motivation"><a href="#4-1-motivation" class="headerlink" title="4.1 motivation"></a>4.1 motivation</h2><p>针对CornerNet误检的缺陷</p>
-<h2 id="4-2-contribution"><a href="#4-2-contribution" class="headerlink" title="4.2 contribution"></a>4.2 contribution</h2><p><img src="clip_image012.png" alt></p>
-<p>对于一个组合（左、右、上、下四个点），计算其中心点的位置。如果在heatmap上，中心点对应的的分数高于阈值，则认为存在目标，其分数为五个点的平均值。</p>
-<h2 id="4-3-problems"><a href="#4-3-problems" class="headerlink" title="4.3 problems"></a>4.3 problems</h2><p>（1）速度慢，需要检测的点更多了（每类都要上下左右中）</p>
-<p>（2）需要标注extreme point，不过可以通过coco的segmentation得到</p>
-<p>（3）比Cornernet没有明显提升</p>
-<h1 id="5、-Objects-as-Points-CVPR2019"><a href="#5、-Objects-as-Points-CVPR2019" class="headerlink" title="5、 Objects as Points CVPR2019"></a>5、 Objects as Points CVPR2019</h1><h2 id="5-1-motivation"><a href="#5-1-motivation" class="headerlink" title="5.1 motivation"></a>5.1 motivation</h2><p> 传统使用anchor的检测方法的缺陷</p>
-<h2 id="5-2-contribution"><a href="#5-2-contribution" class="headerlink" title="5.2 contribution"></a>5.2 contribution</h2><p><img src="clip_image014.png" alt></p>
-<p>论文通过目标中心点来呈现目标，然后在中心点位置回归出目标bounding box的尺寸大小。 因此将目标检测问题变成了一个标准的关键点估计问题。我们仅仅将图像传入全卷积网络，得到一个热力图，热力图峰值点即中心点，每个特征图的峰值点位置预测了目标的宽高信息。模型训练采用标准的监督学习，推理仅仅是单个前向传播网络，不存在NMS这类后处理。</p>
+                <h1 id="PULSE"><a href="#PULSE" class="headerlink" title="PULSE"></a>PULSE</h1><h2 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h2><ul>
+<li>LR-HR image pair</li>
+<li>MSE loss leads to smooth result<br> <em>“ As a result, MSE should not be used alone as a measure of image quality for super-resolution”</em></li>
+<li><em>“the lack of detail in algorithms that rely only on an lp norm cannot be fixed simply by changing the architecture of the network”</em></li>
+<li>main idea: use unconditioned GAN to generate SR instead of using conditioned GAN to add details to transform LR to SR </li>
+</ul>
+<h2 id="method"><a href="#method" class="headerlink" title="method"></a>method</h2><p><img src="image-20200822172456032.png" alt></p>
+<p>传统方法通过减少L1/L2范式来拉近SR与HR之间距离，但距离缩小并非意味着属于真实图像域，论文方法通过讲真实域上图像逐渐拉近HR来生成更具有细节表现的SR</p>
+<p><img src="image-20200822172123257.png" alt></p>
+<p>通过使用styleGAN(experiment)来生成真实域上图像，随后通过优化Latent Space来使其DS后与目标LR相似</p>
+<h3 id="DS-loss"><a href="#DS-loss" class="headerlink" title="DS loss"></a>DS loss</h3><p><img src="image-20200822173318329.png" alt></p>
+<h3 id="Latent-space"><a href="#Latent-space" class="headerlink" title="Latent space"></a>Latent space</h3><p><img src="image-20200822173347625.png" alt></p>
+<h2 id="experiment"><a href="#experiment" class="headerlink" title="experiment"></a>experiment</h2><h3 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h3><p><img src="image-20200822215651944.png" alt></p>
+<h3 id="Robustness"><a href="#Robustness" class="headerlink" title="Robustness"></a>Robustness</h3><p><img src="image-20200822215714477.png" alt></p>
+<h2 id="conclusion"><a href="#conclusion" class="headerlink" title="conclusion"></a>conclusion</h2><ul>
+<li>使用unconditioned GAN解决SR问题</li>
+<li>通过真实图片域中优化latent space来逼近HR</li>
+<li>实现大倍数超分辨率问题（x64）</li>
+</ul>
 
             </div>
             <hr />
@@ -499,9 +490,9 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《anchor-free detection summary》
+                    《PULSE》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/07/28/anchor-free/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/08/21/pulse/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Liangyu Cui
             </a> is licensed under a
@@ -541,29 +532,84 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="/2019/11/06/gan/">
+                <a href="/2020/08/21/pulse/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="GAN summary">
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="PULSE">
                         
-                        <span class="card-title">GAN summary</span>
+                        <span class="card-title">PULSE</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            GAN 经典论文阅读笔记
+                            Self-Supervised Photo Upsampling via Latent Space Exploration of Generative Models
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-06
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-08-21
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/DL-paper/" class="post-category" target="_blank">
+                                    DL paper
+                                </a>
+                            
+                            
                         </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/GAN/" target="_blank">
+                        <span class="chip bg-color">GAN</span>
+                    </a>
+                    
+                    <a href="/tags/self-supervised/" target="_blank">
+                        <span class="chip bg-color">self-supervised</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/07/31/singan/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="sinGAN">
+                        
+                        <span class="card-title">sinGAN</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Bootstrap Your Own Latent
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-07-31
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -581,55 +627,6 @@
                     
                     <a href="/tags/GAN/" target="_blank">
                         <span class="chip bg-color">GAN</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fa fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2019/07/10/pca/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="PCA">
-                        
-                        <span class="card-title">PCA</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            PCA数学原理
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-10
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/ML/" class="post-category" target="_blank">
-                                    ML
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/ML/" target="_blank">
-                        <span class="chip bg-color">ML</span>
                     </a>
                     
                 </div>

@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>PULSE</title>
+      <link href="/2020/08/21/pulse/"/>
+      <url>/2020/08/21/pulse/</url>
+      
+        <content type="html"><![CDATA[<h1 id="PULSE"><a href="#PULSE" class="headerlink" title="PULSE"></a>PULSE</h1><h2 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h2><ul><li>LR-HR image pair</li><li>MSE loss leads to smooth result<br> <em>“ As a result, MSE should not be used alone as a measure of image quality for super-resolution”</em></li><li><em>“the lack of detail in algorithms that rely only on an lp norm cannot be fixed simply by changing the architecture of the network”</em></li><li>main idea: use unconditioned GAN to generate SR instead of using conditioned GAN to add details to transform LR to SR </li></ul><h2 id="method"><a href="#method" class="headerlink" title="method"></a>method</h2><p><img src="image-20200822172456032.png" alt></p><p>传统方法通过减少L1/L2范式来拉近SR与HR之间距离，但距离缩小并非意味着属于真实图像域，论文方法通过讲真实域上图像逐渐拉近HR来生成更具有细节表现的SR</p><p><img src="image-20200822172123257.png" alt></p><p>通过使用styleGAN(experiment)来生成真实域上图像，随后通过优化Latent Space来使其DS后与目标LR相似</p><h3 id="DS-loss"><a href="#DS-loss" class="headerlink" title="DS loss"></a>DS loss</h3><p><img src="image-20200822173318329.png" alt></p><h3 id="Latent-space"><a href="#Latent-space" class="headerlink" title="Latent space"></a>Latent space</h3><p><img src="image-20200822173347625.png" alt></p><h2 id="experiment"><a href="#experiment" class="headerlink" title="experiment"></a>experiment</h2><h3 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h3><p><img src="image-20200822215651944.png" alt></p><h3 id="Robustness"><a href="#Robustness" class="headerlink" title="Robustness"></a>Robustness</h3><p><img src="image-20200822215714477.png" alt></p><h2 id="conclusion"><a href="#conclusion" class="headerlink" title="conclusion"></a>conclusion</h2><ul><li>使用unconditioned GAN解决SR问题</li><li>通过真实图片域中优化latent space来逼近HR</li><li>实现大倍数超分辨率问题（x64）</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GAN </tag>
+            
+            <tag> self-supervised </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>sinGAN</title>
       <link href="/2020/07/31/singan/"/>
       <url>/2020/07/31/singan/</url>
