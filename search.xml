@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>Deep Self-Learning From Noisy Labels</title>
+      <link href="/2020/09/02/deep-self-learning-from-noisy-labels/"/>
+      <url>/2020/09/02/deep-self-learning-from-noisy-labels/</url>
+      
+        <content type="html"><![CDATA[<h1 id="PULSE"><a href="#PULSE" class="headerlink" title="PULSE"></a>PULSE</h1><h2 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h2><ul><li>“ConvNets achieve good results when training from clean data, but learning from noisy labels significantly degrades performances and remains challenging.”</li><li>existing method:<ul><li>wrong assume: There is a single transition probability between the noisy label and ground-truth label</li><li>using extra supervision</li></ul></li></ul><h2 id="method"><a href="#method" class="headerlink" title="method"></a>method</h2><p><img src="image-20200903222350027.png" alt></p><p>如上图所示，整体框架分为两部分：Training Phase &amp; Label Correction Phase。</p><p>首先在原始数据集上粗训练一个特征提取器与分类器。随后Training Phase &amp; Label Correction Phase迭代训练对框架进行优化。通过共享权重的网络对于随机采样的样本提取到的信息进行聚类，对每个类提取prototype，用这些作为clear-label来优化特征提取网络。</p><h3 id="Training-Phase"><a href="#Training-Phase" class="headerlink" title="Training Phase"></a>Training Phase</h3><p>前期正常训练</p><p>Iterative Self-Learning期间通过Y（实际数据集中label）Y‘（Label Correction Phase 聚类得到的label）来优化特征提取器F</p><h3 id="Label-Correction-Phase"><a href="#Label-Correction-Phase" class="headerlink" title="Label Correction Phase"></a>Label Correction Phase</h3><ol><li><p>每个类别随机采样（避免数据集中单一类别数量过多）</p></li><li><p>首先根据cos相似度计算cos similarity matrix得到随机采样batch中各图片深度特征之间相似度（Euclidean distance效果差）</p><p><img src="image-20200903223732641.png" alt></p></li><li><p>定义density，以此选择prototype</p><p><img src="image-20200903223812153.png" alt></p></li><li><p>采用多个prototype来进行优化，定义similarity measurement防止prototype之间相似度过高导致效果提升不明显。该值表示在density小于自身的图片中的最大相似度</p><p><img src="image-20200903224556361.png" alt></p><p> <em>smaller similarity value ηi indicates that the features corresponding to the image i are not too close the other images with density ρ larger than it</em></p><p><em>sample with high-density value ρ (probability a clean label), and low similarity value η (a clean label but moderately far away from other clean labels)</em></p></li></ol><h3 id="Iterative-Self-Learning"><a href="#Iterative-Self-Learning" class="headerlink" title="Iterative Self-Learning"></a>Iterative Self-Learning</h3><p><img src="image-20200903224915879.png" alt></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> DL paper </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> noisy data </tag>
+            
+            <tag> self-supervised </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>PULSE</title>
       <link href="/2020/08/21/pulse/"/>
       <url>/2020/08/21/pulse/</url>

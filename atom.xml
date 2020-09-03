@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://larry-11.github.io/larry-11.github.io/"/>
-  <updated>2020-08-22T14:00:27.574Z</updated>
+  <updated>2020-09-03T14:51:29.088Z</updated>
   <id>https://larry-11.github.io/larry-11.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Deep Self-Learning From Noisy Labels</title>
+    <link href="https://larry-11.github.io/larry-11.github.io/2020/09/02/deep-self-learning-from-noisy-labels/"/>
+    <id>https://larry-11.github.io/larry-11.github.io/2020/09/02/deep-self-learning-from-noisy-labels/</id>
+    <published>2020-09-02T04:00:00.000Z</published>
+    <updated>2020-09-03T14:51:29.088Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;PULSE&quot;&gt;&lt;a href=&quot;#PULSE&quot; class=&quot;headerlink&quot; title=&quot;PULSE&quot;&gt;&lt;/a&gt;PULSE&lt;/h1&gt;&lt;h2 id=&quot;motivation&quot;&gt;&lt;a href=&quot;#motivation&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
+    
+    
+      <category term="noisy data" scheme="https://larry-11.github.io/larry-11.github.io/tags/noisy-data/"/>
+    
+      <category term="self-supervised" scheme="https://larry-11.github.io/larry-11.github.io/tags/self-supervised/"/>
+    
+  </entry>
   
   <entry>
     <title>PULSE</title>
@@ -522,32 +550,6 @@
     </summary>
     
       <category term="DL paper" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-paper/"/>
-    
-    
-      <category term="SR" scheme="https://larry-11.github.io/larry-11.github.io/tags/SR/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SR summary</title>
-    <link href="https://larry-11.github.io/larry-11.github.io/2020/03/06/sr-summary/"/>
-    <id>https://larry-11.github.io/larry-11.github.io/2020/03/06/sr-summary/</id>
-    <published>2020-03-06T04:00:00.000Z</published>
-    <updated>2020-03-06T11:44:36.000Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;SR&quot;&gt;&lt;a href=&quot;#SR&quot; class=&quot;headerlink&quot; title=&quot;SR&quot;&gt;&lt;/a&gt;SR&lt;/h1&gt;&lt;h2 id=&quot;categories&quot;&gt;&lt;a href=&quot;#categories&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="DL summary" scheme="https://larry-11.github.io/larry-11.github.io/categories/DL-summary/"/>
     
     
       <category term="SR" scheme="https://larry-11.github.io/larry-11.github.io/tags/SR/"/>

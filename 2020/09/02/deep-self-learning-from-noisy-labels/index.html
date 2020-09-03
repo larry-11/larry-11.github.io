@@ -4,13 +4,12 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="DiffAug, SYSU CV GAN">
+    <meta name="keywords" content="Deep Self-Learning From Noisy Labels, SYSU CV GAN">
     <meta name="baidu-site-verification" content>
     <meta name="google-site-verification" content>
     <meta name="360-site-verification" content>
-    <meta name="description" content="Motivation
-GANs heavily rely on vast quantities of diverse and high-quality training examples
-reduce the amount of train">
+    <meta name="description" content="PULSEmotivation
+“ConvNets achieve good results when training from clean data, but learning from noisy labels significant">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +17,7 @@ reduce the amount of train">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>DiffAug | Larry Site</title>
+    <title>Deep Self-Learning From Noisy Labels | Larry Site</title>
     <link rel="icon" type="image/jpeg" href="/bio.jpg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -260,13 +259,13 @@ reduce the amount of train">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        DiffAug
+                        Deep Self-Learning From Noisy Labels
                     </div>
                 </div>
             </div>
@@ -377,8 +376,12 @@ reduce the amount of train">
                     
                     <div class="article-tag">
                         
-                        <a href="/tags/GAN/" target="_blank">
-                            <span class="chip bg-color">GAN</span>
+                        <a href="/tags/noisy-data/" target="_blank">
+                            <span class="chip bg-color">noisy data</span>
+                        </a>
+                        
+                        <a href="/tags/self-supervised/" target="_blank">
+                            <span class="chip bg-color">self-supervised</span>
                         </a>
                         
                     </div>
@@ -401,7 +404,7 @@ reduce the amount of train">
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2020-07-29
+                    2020-09-02
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -415,7 +418,7 @@ reduce the amount of train">
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    275
+                    373
                 </div>
                 
 
@@ -433,47 +436,35 @@ reduce the amount of train">
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><ul>
-<li>GANs heavily rely on vast quantities of diverse and high-quality training examples</li>
-<li>reduce the amount of training data results in drastic degradation in the performance</li>
+                <h1 id="PULSE"><a href="#PULSE" class="headerlink" title="PULSE"></a>PULSE</h1><h2 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h2><ul>
+<li>“ConvNets achieve good results when training from clean data, but learning from noisy labels significantly degrades performances and remains challenging.”</li>
+<li>existing method:<ul>
+<li>wrong assume: There is a single transition probability between the noisy label and ground-truth label</li>
+<li>using extra supervision</li>
 </ul>
-<p><img src="image-20200731004813949.png" alt></p>
-<h1 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h1><ul>
-<li>提出DiffAug，使用可微分数据增强来对D &amp; G模块进行反向传播权重更新</li>
-<li>SOTA</li>
+</li>
 </ul>
-<h1 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h1><p><img src="image-20200731005107842.png" alt></p>
-<p>对G &amp; D模块进行优化，因此需要可微分的数据增强方式，能够使loss反向传播至G</p>
-<h2 id="Augment-reals-only"><a href="#Augment-reals-only" class="headerlink" title="Augment reals only"></a>Augment reals only</h2><p><img src="image-20200731005242301.png" alt></p>
-<p>仅对D模块输入的真实图片进行数据增强</p>
-<h2 id="Augment-D-only"><a href="#Augment-D-only" class="headerlink" title="Augment D only"></a>Augment D only</h2><p><img src="image-20200731005256157.png" alt></p>
-<p>对D模块输入的真实/生成图片均进行数据增强</p>
-<h2 id="Differentiable-Augmentation-for-GANs"><a href="#Differentiable-Augmentation-for-GANs" class="headerlink" title="Differentiable Augmentation for GANs"></a>Differentiable Augmentation for GANs</h2><p><img src="image-20200731005312298.png" alt></p>
-<p>前两种方法反而会导致模型效果变差</p>
-<p>在D模块优化的基础上对G模块优化的生成图片进行数据增强</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> DiffAugment_pytorch <span class="token keyword">import</span> DiffAugment
-<span class="token comment" spellcheck="true"># from DiffAugment_tf import DiffAugment</span>
-policy <span class="token operator">=</span> <span class="token string">'color,translation,cutout'</span> 
-<span class="token comment" spellcheck="true"># Welcome to discover more DiffAugment transformations!</span>
-<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token comment" spellcheck="true"># Training loop: update D</span>
-reals <span class="token operator">=</span> sample_real_images<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># a batch of real images</span>
-z <span class="token operator">=</span> sample_latent_vectors<span class="token punctuation">(</span><span class="token punctuation">)</span>
-fakes <span class="token operator">=</span> Generator<span class="token punctuation">(</span>z<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># a batch of fake images</span>
-real_scores <span class="token operator">=</span> Discriminator<span class="token punctuation">(</span>DiffAugment<span class="token punctuation">(</span>reals<span class="token punctuation">,</span> policy<span class="token operator">=</span>policy<span class="token punctuation">)</span><span class="token punctuation">)</span>
-fake_scores <span class="token operator">=</span> Discriminator<span class="token punctuation">(</span>DiffAugment<span class="token punctuation">(</span>fakes<span class="token punctuation">,</span> policy<span class="token operator">=</span>policy<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># Calculating D's loss based on real_scores and fake_scores...</span>
-<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token comment" spellcheck="true"># Training loop: update G</span>
-z <span class="token operator">=</span> sample_latent_vectors<span class="token punctuation">(</span><span class="token punctuation">)</span>
-fakes <span class="token operator">=</span> Generator<span class="token punctuation">(</span>z<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># a batch of fake images</span>
-fake_scores <span class="token operator">=</span> Discriminator<span class="token punctuation">(</span>DiffAugment<span class="token punctuation">(</span>fakes<span class="token punctuation">,</span> policy<span class="token operator">=</span>policy<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># Calculating G's loss based on fake_scores...</span>
-<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="Compare"><a href="#Compare" class="headerlink" title="Compare"></a>Compare</h2><p><img src="image-20200731005523675.png" alt></p>
-<h1 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h1><h2 id="ImageNet"><a href="#ImageNet" class="headerlink" title="ImageNet"></a>ImageNet</h2><p><img src="image-20200731005732489.png" alt></p>
-<h2 id="CIFAR10-100"><a href="#CIFAR10-100" class="headerlink" title="CIFAR10/100"></a>CIFAR10/100</h2><p><img src="image-20200731005706618.png" alt></p>
-<h2 id="Model-Size"><a href="#Model-Size" class="headerlink" title="Model Size"></a>Model Size</h2><p><img src="image-20200731005826367.png" alt></p>
+<h2 id="method"><a href="#method" class="headerlink" title="method"></a>method</h2><p><img src="image-20200903222350027.png" alt></p>
+<p>如上图所示，整体框架分为两部分：Training Phase &amp; Label Correction Phase。</p>
+<p>首先在原始数据集上粗训练一个特征提取器与分类器。随后Training Phase &amp; Label Correction Phase迭代训练对框架进行优化。通过共享权重的网络对于随机采样的样本提取到的信息进行聚类，对每个类提取prototype，用这些作为clear-label来优化特征提取网络。</p>
+<h3 id="Training-Phase"><a href="#Training-Phase" class="headerlink" title="Training Phase"></a>Training Phase</h3><p>前期正常训练</p>
+<p>Iterative Self-Learning期间通过Y（实际数据集中label）Y‘（Label Correction Phase 聚类得到的label）来优化特征提取器F</p>
+<h3 id="Label-Correction-Phase"><a href="#Label-Correction-Phase" class="headerlink" title="Label Correction Phase"></a>Label Correction Phase</h3><ol>
+<li><p>每个类别随机采样（避免数据集中单一类别数量过多）</p>
+</li>
+<li><p>首先根据cos相似度计算cos similarity matrix得到随机采样batch中各图片深度特征之间相似度（Euclidean distance效果差）</p>
+<p><img src="image-20200903223732641.png" alt></p>
+</li>
+<li><p>定义density，以此选择prototype</p>
+<p><img src="image-20200903223812153.png" alt></p>
+</li>
+<li><p>采用多个prototype来进行优化，定义similarity measurement防止prototype之间相似度过高导致效果提升不明显。该值表示在density小于自身的图片中的最大相似度</p>
+<p><img src="image-20200903224556361.png" alt></p>
+<p> <em>smaller similarity value ηi indicates that the features corresponding to the image i are not too close the other images with density ρ larger than it</em></p>
+<p><em>sample with high-density value ρ (probability a clean label), and low similarity value η (a clean label but moderately far away from other clean labels)</em></p>
+</li>
+</ol>
+<h3 id="Iterative-Self-Learning"><a href="#Iterative-Self-Learning" class="headerlink" title="Iterative Self-Learning"></a>Iterative Self-Learning</h3><p><img src="image-20200903224915879.png" alt></p>
 
             </div>
             <hr />
@@ -508,9 +499,9 @@ fake_scores <span class="token operator">=</span> Discriminator<span class="toke
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《DiffAug》
+                    《Deep Self-Learning From Noisy Labels》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/07/29/diffaugmentation/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/09/02/deep-self-learning-from-noisy-labels/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Liangyu Cui
             </a> is licensed under a
@@ -550,29 +541,84 @@ fake_scores <span class="token operator">=</span> Discriminator<span class="toke
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="/2020/07/31/singan/">
+                <a href="/2020/09/02/deep-self-learning-from-noisy-labels/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="sinGAN">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Deep Self-Learning From Noisy Labels">
                         
-                        <span class="card-title">sinGAN</span>
+                        <span class="card-title">Deep Self-Learning From Noisy Labels</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Bootstrap Your Own Latent
+                            Deep Self-Learning From Noisy Labels
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-07-31
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-09-02
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/DL-paper/" class="post-category" target="_blank">
+                                    DL paper
+                                </a>
+                            
+                            
                         </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/noisy-data/" target="_blank">
+                        <span class="chip bg-color">noisy data</span>
+                    </a>
+                    
+                    <a href="/tags/self-supervised/" target="_blank">
+                        <span class="chip bg-color">self-supervised</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/08/21/pulse/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="PULSE">
+                        
+                        <span class="card-title">PULSE</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Self-Supervised Photo Upsampling via Latent Space Exploration of Generative Models
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-08-21
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -591,51 +637,6 @@ fake_scores <span class="token operator">=</span> Discriminator<span class="toke
                     <a href="/tags/GAN/" target="_blank">
                         <span class="chip bg-color">GAN</span>
                     </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fa fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2020/07/24/byol/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="BYOL">
-                        
-                        <span class="card-title">BYOL</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Bootstrap Your Own Latent
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-07-24
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/DL-paper/" class="post-category" target="_blank">
-                                    DL paper
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
                     
                     <a href="/tags/self-supervised/" target="_blank">
                         <span class="chip bg-color">self-supervised</span>

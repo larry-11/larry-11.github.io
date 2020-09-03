@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://larry-11.github.io/larry-11.github.io/2020/09/02/deep-self-learning-from-noisy-labels/</loc>
+    
+    <lastmod>2020-09-03T14:51:29.088Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://larry-11.github.io/larry-11.github.io/2020/08/21/pulse/</loc>
     
     <lastmod>2020-08-22T14:00:27.574Z</lastmod>
@@ -219,13 +226,6 @@
   </url>
   
   <url>
-    <loc>https://larry-11.github.io/larry-11.github.io/categories/index.html</loc>
-    
-    <lastmod>2020-03-04T04:12:46.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://larry-11.github.io/larry-11.github.io/tags/index.html</loc>
     
     <lastmod>2020-03-04T04:12:46.000Z</lastmod>
@@ -233,7 +233,7 @@
   </url>
   
   <url>
-    <loc>https://larry-11.github.io/larry-11.github.io/friends/index.html</loc>
+    <loc>https://larry-11.github.io/larry-11.github.io/categories/index.html</loc>
     
     <lastmod>2020-03-04T04:12:46.000Z</lastmod>
     
@@ -241,6 +241,13 @@
   
   <url>
     <loc>https://larry-11.github.io/larry-11.github.io/contact/index.html</loc>
+    
+    <lastmod>2020-03-04T04:12:46.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://larry-11.github.io/larry-11.github.io/friends/index.html</loc>
     
     <lastmod>2020-03-04T04:12:46.000Z</lastmod>
     

@@ -1,3 +1,4 @@
+https://larry-11.github.io/larry-11.github.io/2020/09/02/deep-self-learning-from-noisy-labels/
 https://larry-11.github.io/larry-11.github.io/2020/08/21/pulse/
 https://larry-11.github.io/larry-11.github.io/2020/07/31/singan/
 https://larry-11.github.io/larry-11.github.io/2020/07/29/diffaugmentation/
